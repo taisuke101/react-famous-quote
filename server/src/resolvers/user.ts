@@ -75,4 +75,29 @@ export class UserResolver {
             resolve(true);
         }))
     }
+
+    // @Mutation(() => Boolean)
+    // async forgotPassword(
+    //     @Arg('email') email: string,
+    //     @Ctx() { redis }: MyContext
+    // ) {
+    //     const user = await User.findOne({ email });
+    //     if (!user) {
+    //         return true
+    //     };
+
+    //     const token = v4();
+
+    //     await redis.set(
+    //         FORGET_PASSWORD_PREFIX + token,
+    //         user.id,
+    //         'ex',
+    //         1000 * 60 * 60 * 24 * 3
+    //     );
+
+    //     await sendEmail(
+    //         email,
+
+    //     )
+    // }
 }
