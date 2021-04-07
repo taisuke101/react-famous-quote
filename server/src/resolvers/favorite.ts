@@ -1,10 +1,10 @@
 import { Arg, Ctx, Int, Mutation, Query, Resolver, UseMiddleware } from "type-graphql";
+import { UserInputError } from "apollo-server-errors";
 
 import { Quote } from "../entities/Quote";
 import { Favorite } from "../entities/Favorite";
 import { User } from "../entities/User";
 import { isAuth } from "../middleware/isAuth";
-import { UserInputError } from "apollo-server-errors";
 import { MyContext } from "src/types";
 
 @Resolver()
@@ -15,7 +15,7 @@ export class FavoriteResolver {
     async getFavorits(
         @Ctx() {req}: MyContext
     ): Promise<Favorite[]> {
-        return Favorite.find({ 
+        return Favorite.find({
             where: { userId: req.session.userId },
             relations: ['user', 'quote'] 
         });

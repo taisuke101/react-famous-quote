@@ -23,11 +23,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.FavoriteResolver = void 0;
 const type_graphql_1 = require("type-graphql");
+const apollo_server_errors_1 = require("apollo-server-errors");
 const Quote_1 = require("../entities/Quote");
 const Favorite_1 = require("../entities/Favorite");
 const User_1 = require("../entities/User");
 const isAuth_1 = require("../middleware/isAuth");
-const apollo_server_errors_1 = require("apollo-server-errors");
 let FavoriteResolver = class FavoriteResolver {
     getFavorits({ req }) {
         return __awaiter(this, void 0, void 0, function* () {
