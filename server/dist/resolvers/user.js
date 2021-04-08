@@ -60,10 +60,10 @@ let UserResolver = class UserResolver {
                 ? { email: usernameOrEmail }
                 : { username: usernameOrEmail });
             if (!user)
-                throw new apollo_server_errors_1.UserInputError('ユーザーが見つかりません！');
+                throw new apollo_server_errors_1.UserInputError('errors', { usernameOrEmail: 'ユーザーが見つかりません！' });
             const valid = yield argon2_1.default.verify(user.password, password);
             if (!valid)
-                throw new apollo_server_errors_1.UserInputError('登録情報と一致しません！');
+                throw new apollo_server_errors_1.UserInputError('errors', { password: '登録情報と一致しません！' });
             req.session.userId = user.id;
             return user;
         });

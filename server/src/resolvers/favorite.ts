@@ -53,8 +53,6 @@ export class FavoriteResolver {
             user: user,
             quote: quote
         }).save();
-
-        console.log(favorite);
         
         return favorite;
     }
@@ -65,5 +63,5 @@ export class FavoriteResolver {
     ): Promise<boolean> {
         await Favorite.delete({id: favoriteId});
         return true;
-    }
+    }//
 }

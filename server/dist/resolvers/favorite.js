@@ -57,7 +57,6 @@ let FavoriteResolver = class FavoriteResolver {
                 user: user,
                 quote: quote
             }).save();
-            console.log(favorite);
             return favorite;
         });
     }

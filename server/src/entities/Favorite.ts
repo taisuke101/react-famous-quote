@@ -1,5 +1,5 @@
 import { Field, ObjectType } from "type-graphql";
-import { Column, Entity, JoinColumn, ManyToOne } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, Unique } from "typeorm";
 
 import Base from "./Base";
 import { Quote } from "./Quote";
@@ -7,6 +7,7 @@ import { User } from "./User";
 
 @ObjectType()
 @Entity('favorits')
+@Unique(['userId', 'quoteId'])
 export class Favorite extends Base {
     @Field()
     @Column()
