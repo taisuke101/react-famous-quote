@@ -44,7 +44,8 @@ __decorate([
 ], Favorite.prototype, "quote", void 0);
 Favorite = __decorate([
     type_graphql_1.ObjectType(),
-    typeorm_1.Entity('favorits')
+    typeorm_1.Entity('favorits'),
+    typeorm_1.Unique(['userId', 'quoteId'])
 ], Favorite);
 exports.Favorite = Favorite;
 //# sourceMappingURL=Favorite.js.map

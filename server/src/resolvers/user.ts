@@ -52,11 +52,13 @@ export class UserResolver {
             : { username: usernameOrEmail }
         );
         if (!user)
-            throw new UserInputError('ユーザーが見つかりません！');
+            throw new UserInputError('errors',
+            {usernameOrEmail: 'ユーザーが見つかりません！'});
         
         const valid = await argon2.verify(user.password, password);
         if (!valid)
-            throw new UserInputError('登録情報と一致しません！');
+            throw new UserInputError('errors', 
+            {password: '登録情報と一致しません！'});
 
         req.session.userId = user.id;
 

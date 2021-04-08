@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 require("reflect-metadata");
+const cors_1 = __importDefault(require("cors"));
 const express_1 = __importDefault(require("express"));
 const ioredis_1 = __importDefault(require("ioredis"));
 const express_session_1 = __importDefault(require("express-session"));
@@ -31,6 +32,10 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
     const app = express_1.default();
     const RedisStore = connect_redis_1.default(express_session_1.default);
     const redis = new ioredis_1.default();
+    app.use(cors_1.default({
+        origin: 'http://localhost:3000',
+        credentials: true
+    }));
     app.use(express_session_1.default({
         name: constants_1.COOKIE_NAME,
         store: new RedisStore({
@@ -76,7 +81,10 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
         },
         context: ({ req, res }) => ({ req, res, redis })
     });
-    apolloServer.applyMiddleware({ app });
+    apolloServer.applyMiddleware({
+        app,
+        cors: false
+    });
     app.listen(process.env.PORT, () => {
         console.log('server started on ' + process.env.APP_ADDRESS);
     });

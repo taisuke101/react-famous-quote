@@ -1,4 +1,5 @@
 import 'reflect-metadata';
+import cors from 'cors';
 import express from 'express'
 import Redis from 'ioredis';
 import session from 'express-session';
@@ -22,6 +23,11 @@ const main = async () => {
 
     const RedisStore = connectRedis(session);
     const redis = new Redis()
+
+    app.use(cors({
+        origin: 'http://localhost:3000',
+        credentials: true
+    }))
 
     app.use(session ({
         name: COOKIE_NAME,
@@ -71,8 +77,11 @@ const main = async () => {
         },
         context: ({ req, res }): MyContext => ({ req, res, redis })
     });
-    
-    apolloServer.applyMiddleware({ app });
+    //
+    apolloServer.applyMiddleware({ 
+        app,
+        cors: false 
+    });
 
     app.listen(process.env.PORT!, () => {
         console.log('server started on ' + process.env.APP_ADDRESS);

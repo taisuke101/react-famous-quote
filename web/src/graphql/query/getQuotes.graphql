@@ -1,0 +1,9 @@
+query getQuotes {
+    getQuotes {
+        id
+        author
+        country
+        job
+        text
+    }
+}
