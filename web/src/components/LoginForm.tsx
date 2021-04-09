@@ -19,16 +19,17 @@ const LoginForm: FC<{}> = ({}) => {
     const { register, handleSubmit } = useForm<LoginFormProps>();
 
     const [ login, { loading } ] = useLoginMutation({
-        update: (cache, result) => {
-            cache.writeQuery({
-                query: GetMeDocument,
-                data: {
-                    getMe: {
-                        result
-                    }
-                }
-            })
-        },
+        // update: (cache, result) => {
+        //     cache.writeQuery({
+        //         query: GetMeDocument,
+        //         data: {
+        //             getMe: {
+        //                 result
+        //             }
+        //         }
+        //     })
+        // },
+        refetchQueries: [{ query: GetMeDocument }],
         onError: (err) => setError(err.graphQLErrors[0].extensions),
         onCompleted: () => router.push('/'),
     });

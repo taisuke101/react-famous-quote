@@ -1,9 +1,15 @@
-query getQuotes {
-    getQuotes {
-        id
-        author
-        country
-        job
-        text
+query getQuotes($limit: Int!, $cursor: String) {
+    getQuotes(
+        limit: $limit,
+        cursor: $cursor
+    ) {
+        hasMore
+        quotes {
+            id
+            author
+            country
+            job
+            text
+        }
     }
 }

@@ -91,14 +91,26 @@ export type MutationDeleteFavoriteArgs = {
   favoriteId: Scalars['Float'];
 };
 
+export type PaginatedQuotes = {
+  __typename?: 'PaginatedQuotes';
+  quotes: Array<Quote>;
+  hasMore: Scalars['Boolean'];
+};
+
 export type Query = {
   __typename?: 'Query';
   hello: Scalars['String'];
-  getQuotes: Array<Quote>;
+  getQuotes: PaginatedQuotes;
   getQuote: Quote;
   getMe?: Maybe<User>;
   getFavorits: Array<Favorite>;
   getFavorite: Favorite;
+};
+
+
+export type QueryGetQuotesArgs = {
+  cursor?: Maybe<Scalars['String']>;
+  limit: Scalars['Int'];
 };
 
 
@@ -182,15 +194,22 @@ export type GetMeQuery = (
   )> }
 );
 
-export type GetQuotesQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetQuotesQueryVariables = Exact<{
+  limit: Scalars['Int'];
+  cursor?: Maybe<Scalars['String']>;
+}>;
 
 
 export type GetQuotesQuery = (
   { __typename?: 'Query' }
-  & { getQuotes: Array<(
-    { __typename?: 'Quote' }
-    & Pick<Quote, 'id' | 'author' | 'country' | 'job' | 'text'>
-  )> }
+  & { getQuotes: (
+    { __typename?: 'PaginatedQuotes' }
+    & Pick<PaginatedQuotes, 'hasMore'>
+    & { quotes: Array<(
+      { __typename?: 'Quote' }
+      & Pick<Quote, 'id' | 'author' | 'country' | 'job' | 'text'>
+    )> }
+  ) }
 );
 
 
@@ -332,13 +351,16 @@ export type GetMeQueryHookResult = ReturnType<typeof useGetMeQuery>;
 export type GetMeLazyQueryHookResult = ReturnType<typeof useGetMeLazyQuery>;
 export type GetMeQueryResult = Apollo.QueryResult<GetMeQuery, GetMeQueryVariables>;
 export const GetQuotesDocument = gql`
-    query getQuotes {
-  getQuotes {
-    id
-    author
-    country
-    job
-    text
+    query getQuotes($limit: Int!, $cursor: String) {
+  getQuotes(limit: $limit, cursor: $cursor) {
+    hasMore
+    quotes {
+      id
+      author
+      country
+      job
+      text
+    }
   }
 }
     `;
@@ -355,10 +377,12 @@ export const GetQuotesDocument = gql`
  * @example
  * const { data, loading, error } = useGetQuotesQuery({
  *   variables: {
+ *      limit: // value for 'limit'
+ *      cursor: // value for 'cursor'
  *   },
  * });
  */
-export function useGetQuotesQuery(baseOptions?: Apollo.QueryHookOptions<GetQuotesQuery, GetQuotesQueryVariables>) {
+export function useGetQuotesQuery(baseOptions: Apollo.QueryHookOptions<GetQuotesQuery, GetQuotesQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetQuotesQuery, GetQuotesQueryVariables>(GetQuotesDocument, options);
       }

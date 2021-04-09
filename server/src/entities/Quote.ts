@@ -28,3 +28,11 @@ export class Quote extends Base {
     @OneToMany(() => Favorite, favorite => favorite.quote)
     favorits: Favorite[];
 }
+
+@ObjectType()
+export class PaginatedQuotes {
+    @Field(() => [Quote])
+    quotes: Quote[];
+    @Field()
+    hasMore: boolean;
+}

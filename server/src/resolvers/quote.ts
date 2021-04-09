@@ -1,14 +1,35 @@
 import { UserInputError } from "apollo-server-errors";
 import { Arg, Int, Mutation, Query, Resolver } from "type-graphql";
+import { getConnection } from "typeorm";
 
-import { Quote } from '../entities/Quote'
+import { PaginatedQuotes, Quote } from '../entities/Quote'
 import { CreateQuoteInput, UpdateQuoteInput } from "../inputs/QuoteInput";
 
 @Resolver()
 export class QuoteResolver {
-    @Query(() => [Quote])
-    async getQuotes(): Promise<Quote[]> {
-        return Quote.find();
+    @Query(() => PaginatedQuotes)
+    async getQuotes(
+        @Arg('limit', () => Int) limit: number,
+        @Arg('cursor', () => String, { nullable: true }) cursor: string | null
+    ): Promise<PaginatedQuotes> {
+        const quoteLimit = Math.min(50, limit);
+        const quoteLimitPlusOne = quoteLimit + 1;
+        
+        const qb =getConnection()
+            .getRepository(Quote)
+            .createQueryBuilder("q")
+            .orderBy('"createdAt"', "ASC")
+            .take(quoteLimitPlusOne)
+        if (cursor) {
+            qb.where('"id" > :cursor', { cursor })
+        }
+
+        const quotes = await qb.getMany();
+
+        return {
+            quotes: quotes.slice(0, quoteLimit),
+            hasMore: quotes.length === quoteLimitPlusOne
+        };
     }
 
     @Query(() => Quote)

@@ -1,7 +1,7 @@
 import { FC } from 'react';
 
 import PageLink from './PageLink';
-import { GetMeDocument, useGetMeQuery, useLogoutMutation } from '../generated/graphql';
+import { useGetMeQuery, useLogoutMutation } from '../generated/graphql';
 import { useApolloClient } from '@apollo/client';
 
 interface HeaderProps {
@@ -36,6 +36,10 @@ const Header: FC<HeaderProps> = ({}) => {
         body = (
             <>
                 <span>ユーザー名：{data.getMe.username}</span>
+                <PageLink
+                    href='/quote'
+                    text='名言一覧'
+                />
                 <button
                 　onClick={async () => {
                     await logout();
