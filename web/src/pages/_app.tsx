@@ -1,6 +1,7 @@
-import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
+import { ApolloClient, ApolloProvider } from '@apollo/client';
 
 import Header from '../components/Header';
+import { cache } from '../utils/cache';
 
 import '../styles/globals.css';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
@@ -8,7 +9,7 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 const client = new ApolloClient({
   uri: 'http://localhost:5000/graphql',
   credentials: 'include',
-  cache: new InMemoryCache(),
+  cache,
 })
 
 function MyApp({ Component, pageProps }) {

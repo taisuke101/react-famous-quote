@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Quote = void 0;
+exports.PaginatedQuotes = exports.Quote = void 0;
 const type_graphql_1 = require("type-graphql");
 const typeorm_1 = require("typeorm");
 const Base_1 = __importDefault(require("./Base"));
@@ -49,4 +49,18 @@ Quote = __decorate([
     typeorm_1.Entity('quotes')
 ], Quote);
 exports.Quote = Quote;
+let PaginatedQuotes = class PaginatedQuotes {
+};
+__decorate([
+    type_graphql_1.Field(() => [Quote]),
+    __metadata("design:type", Array)
+], PaginatedQuotes.prototype, "quotes", void 0);
+__decorate([
+    type_graphql_1.Field(),
+    __metadata("design:type", Boolean)
+], PaginatedQuotes.prototype, "hasMore", void 0);
+PaginatedQuotes = __decorate([
+    type_graphql_1.ObjectType()
+], PaginatedQuotes);
+exports.PaginatedQuotes = PaginatedQuotes;
 //# sourceMappingURL=Quote.js.map

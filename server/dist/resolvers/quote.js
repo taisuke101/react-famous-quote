@@ -24,12 +24,27 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.QuoteResolver = void 0;
 const apollo_server_errors_1 = require("apollo-server-errors");
 const type_graphql_1 = require("type-graphql");
+const typeorm_1 = require("typeorm");
 const Quote_1 = require("../entities/Quote");
 const QuoteInput_1 = require("../inputs/QuoteInput");
 let QuoteResolver = class QuoteResolver {
-    getQuotes() {
+    getQuotes(limit, cursor) {
         return __awaiter(this, void 0, void 0, function* () {
-            return Quote_1.Quote.find();
+            const quoteLimit = Math.min(50, limit);
+            const quoteLimitPlusOne = quoteLimit + 1;
+            const qb = typeorm_1.getConnection()
+                .getRepository(Quote_1.Quote)
+                .createQueryBuilder("q")
+                .orderBy('"createdAt"', "ASC")
+                .take(quoteLimitPlusOne);
+            if (cursor) {
+                qb.where('"id" > :cursor', { cursor });
+            }
+            const quotes = yield qb.getMany();
+            return {
+                quotes: quotes.slice(0, quoteLimit),
+                hasMore: quotes.length === quoteLimitPlusOne
+            };
         });
     }
     getQuote(id) {
@@ -63,9 +78,11 @@ let QuoteResolver = class QuoteResolver {
     }
 };
 __decorate([
-    type_graphql_1.Query(() => [Quote_1.Quote]),
+    type_graphql_1.Query(() => Quote_1.PaginatedQuotes),
+    __param(0, type_graphql_1.Arg('limit', () => type_graphql_1.Int)),
+    __param(1, type_graphql_1.Arg('cursor', () => String, { nullable: true })),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [Number, Object]),
     __metadata("design:returntype", Promise)
 ], QuoteResolver.prototype, "getQuotes", null);
 __decorate([
