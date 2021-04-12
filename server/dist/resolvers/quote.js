@@ -47,9 +47,17 @@ let QuoteResolver = class QuoteResolver {
             };
         });
     }
-    getQuote(id) {
+    getQuote(author, country, job) {
         return __awaiter(this, void 0, void 0, function* () {
-            return Quote_1.Quote.findOne(id);
+            if (author) {
+                return Quote_1.Quote.find({ author });
+            }
+            else if (country) {
+                return Quote_1.Quote.find({ country });
+            }
+            else {
+                return Quote_1.Quote.find({ job });
+            }
         });
     }
     createQuote(data) {
@@ -86,10 +94,12 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], QuoteResolver.prototype, "getQuotes", null);
 __decorate([
-    type_graphql_1.Query(() => Quote_1.Quote),
-    __param(0, type_graphql_1.Arg('id', () => type_graphql_1.Int)),
+    type_graphql_1.Query(() => [Quote_1.Quote]),
+    __param(0, type_graphql_1.Arg('author', () => String, { nullable: true })),
+    __param(1, type_graphql_1.Arg('country', () => String, { nullable: true })),
+    __param(2, type_graphql_1.Arg('job', () => String, { nullable: true })),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
+    __metadata("design:paramtypes", [String, String, String]),
     __metadata("design:returntype", Promise)
 ], QuoteResolver.prototype, "getQuote", null);
 __decorate([

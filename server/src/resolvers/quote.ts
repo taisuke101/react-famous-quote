@@ -32,11 +32,19 @@ export class QuoteResolver {
         };
     }
 
-    @Query(() => Quote)
+    @Query(() => [Quote])
     async getQuote(
-        @Arg('id', () => Int!) id: number
-    ): Promise<Quote | undefined> {
-        return Quote.findOne(id);
+        @Arg('author', () => String, { nullable: true }) author: string,
+        @Arg('country', () => String, { nullable: true }) country: string,
+        @Arg('job', () => String, { nullable: true }) job: string
+    ): Promise<Quote[] | undefined> {
+        if (author) {
+            return Quote.find({author});
+        } else if (country) {
+            return Quote.find({country});
+        } else {
+            return Quote.find({job});
+        }
     }
 
     @Mutation(() => Quote)

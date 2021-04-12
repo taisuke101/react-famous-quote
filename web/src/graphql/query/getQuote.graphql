@@ -1,0 +1,17 @@
+query getQuote(
+    $author: String,
+    $country: String,
+    $job: String
+) {
+    getQuote(
+        author: $author,
+        country: $country,
+        job: $job
+    ) {
+        id
+        author
+        country
+        job
+        text
+    }
+}

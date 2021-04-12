@@ -101,7 +101,7 @@ export type Query = {
   __typename?: 'Query';
   hello: Scalars['String'];
   getQuotes: PaginatedQuotes;
-  getQuote: Quote;
+  getQuote: Array<Quote>;
   getMe?: Maybe<User>;
   getFavorits: Array<Favorite>;
   getFavorite: Favorite;
@@ -115,7 +115,9 @@ export type QueryGetQuotesArgs = {
 
 
 export type QueryGetQuoteArgs = {
-  id: Scalars['Int'];
+  job?: Maybe<Scalars['String']>;
+  country?: Maybe<Scalars['String']>;
+  author?: Maybe<Scalars['String']>;
 };
 
 export type Quote = {
@@ -191,6 +193,21 @@ export type GetMeQuery = (
   & { getMe?: Maybe<(
     { __typename?: 'User' }
     & Pick<User, 'id' | 'username'>
+  )> }
+);
+
+export type GetQuoteQueryVariables = Exact<{
+  author?: Maybe<Scalars['String']>;
+  country?: Maybe<Scalars['String']>;
+  job?: Maybe<Scalars['String']>;
+}>;
+
+
+export type GetQuoteQuery = (
+  { __typename?: 'Query' }
+  & { getQuote: Array<(
+    { __typename?: 'Quote' }
+    & Pick<Quote, 'id' | 'author' | 'country' | 'job' | 'text'>
   )> }
 );
 
@@ -350,6 +367,47 @@ export function useGetMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetM
 export type GetMeQueryHookResult = ReturnType<typeof useGetMeQuery>;
 export type GetMeLazyQueryHookResult = ReturnType<typeof useGetMeLazyQuery>;
 export type GetMeQueryResult = Apollo.QueryResult<GetMeQuery, GetMeQueryVariables>;
+export const GetQuoteDocument = gql`
+    query getQuote($author: String, $country: String, $job: String) {
+  getQuote(author: $author, country: $country, job: $job) {
+    id
+    author
+    country
+    job
+    text
+  }
+}
+    `;
+
+/**
+ * __useGetQuoteQuery__
+ *
+ * To run a query within a React component, call `useGetQuoteQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetQuoteQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetQuoteQuery({
+ *   variables: {
+ *      author: // value for 'author'
+ *      country: // value for 'country'
+ *      job: // value for 'job'
+ *   },
+ * });
+ */
+export function useGetQuoteQuery(baseOptions?: Apollo.QueryHookOptions<GetQuoteQuery, GetQuoteQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetQuoteQuery, GetQuoteQueryVariables>(GetQuoteDocument, options);
+      }
+export function useGetQuoteLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetQuoteQuery, GetQuoteQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetQuoteQuery, GetQuoteQueryVariables>(GetQuoteDocument, options);
+        }
+export type GetQuoteQueryHookResult = ReturnType<typeof useGetQuoteQuery>;
+export type GetQuoteLazyQueryHookResult = ReturnType<typeof useGetQuoteLazyQuery>;
+export type GetQuoteQueryResult = Apollo.QueryResult<GetQuoteQuery, GetQuoteQueryVariables>;
 export const GetQuotesDocument = gql`
     query getQuotes($limit: Int!, $cursor: String) {
   getQuotes(limit: $limit, cursor: $cursor) {
