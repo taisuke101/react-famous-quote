@@ -18,8 +18,12 @@ const Header: FC<HeaderProps> = ({}) => {
     if (!data?.getMe) {
         body = (
             <>
+                <PageLink 
+                    href='/about'
+                    text='このサイトについて'
+                />
                 <PageLink
-                    href='/quote'
+                    href='/quotes'
                     text='名言一覧'
                 />
                 <PageLink
@@ -36,8 +40,12 @@ const Header: FC<HeaderProps> = ({}) => {
         body = (
             <>
                 <span>ユーザー名：{data.getMe.username}</span>
+                <PageLink 
+                    href='/about'
+                    text='このサイトについて'
+                />
                 <PageLink
-                    href='/quote'
+                    href='/quotes'
                     text='名言一覧'
                 />
                 <button
