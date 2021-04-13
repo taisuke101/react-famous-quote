@@ -38,13 +38,12 @@ export class QuoteResolver {
         @Arg('country', () => String, { nullable: true }) country: string,
         @Arg('job', () => String, { nullable: true }) job: string
     ): Promise<Quote[] | undefined> {
-        if (author) {
+        if (author)
             return Quote.find({author});
-        } else if (country) {
+        else if (country)
             return Quote.find({country});
-        } else {
+        else
             return Quote.find({job});
-        }
     }
 
     @Mutation(() => Quote)

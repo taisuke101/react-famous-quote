@@ -49,15 +49,12 @@ let QuoteResolver = class QuoteResolver {
     }
     getQuote(author, country, job) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (author) {
+            if (author)
                 return Quote_1.Quote.find({ author });
-            }
-            else if (country) {
+            else if (country)
                 return Quote_1.Quote.find({ country });
-            }
-            else {
+            else
                 return Quote_1.Quote.find({ job });
-            }
         });
     }
     createQuote(data) {

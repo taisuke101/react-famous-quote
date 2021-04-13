@@ -7,7 +7,6 @@ import { Favorite } from "./Favorite";
 @ObjectType()
 @Entity('quotes')
 export class Quote extends Base {
-    //country,job,author,text
     @Field()
     @Column()
     author: string;

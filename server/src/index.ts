@@ -4,6 +4,7 @@ import express from 'express'
 import Redis from 'ioredis';
 import session from 'express-session';
 import connectRedis from 'connect-redis';
+import http from 'http';
 import { ApolloError, ApolloServer, UserInputError } from 'apollo-server-express'
 import { ArgumentValidationError, buildSchema } from 'type-graphql';
 import { createConnection } from 'typeorm';
@@ -20,14 +21,15 @@ const main = async () => {
         .then(() => console.log('database connect!'));
 
     const app = express();
+    const httpServer = http.createServer(app);
 
     const RedisStore = connectRedis(session);
-    const redis = new Redis()
+    const redis = new Redis();
 
     app.use(cors({
         origin: 'http://localhost:3000',
         credentials: true
-    }))
+    }));
 
     app.use(session ({
         name: COOKIE_NAME,
@@ -45,9 +47,14 @@ const main = async () => {
         saveUninitialized: false,
         secret: process.env.REDIS_SECRET!,
         resave: false,
-    }))
+    }));
     
     const apolloServer = new ApolloServer({
+        playground: {
+            settings: {
+                "request.credentials": "include",
+            },
+        },
         schema: await buildSchema({
             resolvers: [
                 HelloResolver,
@@ -56,6 +63,11 @@ const main = async () => {
                 FavoriteResolver
             ]
         }),
+        subscriptions: {
+            path: '/subscriptions',
+            onConnect: () => console.log('subscription connected!'),
+            onDisconnect: () => console.log('subscription disconnected!'),
+        },
         formatError: (err) => {
             if (err.originalError instanceof ApolloError) {
                 return err;
@@ -82,8 +94,9 @@ const main = async () => {
         app,
         cors: false 
     });
+    apolloServer.installSubscriptionHandlers(httpServer);
 
-    app.listen(process.env.PORT!, () => {
+    httpServer.listen(process.env.PORT!, () => {
         console.log('server started on ' + process.env.APP_ADDRESS);
     })
 }
