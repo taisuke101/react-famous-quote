@@ -2,6 +2,7 @@ import { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import Loader from 'react-loader-spinner';
+import Link from 'next/link';
 
 import { GetMeDocument, useLoginMutation } from '../generated/graphql';
 import SubmitButton from './SubmitButton';
@@ -78,6 +79,9 @@ const LoginForm: FC<{}> = ({}) => {
                         <SubmitButton>
                             ログイン
                         </SubmitButton>
+                        <Link href='/forgot-password'>
+                            <a className='mt-4'>パスワードを忘れた場合</a>
+                        </Link>
                     </form>
                 )
             }
