@@ -41,11 +41,13 @@ export class FavoriteResolver {
         const { userId } = req.session;
         const user = await User.findOne(userId);
         if (!user)
-            throw new UserInputError('ユーザーが見つかりません！');
+            throw new UserInputError('errors', 
+            {formattedErrors: {userId: 'ユーザーが見つかりません！'}});
         
         const quote = await Quote.findOne(quoteId);
         if (!quote)
-            throw new UserInputError('名言が見つかりません！');
+            throw new UserInputError('errors',
+            {formattedErrors: {quoteId: '名言が見つかりません！'}});
 
         const favorite = await Favorite.create({
             userId: userId as number,

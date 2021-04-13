@@ -27,7 +27,7 @@ const Quotes: FC<QuoteProps> = ({}) => {
     }
     
     return (
-        <div className='pt-24'>
+        <div className='py-24 text-center'>
             {!data && loading 
             ? (<div>loading...</div>) 
             : (
@@ -55,6 +55,7 @@ const Quotes: FC<QuoteProps> = ({}) => {
                 )
             }
             <button
+                className='px-6 py-2 mx-auto mt-2 text-lg font-semibold tracking-widest text-white transition duration-500 transform bg-green-400 rounded-lg hover:text-black hover:bg-green-600'
                 onClick={async () => {
                     await fetchMore({
                         variables: {

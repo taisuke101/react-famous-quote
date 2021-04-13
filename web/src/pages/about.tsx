@@ -6,7 +6,7 @@ interface AboutProps {
 
 const About: VFC<AboutProps> = ({}) => {
     return (
-        <div>
+        <div className='pt-24'>
             about
         </div>
     );
