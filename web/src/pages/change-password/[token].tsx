@@ -62,6 +62,8 @@ const Token: VFC<TokenProps> = ({}) => {
                             >
                                 <p className='mt-2 text-xl'>新しいパスワード</p>
                                 { error.newPassword && <p className='text-red-600'>{error.newPassword}</p> }
+                                { error.token && <p className='text-red-600'>{error.token}</p> }
+                                { error.userId && <p className='text-red-600'>{error.userId}</p> }
                                 <input 
                                     name='newPassword'
                                     placeholder='新しいパスワード'

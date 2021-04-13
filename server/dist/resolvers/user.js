@@ -46,7 +46,7 @@ let UserResolver = class UserResolver {
             const { username, email, password } = data;
             const emailIsTaken = yield User_1.User.findOne({ email });
             if (emailIsTaken)
-                throw new apollo_server_errors_1.UserInputError('登録済みのEメールです！');
+                throw new apollo_server_errors_1.UserInputError('errors', { formattedErrors: { email: '登録済みのEメールです！' } });
             const user = yield User_1.User.create({
                 username,
                 email,
@@ -67,10 +67,10 @@ let UserResolver = class UserResolver {
                 ? { email: usernameOrEmail }
                 : { username: usernameOrEmail });
             if (!user)
-                throw new apollo_server_errors_1.UserInputError('errors', { usernameOrEmail: 'ユーザーが見つかりません！' });
+                throw new apollo_server_errors_1.UserInputError('errors', { formattedErrors: { usernameOrEmail: 'ユーザーが見つかりません！' } });
             const valid = yield argon2_1.default.verify(user.password, password);
             if (!valid)
-                throw new apollo_server_errors_1.UserInputError('errors', { password: '登録情報と一致しません！' });
+                throw new apollo_server_errors_1.UserInputError('errors', { formattedErrors: { password: '登録情報と一致しません！' } });
             req.session.userId = user.id;
             return user;
         });
@@ -111,11 +111,11 @@ let UserResolver = class UserResolver {
             const key = constants_1.FORGET_PASSWORD_PREFIX + token;
             const userId = yield redis.get(key);
             if (!userId)
-                throw new apollo_server_errors_1.UserInputError('errors', { token: '期限切れのトークンです！' });
+                throw new apollo_server_errors_1.UserInputError('errors', { formattedErrors: { token: '期限切れのトークンです！' } });
             const numberUserId = parseInt(userId);
             const user = yield User_1.User.findOne(numberUserId);
             if (!user)
-                throw new apollo_server_errors_1.UserInputError('errors', { userId: 'ユーザーが存在しません！' });
+                throw new apollo_server_errors_1.UserInputError('errors', { formattedErrors: { userId: 'ユーザーが存在しません！' } });
             yield User_1.User.update({ id: numberUserId }, { password: yield argon2_1.default.hash(data.newPassword) });
             yield redis.del(key);
             req.session.userId = userId;
