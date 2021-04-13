@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CreateUserInput = void 0;
+exports.ChangePasswordInput = exports.CreateUserInput = void 0;
 const class_validator_1 = require("class-validator");
 const type_graphql_1 = require("type-graphql");
 const Match_1 = require("../decorators/Match");
@@ -33,6 +33,7 @@ __decorate([
     type_graphql_1.Field(),
     class_validator_1.IsNotEmpty({ message: 'パスワードは必須項目です！' }),
     class_validator_1.MaxLength(15, { message: '15文字以内に収めて下さい！' }),
+    class_validator_1.MinLength(2, { message: '2文字以上に設定して下さい！' }),
     __metadata("design:type", String)
 ], CreateUserInput.prototype, "password", void 0);
 __decorate([
@@ -45,4 +46,16 @@ CreateUserInput = __decorate([
     type_graphql_1.InputType()
 ], CreateUserInput);
 exports.CreateUserInput = CreateUserInput;
+let ChangePasswordInput = class ChangePasswordInput {
+};
+__decorate([
+    type_graphql_1.Field(),
+    class_validator_1.IsNotEmpty({ message: '新しいパスワードは必須項目です！' }),
+    class_validator_1.MinLength(2, { message: '2文字以上に設定して下さい！' }),
+    __metadata("design:type", String)
+], ChangePasswordInput.prototype, "newPassword", void 0);
+ChangePasswordInput = __decorate([
+    type_graphql_1.InputType()
+], ChangePasswordInput);
+exports.ChangePasswordInput = ChangePasswordInput;
 //# sourceMappingURL=UserInput.js.map
