@@ -3,6 +3,7 @@ import { Column, Entity, OneToMany } from "typeorm";
 
 import Base from "./Base";
 import { Favorite } from "./Favorite";
+import { Like } from './Like'
 
 @ObjectType()
 @Entity('quotes')
@@ -23,9 +24,15 @@ export class Quote extends Base {
     @Column()
     text: string;
 
-    @Field(() => Favorite)
+    @Field()
+    @Column({ default: 0})
+    likeCount: number;
+
     @OneToMany(() => Favorite, favorite => favorite.quote)
     favorits: Favorite[];
+
+    @OneToMany(() => Like, like => like.quote)
+    likes: Like[];
 }
 
 @ObjectType()

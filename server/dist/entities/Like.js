@@ -9,39 +9,35 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Favorite = void 0;
-const type_graphql_1 = require("type-graphql");
+exports.Like = void 0;
 const typeorm_1 = require("typeorm");
 const Quote_1 = require("./Quote");
 const User_1 = require("./User");
-let Favorite = class Favorite extends typeorm_1.BaseEntity {
+let Like = class Like extends typeorm_1.BaseEntity {
 };
 __decorate([
-    type_graphql_1.Field(),
+    typeorm_1.Column(),
+    __metadata("design:type", Number)
+], Like.prototype, "value", void 0);
+__decorate([
     typeorm_1.PrimaryColumn(),
     __metadata("design:type", Number)
-], Favorite.prototype, "userId", void 0);
+], Like.prototype, "userId", void 0);
 __decorate([
-    type_graphql_1.Field(),
     typeorm_1.PrimaryColumn(),
     __metadata("design:type", Number)
-], Favorite.prototype, "quoteId", void 0);
+], Like.prototype, "quoteId", void 0);
 __decorate([
-    type_graphql_1.Field(() => User_1.User),
-    typeorm_1.ManyToOne(() => User_1.User, user => user.favorits),
-    typeorm_1.JoinColumn({ name: 'user' }),
+    typeorm_1.ManyToOne(() => User_1.User, user => user.likes),
     __metadata("design:type", User_1.User)
-], Favorite.prototype, "user", void 0);
+], Like.prototype, "user", void 0);
 __decorate([
-    type_graphql_1.Field(() => Quote_1.Quote),
-    typeorm_1.ManyToOne(() => Quote_1.Quote, quote => quote.favorits),
-    typeorm_1.JoinColumn({ name: 'quote' }),
+    typeorm_1.ManyToOne(() => Quote_1.Quote, quote => quote.likes),
     __metadata("design:type", Quote_1.Quote)
-], Favorite.prototype, "quote", void 0);
-Favorite = __decorate([
-    type_graphql_1.ObjectType(),
-    typeorm_1.Entity('favorits'),
+], Like.prototype, "quote", void 0);
+Like = __decorate([
+    typeorm_1.Entity('likes'),
     typeorm_1.Unique(['userId', 'quoteId'])
-], Favorite);
-exports.Favorite = Favorite;
-//# sourceMappingURL=Favorite.js.map
+], Like);
+exports.Like = Like;
+//# sourceMappingURL=Like.js.map

@@ -24,46 +24,50 @@ export class FavoriteResolver {
     @UseMiddleware(isAuth)
     @Query(() => Favorite)
     async getFavorite(
+        @Arg('quoteId', () => Int) quoteId: number, 
         @Ctx() { req }: MyContext
     ): Promise<Favorite | undefined> {
+        const userId  = req.session.userId as number;
+
         return Favorite.findOne(
-            req.session.userId, 
+            {userId, quoteId}, 
             {relations: ['user', 'quote']}
         );
     }
 
     @UseMiddleware(isAuth)
-    @Mutation(() => Favorite)
+    @Mutation(() => Boolean)
     async createFavorite(
         @Arg('quoteId', () => Int) quoteId: number,
         @Ctx() { req }: MyContext
-    ): Promise<Favorite> {
-        const { userId } = req.session;
+    ): Promise<boolean> {
+        const { userId }= req.session;
         const user = await User.findOne(userId);
-        if (!user)
-            throw new UserInputError('errors', 
-            {formattedErrors: {userId: 'ユーザーが見つかりません！'}});
-        
+
         const quote = await Quote.findOne(quoteId);
-        if (!quote)
+
+        if (quote) {
+            const favorite = await Favorite.findOne({
+                userId: userId as number, 
+                quoteId
+            })
+            if (favorite) {
+                Favorite.delete({
+                    userId: userId as number,
+                    quoteId
+                });
+            } else {
+                Favorite.create({
+                    userId: userId as number,
+                    quoteId,
+                    user: user,
+                    quote: quote,
+                }).save();
+            }
+            return true;
+        } else {
             throw new UserInputError('errors',
             {formattedErrors: {quoteId: '名言が見つかりません！'}});
-
-        const favorite = await Favorite.create({
-            userId: userId as number,
-            quoteId,
-            user: user,
-            quote: quote
-        }).save();
-        
-        return favorite;
+        }
     }
-
-    @Mutation(() => Favorite)
-    async deleteFavorite(
-        @Arg('favoriteId') favoriteId: number,
-    ): Promise<boolean> {
-        await Favorite.delete({id: favoriteId});
-        return true;
-    }//
 }

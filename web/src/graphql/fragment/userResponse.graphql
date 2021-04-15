@@ -1,0 +1,4 @@
+fragment userResponse on User {
+    id
+    username
+}

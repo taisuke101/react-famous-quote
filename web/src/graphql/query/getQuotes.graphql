@@ -5,11 +5,7 @@ query getQuotes($limit: Int!, $cursor: String) {
     ) {
         hasMore
         quotes {
-            id
-            author
-            country
-            job
-            text
+            ...quoteResponse
         }
     }
 }

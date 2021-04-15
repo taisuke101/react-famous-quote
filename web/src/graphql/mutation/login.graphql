@@ -6,8 +6,6 @@ mutation login(
         usernameOrEmail: $usernameOrEmail,
         password: $password
     ) {
-        username
-        email
-        password
+        ...userResponse
     }
 }

@@ -2,12 +2,14 @@ import { FC } from 'react'
 import Link from 'next/link';
 
 import { useGetQuotesQuery } from '../generated/graphql';
+import LikeAndFavorite from '../components/LikeAndFavorite';
 
 interface QuoteProps {
 
 }
 
 const Quotes: FC<QuoteProps> = ({}) => {
+
     const { data, loading, fetchMore, variables } = useGetQuotesQuery({
         variables: {
             limit: 10,
@@ -32,7 +34,7 @@ const Quotes: FC<QuoteProps> = ({}) => {
             ? (<div>loading...</div>) 
             : (
                 <>
-                    { data.getQuotes.quotes.map(quote => {
+                    { data?.getQuotes.quotes.map(quote => {
                         return (
                             <div 
                                 key={quote.id}
@@ -47,26 +49,29 @@ const Quotes: FC<QuoteProps> = ({}) => {
                                         <a className='text-lg'>{quote.country}</a>
                                     </Link>
                                     <div>{quote.job}</div>
+                                    <LikeAndFavorite 
+                                        quote={quote}
+                                    />
                                 </section>
                             </div>
                         )
                     })}
+                    <button
+                        className='px-6 py-2 mx-auto mt-2 text-lg font-semibold tracking-widest text-white transition duration-500 transform bg-green-400 rounded-lg hover:text-black hover:bg-green-600'
+                        onClick={async () => {
+                            await fetchMore({
+                                variables: {
+                                    limit: variables?.limit,
+                                    cursor: data?.getQuotes.quotes[data.getQuotes.quotes.length -1].id
+                                }
+                            })
+                        }}
+                    >
+                        さらに読み込む
+                    </button>
                 </>
                 )
             }
-            <button
-                className='px-6 py-2 mx-auto mt-2 text-lg font-semibold tracking-widest text-white transition duration-500 transform bg-green-400 rounded-lg hover:text-black hover:bg-green-600'
-                onClick={async () => {
-                    await fetchMore({
-                        variables: {
-                            limit: variables?.limit,
-                            cursor: data.getQuotes.quotes[data.getQuotes.quotes.length -1].id
-                        }
-                    })
-                }}
-            >
-                さらに読み込む
-            </button>
         </div>
     );
 }

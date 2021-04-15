@@ -8,10 +8,6 @@ query getQuote(
         country: $country,
         job: $job
     ) {
-        id
-        author
-        country
-        job
-        text
+        ...quoteResponse
     }
 }

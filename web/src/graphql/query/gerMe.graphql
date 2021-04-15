@@ -1,6 +1,5 @@
 query getMe {
     getMe{
-        id
-        username
+        ...userResponse
     }
 }

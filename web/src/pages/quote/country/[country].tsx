@@ -2,6 +2,7 @@ import { VFC } from 'react';
 import { useRouter } from 'next/router';
 
 import { useGetQuoteQuery } from '../../../generated/graphql';
+import LikeAndFavorite from '../../../components/LikeAndFavorite';
 
 interface CountryProps {
 
@@ -30,11 +31,14 @@ const Country: VFC<CountryProps> = ({}) => {
                 <>
                     {data.getQuote.map(quote => {
                         return (
-                            <>
+                            <div className='p-4 m-4 space-y-5 text-center bg-gray-500'>
                                 <div>{quote.text}</div>
                                 <div>{quote.author}</div>
                                 <div>{quote.job}</div>
-                            </>
+                                <LikeAndFavorite 
+                                    quote={quote}
+                                />
+                            </div>
                         )
                     })
                     }

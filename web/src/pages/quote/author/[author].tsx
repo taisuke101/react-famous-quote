@@ -2,6 +2,7 @@ import { VFC } from 'react';
 import { useRouter } from 'next/router';
 
 import { useGetQuoteQuery } from '../../../generated/graphql';
+import LikeAndFavorite from '../../../components/LikeAndFavorite';
 
 interface AuthorProps {
 
@@ -28,9 +29,13 @@ const Author: VFC<AuthorProps> = ({}) => {
                 <>
                     {data.getQuote.map(quote => {
                         return (
-                            <div>{quote.text}</div>
-                        )
-                    })
+                            <div className='p-4 m-4 space-y-5 text-center bg-gray-500'>
+                                <div>{quote.text}</div>
+                                <LikeAndFavorite 
+                                    quote={quote}
+                                />
+                            </div>
+                        )})
                     }
                 </>
             )

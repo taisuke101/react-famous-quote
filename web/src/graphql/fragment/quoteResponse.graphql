@@ -1,0 +1,10 @@
+fragment quoteResponse on Quote {
+    id
+    author
+    country
+    job
+    text
+    likeCount
+    likeStatus
+    hasFavorite
+}

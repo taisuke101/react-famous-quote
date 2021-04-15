@@ -26,8 +26,33 @@ const apollo_server_errors_1 = require("apollo-server-errors");
 const type_graphql_1 = require("type-graphql");
 const typeorm_1 = require("typeorm");
 const Quote_1 = require("../entities/Quote");
+const Like_1 = require("../entities/Like");
+const Favorite_1 = require("../entities/Favorite");
 const QuoteInput_1 = require("../inputs/QuoteInput");
+const isAuth_1 = require("../middleware/isAuth");
 let QuoteResolver = class QuoteResolver {
+    likeStatus(quote, { req }) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!req.session.userId)
+                return null;
+            const like = yield Like_1.Like.findOne({
+                quoteId: quote.id,
+                userId: req.session.userId
+            });
+            return like ? like.value : null;
+        });
+    }
+    hasFavorite(quote, { req }) {
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!req.session.userId)
+                return null;
+            const favorite = yield Favorite_1.Favorite.findOne({
+                quoteId: quote.id,
+                userId: req.session.userId
+            });
+            return favorite ? true : false;
+        });
+    }
     getQuotes(limit, cursor) {
         return __awaiter(this, void 0, void 0, function* () {
             const quoteLimit = Math.min(50, limit);
@@ -57,6 +82,45 @@ let QuoteResolver = class QuoteResolver {
                 return Quote_1.Quote.find({ job });
         });
     }
+    likeQuote(quoteId, value, { req }) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const isLike = value !== -1;
+            const realValue = isLike ? 1 : -1;
+            const { userId } = req.session;
+            const like = yield Like_1.Like.findOne({
+                userId: userId,
+                quoteId
+            });
+            if (like && like.value !== realValue) {
+                yield typeorm_1.getConnection().transaction((transaction) => __awaiter(this, void 0, void 0, function* () {
+                    yield transaction.query(`
+                    update likes
+                    set value = $1
+                    where "quoteId" = $2 and "userId" = $3
+                `, [realValue, quoteId, userId]);
+                    yield transaction.query(`
+                    update quotes
+                    set "likeCount" = "likeCount" + $1
+                    where id = $2
+                `, [realValue, quoteId]);
+                }));
+            }
+            else if (!like) {
+                yield typeorm_1.getConnection().transaction((transaction) => __awaiter(this, void 0, void 0, function* () {
+                    yield transaction.query(`
+                    insert into likes ("userId", "quoteId", value)
+                    values ($1, $2, $3)
+                `, [userId, quoteId, realValue]);
+                    yield transaction.query(`
+                    update quotes
+                    set "likeCount" = "likeCount" + $1
+                    where id = $2
+                `, [realValue, quoteId]);
+                }));
+            }
+            return true;
+        });
+    }
     createQuote(data) {
         return __awaiter(this, void 0, void 0, function* () {
             return Quote_1.Quote.create(Object.assign({}, data)).save();
@@ -83,6 +147,22 @@ let QuoteResolver = class QuoteResolver {
     }
 };
 __decorate([
+    type_graphql_1.FieldResolver(() => type_graphql_1.Int, { nullable: true }),
+    __param(0, type_graphql_1.Root()),
+    __param(1, type_graphql_1.Ctx()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Quote_1.Quote, Object]),
+    __metadata("design:returntype", Promise)
+], QuoteResolver.prototype, "likeStatus", null);
+__decorate([
+    type_graphql_1.FieldResolver(() => Boolean, { nullable: true }),
+    __param(0, type_graphql_1.Root()),
+    __param(1, type_graphql_1.Ctx()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Quote_1.Quote, Object]),
+    __metadata("design:returntype", Promise)
+], QuoteResolver.prototype, "hasFavorite", null);
+__decorate([
     type_graphql_1.Query(() => Quote_1.PaginatedQuotes),
     __param(0, type_graphql_1.Arg('limit', () => type_graphql_1.Int)),
     __param(1, type_graphql_1.Arg('cursor', () => String, { nullable: true })),
@@ -99,6 +179,16 @@ __decorate([
     __metadata("design:paramtypes", [String, String, String]),
     __metadata("design:returntype", Promise)
 ], QuoteResolver.prototype, "getQuote", null);
+__decorate([
+    type_graphql_1.Mutation(() => Boolean),
+    type_graphql_1.UseMiddleware(isAuth_1.isAuth),
+    __param(0, type_graphql_1.Arg('quoteId', () => type_graphql_1.Int)),
+    __param(1, type_graphql_1.Arg('value', () => type_graphql_1.Int)),
+    __param(2, type_graphql_1.Ctx()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Number, Object]),
+    __metadata("design:returntype", Promise)
+], QuoteResolver.prototype, "likeQuote", null);
 __decorate([
     type_graphql_1.Mutation(() => Quote_1.Quote),
     __param(0, type_graphql_1.Arg('data')),
@@ -122,7 +212,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], QuoteResolver.prototype, "deleteQuote", null);
 QuoteResolver = __decorate([
-    type_graphql_1.Resolver()
+    type_graphql_1.Resolver(Quote_1.Quote)
 ], QuoteResolver);
 exports.QuoteResolver = QuoteResolver;
 //# sourceMappingURL=quote.js.map
