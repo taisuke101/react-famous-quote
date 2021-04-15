@@ -37,9 +37,6 @@ export type CreateUserInput = {
 
 export type Favorite = {
   __typename?: 'Favorite';
-  id: Scalars['ID'];
-  createdAt: Scalars['DateTime'];
-  updatedAt: Scalars['DateTime'];
   userId: Scalars['Float'];
   quoteId: Scalars['Float'];
   user: User;
@@ -48,6 +45,7 @@ export type Favorite = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  likeQuote: Scalars['Boolean'];
   createQuote: Quote;
   updateQuote: Quote;
   deleteQuote: Scalars['Boolean'];
@@ -56,8 +54,13 @@ export type Mutation = {
   logout: Scalars['Boolean'];
   forgotPassword: Scalars['Boolean'];
   changePassword: User;
-  createFavorite: Favorite;
-  deleteFavorite: Favorite;
+  createFavorite: Scalars['Boolean'];
+};
+
+
+export type MutationLikeQuoteArgs = {
+  value: Scalars['Int'];
+  quoteId: Scalars['Int'];
 };
 
 
@@ -103,11 +106,6 @@ export type MutationCreateFavoriteArgs = {
   quoteId: Scalars['Int'];
 };
 
-
-export type MutationDeleteFavoriteArgs = {
-  favoriteId: Scalars['Float'];
-};
-
 export type PaginatedQuotes = {
   __typename?: 'PaginatedQuotes';
   quotes: Array<Quote>;
@@ -137,6 +135,11 @@ export type QueryGetQuoteArgs = {
   author?: Maybe<Scalars['String']>;
 };
 
+
+export type QueryGetFavoriteArgs = {
+  quoteId: Scalars['Int'];
+};
+
 export type Quote = {
   __typename?: 'Quote';
   id: Scalars['ID'];
@@ -146,7 +149,9 @@ export type Quote = {
   country: Scalars['String'];
   job: Scalars['String'];
   text: Scalars['String'];
-  favorits: Favorite;
+  likeCount: Scalars['Float'];
+  likeStatus?: Maybe<Scalars['Int']>;
+  hasFavorite?: Maybe<Scalars['Boolean']>;
 };
 
 export type Subscription = {
@@ -169,8 +174,18 @@ export type User = {
   username: Scalars['String'];
   email: Scalars['String'];
   password: Scalars['String'];
-  favorits: Favorite;
+  favorits: Array<Favorite>;
 };
+
+export type QuoteResponseFragment = (
+  { __typename?: 'Quote' }
+  & Pick<Quote, 'id' | 'author' | 'country' | 'job' | 'text' | 'likeCount' | 'likeStatus' | 'hasFavorite'>
+);
+
+export type UserResponseFragment = (
+  { __typename?: 'User' }
+  & Pick<User, 'id' | 'username'>
+);
 
 export type ChangePasswordMutationVariables = Exact<{
   data: ChangePasswordInput;
@@ -182,8 +197,18 @@ export type ChangePasswordMutation = (
   { __typename?: 'Mutation' }
   & { changePassword: (
     { __typename?: 'User' }
-    & Pick<User, 'username' | 'password'>
+    & UserResponseFragment
   ) }
+);
+
+export type CreateFavoriteMutationVariables = Exact<{
+  quoteId: Scalars['Int'];
+}>;
+
+
+export type CreateFavoriteMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'createFavorite'>
 );
 
 export type CreateUserMutationVariables = Exact<{
@@ -195,7 +220,7 @@ export type CreateUserMutation = (
   { __typename?: 'Mutation' }
   & { createUser: (
     { __typename?: 'User' }
-    & Pick<User, 'id' | 'username' | 'email' | 'password'>
+    & UserResponseFragment
   ) }
 );
 
@@ -209,6 +234,17 @@ export type ForgotPasswordMutation = (
   & Pick<Mutation, 'forgotPassword'>
 );
 
+export type LikeQuoteMutationVariables = Exact<{
+  value: Scalars['Int'];
+  quoteId: Scalars['Int'];
+}>;
+
+
+export type LikeQuoteMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'likeQuote'>
+);
+
 export type LoginMutationVariables = Exact<{
   usernameOrEmail: Scalars['String'];
   password: Scalars['String'];
@@ -219,7 +255,7 @@ export type LoginMutation = (
   { __typename?: 'Mutation' }
   & { login: (
     { __typename?: 'User' }
-    & Pick<User, 'username' | 'email' | 'password'>
+    & UserResponseFragment
   ) }
 );
 
@@ -238,7 +274,7 @@ export type GetMeQuery = (
   { __typename?: 'Query' }
   & { getMe?: Maybe<(
     { __typename?: 'User' }
-    & Pick<User, 'id' | 'username'>
+    & UserResponseFragment
   )> }
 );
 
@@ -253,7 +289,7 @@ export type GetQuoteQuery = (
   { __typename?: 'Query' }
   & { getQuote: Array<(
     { __typename?: 'Quote' }
-    & Pick<Quote, 'id' | 'author' | 'country' | 'job' | 'text'>
+    & QuoteResponseFragment
   )> }
 );
 
@@ -270,20 +306,36 @@ export type GetQuotesQuery = (
     & Pick<PaginatedQuotes, 'hasMore'>
     & { quotes: Array<(
       { __typename?: 'Quote' }
-      & Pick<Quote, 'id' | 'author' | 'country' | 'job' | 'text'>
+      & QuoteResponseFragment
     )> }
   ) }
 );
 
-
+export const QuoteResponseFragmentDoc = gql`
+    fragment quoteResponse on Quote {
+  id
+  author
+  country
+  job
+  text
+  likeCount
+  likeStatus
+  hasFavorite
+}
+    `;
+export const UserResponseFragmentDoc = gql`
+    fragment userResponse on User {
+  id
+  username
+}
+    `;
 export const ChangePasswordDocument = gql`
     mutation changePassword($data: ChangePasswordInput!, $token: String!) {
   changePassword(data: $data, token: $token) {
-    username
-    password
+    ...userResponse
   }
 }
-    `;
+    ${UserResponseFragmentDoc}`;
 export type ChangePasswordMutationFn = Apollo.MutationFunction<ChangePasswordMutation, ChangePasswordMutationVariables>;
 
 /**
@@ -311,16 +363,44 @@ export function useChangePasswordMutation(baseOptions?: Apollo.MutationHookOptio
 export type ChangePasswordMutationHookResult = ReturnType<typeof useChangePasswordMutation>;
 export type ChangePasswordMutationResult = Apollo.MutationResult<ChangePasswordMutation>;
 export type ChangePasswordMutationOptions = Apollo.BaseMutationOptions<ChangePasswordMutation, ChangePasswordMutationVariables>;
+export const CreateFavoriteDocument = gql`
+    mutation createFavorite($quoteId: Int!) {
+  createFavorite(quoteId: $quoteId)
+}
+    `;
+export type CreateFavoriteMutationFn = Apollo.MutationFunction<CreateFavoriteMutation, CreateFavoriteMutationVariables>;
+
+/**
+ * __useCreateFavoriteMutation__
+ *
+ * To run a mutation, you first call `useCreateFavoriteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateFavoriteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createFavoriteMutation, { data, loading, error }] = useCreateFavoriteMutation({
+ *   variables: {
+ *      quoteId: // value for 'quoteId'
+ *   },
+ * });
+ */
+export function useCreateFavoriteMutation(baseOptions?: Apollo.MutationHookOptions<CreateFavoriteMutation, CreateFavoriteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateFavoriteMutation, CreateFavoriteMutationVariables>(CreateFavoriteDocument, options);
+      }
+export type CreateFavoriteMutationHookResult = ReturnType<typeof useCreateFavoriteMutation>;
+export type CreateFavoriteMutationResult = Apollo.MutationResult<CreateFavoriteMutation>;
+export type CreateFavoriteMutationOptions = Apollo.BaseMutationOptions<CreateFavoriteMutation, CreateFavoriteMutationVariables>;
 export const CreateUserDocument = gql`
     mutation createUser($data: CreateUserInput!) {
   createUser(data: $data) {
-    id
-    username
-    email
-    password
+    ...userResponse
   }
 }
-    `;
+    ${UserResponseFragmentDoc}`;
 export type CreateUserMutationFn = Apollo.MutationFunction<CreateUserMutation, CreateUserMutationVariables>;
 
 /**
@@ -378,15 +458,45 @@ export function useForgotPasswordMutation(baseOptions?: Apollo.MutationHookOptio
 export type ForgotPasswordMutationHookResult = ReturnType<typeof useForgotPasswordMutation>;
 export type ForgotPasswordMutationResult = Apollo.MutationResult<ForgotPasswordMutation>;
 export type ForgotPasswordMutationOptions = Apollo.BaseMutationOptions<ForgotPasswordMutation, ForgotPasswordMutationVariables>;
+export const LikeQuoteDocument = gql`
+    mutation likeQuote($value: Int!, $quoteId: Int!) {
+  likeQuote(value: $value, quoteId: $quoteId)
+}
+    `;
+export type LikeQuoteMutationFn = Apollo.MutationFunction<LikeQuoteMutation, LikeQuoteMutationVariables>;
+
+/**
+ * __useLikeQuoteMutation__
+ *
+ * To run a mutation, you first call `useLikeQuoteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLikeQuoteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [likeQuoteMutation, { data, loading, error }] = useLikeQuoteMutation({
+ *   variables: {
+ *      value: // value for 'value'
+ *      quoteId: // value for 'quoteId'
+ *   },
+ * });
+ */
+export function useLikeQuoteMutation(baseOptions?: Apollo.MutationHookOptions<LikeQuoteMutation, LikeQuoteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<LikeQuoteMutation, LikeQuoteMutationVariables>(LikeQuoteDocument, options);
+      }
+export type LikeQuoteMutationHookResult = ReturnType<typeof useLikeQuoteMutation>;
+export type LikeQuoteMutationResult = Apollo.MutationResult<LikeQuoteMutation>;
+export type LikeQuoteMutationOptions = Apollo.BaseMutationOptions<LikeQuoteMutation, LikeQuoteMutationVariables>;
 export const LoginDocument = gql`
     mutation login($usernameOrEmail: String!, $password: String!) {
   login(usernameOrEmail: $usernameOrEmail, password: $password) {
-    username
-    email
-    password
+    ...userResponse
   }
 }
-    `;
+    ${UserResponseFragmentDoc}`;
 export type LoginMutationFn = Apollo.MutationFunction<LoginMutation, LoginMutationVariables>;
 
 /**
@@ -447,11 +557,10 @@ export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, L
 export const GetMeDocument = gql`
     query getMe {
   getMe {
-    id
-    username
+    ...userResponse
   }
 }
-    `;
+    ${UserResponseFragmentDoc}`;
 
 /**
  * __useGetMeQuery__
@@ -482,14 +591,10 @@ export type GetMeQueryResult = Apollo.QueryResult<GetMeQuery, GetMeQueryVariable
 export const GetQuoteDocument = gql`
     query getQuote($author: String, $country: String, $job: String) {
   getQuote(author: $author, country: $country, job: $job) {
-    id
-    author
-    country
-    job
-    text
+    ...quoteResponse
   }
 }
-    `;
+    ${QuoteResponseFragmentDoc}`;
 
 /**
  * __useGetQuoteQuery__
@@ -525,15 +630,11 @@ export const GetQuotesDocument = gql`
   getQuotes(limit: $limit, cursor: $cursor) {
     hasMore
     quotes {
-      id
-      author
-      country
-      job
-      text
+      ...quoteResponse
     }
   }
 }
-    `;
+    ${QuoteResponseFragmentDoc}`;
 
 /**
  * __useGetQuotesQuery__

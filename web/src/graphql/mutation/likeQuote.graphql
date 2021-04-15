@@ -1,0 +1,9 @@
+mutation likeQuote(
+    $value: Int!
+    $quoteId: Int!
+) {
+    likeQuote(
+        value: $value,
+        quoteId: $quoteId
+    )
+}

@@ -1,0 +1,5 @@
+mutation createFavorite($quoteId: Int!) {
+    createFavorite(
+        quoteId: $quoteId,
+    ) 
+}

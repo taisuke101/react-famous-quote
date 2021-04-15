@@ -1,12 +1,46 @@
 import { UserInputError } from "apollo-server-errors";
-import { Arg, Int, Mutation, Query, Resolver } from "type-graphql";
+import { Arg, Ctx, FieldResolver, Int, Mutation, Query, Resolver, Root, UseMiddleware } from "type-graphql";
 import { getConnection } from "typeorm";
 
 import { PaginatedQuotes, Quote } from '../entities/Quote'
+import { Like } from "../entities/Like";
+import { Favorite } from "../entities/Favorite";
 import { CreateQuoteInput, UpdateQuoteInput } from "../inputs/QuoteInput";
+import { isAuth } from "../middleware/isAuth";
+import { MyContext } from "../types";
 
-@Resolver()
+@Resolver(Quote)
 export class QuoteResolver {
+    @FieldResolver(() => Int, { nullable: true})
+    async likeStatus(
+        @Root() quote: Quote,
+        @Ctx() { req }: MyContext
+    ): Promise<number | null> {
+        if (!req.session.userId) return null;
+
+        const like = await Like.findOne({
+            quoteId: quote.id,
+            userId: req.session.userId as number
+        });
+
+        return like ? like.value : null;
+    }
+
+    @FieldResolver(() => Boolean, {nullable: true})
+    async hasFavorite(
+        @Root() quote: Quote,
+        @Ctx() { req }: MyContext
+    ): Promise<boolean | null> {
+        if (!req.session.userId) return null;
+
+        const favorite = await Favorite.findOne({
+            quoteId: quote.id,
+            userId: req.session.userId  as number
+        });
+
+        return favorite ? true : false;
+    }
+
     @Query(() => PaginatedQuotes)
     async getQuotes(
         @Arg('limit', () => Int) limit: number,
@@ -44,6 +78,54 @@ export class QuoteResolver {
             return Quote.find({country});
         else
             return Quote.find({job});
+    }
+
+    @Mutation(() => Boolean)
+    @UseMiddleware(isAuth)
+    async likeQuote(
+        @Arg('quoteId', () => Int) quoteId: number,
+        @Arg('value', () => Int) value: number,
+        @Ctx() { req }: MyContext
+    ) {
+        const isLike = value !== -1;
+        const realValue = isLike ? 1 : -1;
+        const { userId } = req.session;
+
+        const like = await Like.findOne({
+            userId: userId as number, 
+            quoteId
+        });
+
+        if (like && like.value !== realValue) {
+            await getConnection().transaction(async (transaction) => {
+                await transaction.query(`
+                    update likes
+                    set value = $1
+                    where "quoteId" = $2 and "userId" = $3
+                `, [realValue, quoteId, userId]);
+
+                await transaction.query(`
+                    update quotes
+                    set "likeCount" = "likeCount" + $1
+                    where id = $2
+                `, [realValue, quoteId]);
+            })
+        } else if (!like) {
+            await getConnection().transaction(async (transaction) => {
+                await transaction.query(`
+                    insert into likes ("userId", "quoteId", value)
+                    values ($1, $2, $3)
+                `, [userId, quoteId, realValue]);
+
+                await transaction.query(`
+                    update quotes
+                    set "likeCount" = "likeCount" + $1
+                    where id = $2
+                `, [realValue, quoteId])
+            });
+            
+        }
+        return true;
     }
 
     @Mutation(() => Quote)

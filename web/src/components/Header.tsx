@@ -1,17 +1,24 @@
 import { FC } from 'react';
+import { useApolloClient } from '@apollo/client';
+import { useRouter } from 'next/router'
 
 import PageLink from './PageLink';
 import { useGetMeQuery, useLogoutMutation } from '../generated/graphql';
-import { useApolloClient } from '@apollo/client';
+
 
 interface HeaderProps {
 
 }
 
 const Header: FC<HeaderProps> = ({}) => {
+    const router = useRouter();
     const apolloClient = useApolloClient();
+    
     const { data } = useGetMeQuery();
-    const [ logout ] = useLogoutMutation();
+
+    const [ logout ] = useLogoutMutation({
+        onCompleted: () => apolloClient.resetStore(),
+    });
 
     let body = null;
 
@@ -49,9 +56,9 @@ const Header: FC<HeaderProps> = ({}) => {
                     text='名言一覧'
                 />
                 <button
-                　onClick={async () => {
+                　onClick={async () =>{
+                    await router.push('/');
                     await logout();
-                    await apolloClient.resetStore();
                 }}
                 >ログアウト</button>
             </>

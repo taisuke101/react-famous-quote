@@ -17,6 +17,7 @@ const type_graphql_1 = require("type-graphql");
 const typeorm_1 = require("typeorm");
 const Base_1 = __importDefault(require("./Base"));
 const Favorite_1 = require("./Favorite");
+const Like_1 = require("./Like");
 let Quote = class Quote extends Base_1.default {
 };
 __decorate([
@@ -40,10 +41,18 @@ __decorate([
     __metadata("design:type", String)
 ], Quote.prototype, "text", void 0);
 __decorate([
-    type_graphql_1.Field(() => Favorite_1.Favorite),
+    type_graphql_1.Field(),
+    typeorm_1.Column({ default: 0 }),
+    __metadata("design:type", Number)
+], Quote.prototype, "likeCount", void 0);
+__decorate([
     typeorm_1.OneToMany(() => Favorite_1.Favorite, favorite => favorite.quote),
     __metadata("design:type", Array)
 ], Quote.prototype, "favorits", void 0);
+__decorate([
+    typeorm_1.OneToMany(() => Like_1.Like, like => like.quote),
+    __metadata("design:type", Array)
+], Quote.prototype, "likes", void 0);
 Quote = __decorate([
     type_graphql_1.ObjectType(),
     typeorm_1.Entity('quotes')
