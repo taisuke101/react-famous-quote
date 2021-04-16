@@ -117,9 +117,9 @@ export type Query = {
   hello: Scalars['String'];
   getQuotes: PaginatedQuotes;
   getQuote: Array<Quote>;
+  getToptenQuotes: Array<Quote>;
   getMe?: Maybe<User>;
   getFavorits: Array<Favorite>;
-  getFavorite: Favorite;
 };
 
 
@@ -133,11 +133,6 @@ export type QueryGetQuoteArgs = {
   job?: Maybe<Scalars['String']>;
   country?: Maybe<Scalars['String']>;
   author?: Maybe<Scalars['String']>;
-};
-
-
-export type QueryGetFavoriteArgs = {
-  quoteId: Scalars['Int'];
 };
 
 export type Quote = {
@@ -174,7 +169,6 @@ export type User = {
   username: Scalars['String'];
   email: Scalars['String'];
   password: Scalars['String'];
-  favorits: Array<Favorite>;
 };
 
 export type QuoteResponseFragment = (
@@ -267,6 +261,20 @@ export type LogoutMutation = (
   & Pick<Mutation, 'logout'>
 );
 
+export type GetFavoritsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetFavoritsQuery = (
+  { __typename?: 'Query' }
+  & { getFavorits: Array<(
+    { __typename?: 'Favorite' }
+    & { quote: (
+      { __typename?: 'Quote' }
+      & QuoteResponseFragment
+    ) }
+  )> }
+);
+
 export type GetMeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -274,7 +282,7 @@ export type GetMeQuery = (
   { __typename?: 'Query' }
   & { getMe?: Maybe<(
     { __typename?: 'User' }
-    & UserResponseFragment
+    & Pick<User, 'id' | 'username'>
   )> }
 );
 
@@ -309,6 +317,17 @@ export type GetQuotesQuery = (
       & QuoteResponseFragment
     )> }
   ) }
+);
+
+export type GetToptenQuotesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetToptenQuotesQuery = (
+  { __typename?: 'Query' }
+  & { getToptenQuotes: Array<(
+    { __typename?: 'Quote' }
+    & QuoteResponseFragment
+  )> }
 );
 
 export const QuoteResponseFragmentDoc = gql`
@@ -554,13 +573,50 @@ export function useLogoutMutation(baseOptions?: Apollo.MutationHookOptions<Logou
 export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
 export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>;
 export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
+export const GetFavoritsDocument = gql`
+    query getFavorits {
+  getFavorits {
+    quote {
+      ...quoteResponse
+    }
+  }
+}
+    ${QuoteResponseFragmentDoc}`;
+
+/**
+ * __useGetFavoritsQuery__
+ *
+ * To run a query within a React component, call `useGetFavoritsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetFavoritsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetFavoritsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetFavoritsQuery(baseOptions?: Apollo.QueryHookOptions<GetFavoritsQuery, GetFavoritsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetFavoritsQuery, GetFavoritsQueryVariables>(GetFavoritsDocument, options);
+      }
+export function useGetFavoritsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetFavoritsQuery, GetFavoritsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetFavoritsQuery, GetFavoritsQueryVariables>(GetFavoritsDocument, options);
+        }
+export type GetFavoritsQueryHookResult = ReturnType<typeof useGetFavoritsQuery>;
+export type GetFavoritsLazyQueryHookResult = ReturnType<typeof useGetFavoritsLazyQuery>;
+export type GetFavoritsQueryResult = Apollo.QueryResult<GetFavoritsQuery, GetFavoritsQueryVariables>;
 export const GetMeDocument = gql`
     query getMe {
   getMe {
-    ...userResponse
+    id
+    username
   }
 }
-    ${UserResponseFragmentDoc}`;
+    `;
 
 /**
  * __useGetMeQuery__
@@ -664,3 +720,37 @@ export function useGetQuotesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<
 export type GetQuotesQueryHookResult = ReturnType<typeof useGetQuotesQuery>;
 export type GetQuotesLazyQueryHookResult = ReturnType<typeof useGetQuotesLazyQuery>;
 export type GetQuotesQueryResult = Apollo.QueryResult<GetQuotesQuery, GetQuotesQueryVariables>;
+export const GetToptenQuotesDocument = gql`
+    query getToptenQuotes {
+  getToptenQuotes {
+    ...quoteResponse
+  }
+}
+    ${QuoteResponseFragmentDoc}`;
+
+/**
+ * __useGetToptenQuotesQuery__
+ *
+ * To run a query within a React component, call `useGetToptenQuotesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetToptenQuotesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetToptenQuotesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetToptenQuotesQuery(baseOptions?: Apollo.QueryHookOptions<GetToptenQuotesQuery, GetToptenQuotesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetToptenQuotesQuery, GetToptenQuotesQueryVariables>(GetToptenQuotesDocument, options);
+      }
+export function useGetToptenQuotesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetToptenQuotesQuery, GetToptenQuotesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetToptenQuotesQuery, GetToptenQuotesQueryVariables>(GetToptenQuotesDocument, options);
+        }
+export type GetToptenQuotesQueryHookResult = ReturnType<typeof useGetToptenQuotesQuery>;
+export type GetToptenQuotesLazyQueryHookResult = ReturnType<typeof useGetToptenQuotesLazyQuery>;
+export type GetToptenQuotesQueryResult = Apollo.QueryResult<GetToptenQuotesQuery, GetToptenQuotesQueryVariables>;

@@ -33,14 +33,14 @@ let FavoriteResolver = class FavoriteResolver {
         return __awaiter(this, void 0, void 0, function* () {
             return Favorite_1.Favorite.find({
                 where: { userId: req.session.userId },
-                relations: ['user', 'quote']
+                relations: ['quote']
             });
         });
     }
     getFavorite(quoteId, { req }) {
         return __awaiter(this, void 0, void 0, function* () {
             const userId = req.session.userId;
-            return Favorite_1.Favorite.findOne({ userId, quoteId }, { relations: ['user', 'quote'] });
+            return Favorite_1.Favorite.findOne({ userId, quoteId }, { relations: ['quote'] });
         });
     }
     createFavorite(quoteId, { req }) {

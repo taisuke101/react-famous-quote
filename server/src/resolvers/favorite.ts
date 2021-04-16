@@ -17,7 +17,7 @@ export class FavoriteResolver {
     ): Promise<Favorite[]> {
         return Favorite.find({
             where: { userId: req.session.userId },
-            relations: ['user', 'quote'] 
+            relations: ['quote'] 
         });
     }
 
@@ -31,7 +31,7 @@ export class FavoriteResolver {
 
         return Favorite.findOne(
             {userId, quoteId}, 
-            {relations: ['user', 'quote']}
+            {relations: ['quote']}
         );
     }
 

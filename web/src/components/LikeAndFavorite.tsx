@@ -2,6 +2,8 @@ import { useRouter } from 'next/router';
 import { VFC } from 'react';
 
 import { 
+    GetFavoritsDocument,
+    GetToptenQuotesDocument,
     QuoteResponseFragment, 
     useCreateFavoriteMutation, 
     useLikeQuoteMutation 
@@ -23,11 +25,23 @@ const LikeAndFavorite: VFC<LikeAndFavoriteProps> = ({ quote }) => {
     const router = useRouter();
 
     const [ like ] = useLikeQuoteMutation({
-        onError: () => router.push('/login'),
+        onError: () => router.push({
+            pathname: '/login',
+            query: {
+                errorMessage: 
+                'いいね機能を使用するにはログインする必要があります。'
+            }
+        }),
     });
 
     const [ createFavorite ] = useCreateFavoriteMutation({
-        onError: () => router.push('/login'),
+        onError: () => router.push({
+            pathname: '/login',
+            query: {
+                errorMessage:
+                'ストック機能を使用するにはログインする必要があります。'
+            }
+        }),
     });
 
     return (
@@ -41,7 +55,8 @@ const LikeAndFavorite: VFC<LikeAndFavoriteProps> = ({ quote }) => {
                                 quoteId: numberQuoteId,
                                 value: -1
                             },
-                            update: (cache) => updateAfterLike(-1, numberQuoteId, cache)
+                            update: (cache) => updateAfterLike(-1, numberQuoteId, cache),
+                            refetchQueries: [{query: GetToptenQuotesDocument}]
                             })
                         }}
                     >
@@ -61,7 +76,8 @@ const LikeAndFavorite: VFC<LikeAndFavoriteProps> = ({ quote }) => {
                                 quoteId: numberQuoteId,
                                 value: 1
                             },
-                            update: (cache) => updateAfterLike(1, numberQuoteId, cache)
+                            update: (cache) => updateAfterLike(1, numberQuoteId, cache),
+                            refetchQueries: [{query: GetToptenQuotesDocument}]
                             })
                         }}
                     >
@@ -83,7 +99,8 @@ const LikeAndFavorite: VFC<LikeAndFavoriteProps> = ({ quote }) => {
                         className='flex'
                         onClick={() => createFavorite({
                             variables: { quoteId: numberQuoteId},
-                            update: (cache) => updateAfterFavorite(false, numberQuoteId, cache)
+                            update: (cache) => updateAfterFavorite(false, numberQuoteId, cache),
+                            refetchQueries: [{ query: GetFavoritsDocument }]
                         })}
                     >
                         <BsBookmarkFill className='text-3xl text-blue-500' />
@@ -96,7 +113,8 @@ const LikeAndFavorite: VFC<LikeAndFavoriteProps> = ({ quote }) => {
                         className='flex'
                         onClick={() => createFavorite({
                             variables: { quoteId: numberQuoteId},
-                            update: (cache) => updateAfterFavorite(true, numberQuoteId, cache)
+                            update: (cache) => updateAfterFavorite(true, numberQuoteId, cache),
+                            refetchQueries: [{ query: GetFavoritsDocument }]
                         })}
                     >
                         <BsBookmarkPlus className='text-3xl text-blue-500' /> 

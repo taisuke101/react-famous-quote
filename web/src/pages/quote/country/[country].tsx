@@ -1,5 +1,6 @@
 import { VFC } from 'react';
 import { useRouter } from 'next/router';
+import Loader from 'react-loader-spinner';
 
 import { useGetQuoteQuery } from '../../../generated/graphql';
 import LikeAndFavorite from '../../../components/LikeAndFavorite';
@@ -26,7 +27,17 @@ const Country: VFC<CountryProps> = ({}) => {
         <div className='pt-24'>
             <h1 className='mb-4 text-4xl text-center'>{`${country}出身者の名言一覧`}</h1>
             {!data && loading 
-            ? (<div>loading...</div>) 
+            ? (
+                <div className='flex justify-center'>
+                    <h1>Loading....</h1>
+                    <Loader 
+                        type="TailSpin" 
+                        color="#00fa9a" 
+                        height={200} 
+                        width={200} 
+                    />
+                </div>
+            ) 
             : (
                 <>
                     {data.getQuote.map(quote => {

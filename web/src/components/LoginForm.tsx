@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import Loader from 'react-loader-spinner';
 import Link from 'next/link';
 
-import { GetMeDocument, useLoginMutation } from '../generated/graphql';
+import { GetMeDocument, GetToptenQuotesDocument, useLoginMutation } from '../generated/graphql';
 import SubmitButton from './SubmitButton';
 
 interface LoginFormProps {
@@ -30,6 +30,7 @@ const LoginForm: FC<{}> = ({}) => {
                 }
             })
         },
+        refetchQueries: [{query: GetToptenQuotesDocument}],
         onError: (err) => setError(err.graphQLErrors[0].extensions?.formattedErrors),
         onCompleted: () => router.push('/'),
     });
@@ -54,34 +55,44 @@ const LoginForm: FC<{}> = ({}) => {
                     </div>
                 )
                 : ( 
-                    <form 
-                        onSubmit={handleSubmit(onSubmit)}
-                        className='flex flex-col mx-40 text-center'
-                    >
-                        <p className='mt-2 text-xl'>ユーザー名</p>
-                        { error.usernameOrEmail && <p className='text-red-600'>*{error.usernameOrEmail}</p>}
-                        <input 
-                            name='usernameOrEmail'
-                            placeholder='ユーザー名またはメールアドレス'
-                            className='p-2 mt-2 border-b-2 border-green-400'
-                            {...register('usernameOrEmail')}
-                        />
-                        <p className='mt-2 text-xl'>パスワード</p>
-                        { error.password && <p className='text-red-600'>*{error.password}</p>}
-                        <input 
-                            name='password'
-                            type='password'
-                            placeholder='パスワード'
-                            className='p-2 mt-2 border-b-2 border-green-400'
-                            {...register('password')}
-                        />
-                        <SubmitButton>
-                            ログイン
-                        </SubmitButton>
-                        <Link href='/forgot-password'>
-                            <a className='mt-4'>パスワードを忘れた場合</a>
-                        </Link>
-                    </form>
+                    <>
+                        <form 
+                            onSubmit={handleSubmit(onSubmit)}
+                            className='flex flex-col mx-40 text-center'
+                        >
+                            { router.query.errorMessage && (
+                                <h1 className='mb-5 text-lg text-red-500'>
+                                    {router.query.errorMessage}
+                                </h1>
+                            )}
+                            <p className='mt-2 text-xl'>ユーザー名</p>
+                            { error.usernameOrEmail && <p className='text-red-600'>*{error.usernameOrEmail}</p>}
+                            <input 
+                                name='usernameOrEmail'
+                                placeholder='ユーザー名またはメールアドレス'
+                                className='p-2 mt-2 border-b-2 border-green-400'
+                                {...register('usernameOrEmail')}
+                            />
+                            <p className='mt-2 text-xl'>パスワード</p>
+                            { error.password && <p className='text-red-600'>*{error.password}</p>}
+                            <input 
+                                name='password'
+                                type='password'
+                                placeholder='パスワード'
+                                className='p-2 mt-2 border-b-2 border-green-400'
+                                {...register('password')}
+                            />
+                            <SubmitButton>
+                                ログイン
+                            </SubmitButton>
+                            <Link href='/register'>
+                                <a className='mt-4'>アカウントを持っていない場合はこちら</a>
+                            </Link>
+                            <Link href='/forgot-password'>
+                                <a className='mt-4'>パスワードを忘れた場合</a>
+                            </Link>
+                        </form>
+                    </>
                 )
             }
         </div>
