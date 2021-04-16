@@ -39,7 +39,7 @@ let QuoteResolver = class QuoteResolver {
                 quoteId: quote.id,
                 userId: req.session.userId
             });
-            return like ? like.value : null;
+            return (like === null || like === void 0 ? void 0 : like.value) === 1 ? 1 : null;
         });
     }
     hasFavorite(quote, { req }) {
@@ -80,6 +80,14 @@ let QuoteResolver = class QuoteResolver {
                 return Quote_1.Quote.find({ country });
             else
                 return Quote_1.Quote.find({ job });
+        });
+    }
+    getToptenQuotes() {
+        return __awaiter(this, void 0, void 0, function* () {
+            const quote = Quote_1.Quote.find({
+                order: { likeCount: "DESC" }
+            });
+            return (yield quote).slice(0, 10);
         });
     }
     likeQuote(quoteId, value, { req }) {
@@ -179,6 +187,12 @@ __decorate([
     __metadata("design:paramtypes", [String, String, String]),
     __metadata("design:returntype", Promise)
 ], QuoteResolver.prototype, "getQuote", null);
+__decorate([
+    type_graphql_1.Query(() => [Quote_1.Quote]),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], QuoteResolver.prototype, "getToptenQuotes", null);
 __decorate([
     type_graphql_1.Mutation(() => Boolean),
     type_graphql_1.UseMiddleware(isAuth_1.isAuth),

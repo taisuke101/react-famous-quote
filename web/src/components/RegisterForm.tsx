@@ -2,6 +2,7 @@ import { FC, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import Loader from 'react-loader-spinner';
+import Link from 'next/link';
 
 import { CreateUserInput, useCreateUserMutation } from '../generated/graphql';
 import SubmitButton from './SubmitButton';
@@ -86,6 +87,9 @@ const RegisterForm: FC<{}> = ({}) => {
                         <SubmitButton>
                             新規登録
                         </SubmitButton>
+                        <Link href='/login'>
+                            <a className='mt-4'>すでにアカウントを作成している場合はこちら</a>
+                        </Link>
                     </form>
                 )
             }

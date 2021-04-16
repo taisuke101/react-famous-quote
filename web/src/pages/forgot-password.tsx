@@ -41,7 +41,7 @@ const ForgotPassword: VFC<ForgotPasswordProps> = ({}) => {
                     ) : (
                         complete ? (
                             <>
-                                <div>complete!</div>
+                                <div>メールを送信しました！</div>
                                 <span className='text-red-500'>*メールが届かない場合は誤ったアドレスを入力しているか、メールアドレスが登録されていない場合があります。</span>
                                 <Link href='/'>
                                     <a>ホームに戻る</a>
@@ -53,7 +53,7 @@ const ForgotPassword: VFC<ForgotPasswordProps> = ({}) => {
                                 className='flex flex-col mx-40 text-center'
                             >
                                 <p className='mt-2 text-xl'>パスワードのリセット</p>
-                                <span>パスワードリセットのメールを送るため、下記に登録したメールアドレスを入力して下さい。</span>
+                                <span>パスワードリセットのメールを送るため、以下の欄に登録したメールアドレスを入力して下さい。</span>
                                 <input 
                                     name='email'
                                     placeholder='パスワードリセットメール送信先'

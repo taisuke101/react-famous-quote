@@ -23,7 +23,7 @@ export class QuoteResolver {
             userId: req.session.userId as number
         });
 
-        return like ? like.value : null;
+        return like?.value === 1 ? 1 : null;
     }
 
     @FieldResolver(() => Boolean, {nullable: true})
@@ -44,7 +44,7 @@ export class QuoteResolver {
     @Query(() => PaginatedQuotes)
     async getQuotes(
         @Arg('limit', () => Int) limit: number,
-        @Arg('cursor', () => String, { nullable: true }) cursor: string | null
+        @Arg('cursor', () => String, { nullable: true }) cursor: string | null,       
     ): Promise<PaginatedQuotes> {
         const quoteLimit = Math.min(50, limit);
         const quoteLimitPlusOne = quoteLimit + 1;
@@ -78,6 +78,15 @@ export class QuoteResolver {
             return Quote.find({country});
         else
             return Quote.find({job});
+    }
+
+    @Query(() => [Quote])
+    async getToptenQuotes(): Promise<Quote[]> {
+        const quote = Quote.find({
+            order: { likeCount: "DESC"}
+        })
+
+        return (await quote).slice(0, 10)
     }
 
     @Mutation(() => Boolean)
@@ -124,7 +133,7 @@ export class QuoteResolver {
                 `, [realValue, quoteId])
             });
             
-        }
+        }//
         return true;
     }
 

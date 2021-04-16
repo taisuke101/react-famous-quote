@@ -1,8 +1,10 @@
 import { Field, ObjectType } from "type-graphql";
-import { BeforeInsert, Column, Entity } from "typeorm";
+import { BeforeInsert, Column, Entity, OneToMany } from "typeorm";
 import argon2 from 'argon2';
 
 import Base from "./Base";
+import { Favorite } from "./Favorite";
+import { Like } from "./Like";
 
 @ObjectType()
 @Entity('users')
@@ -23,6 +25,12 @@ export class User extends Base {
     @Field()
     @Column()
     password: string;
+
+    @OneToMany(() => Favorite, favorite => favorite.user)
+    favorits: Favorite[];
+
+    @OneToMany(() => Like, like => like.user)
+    likes: Like[];
 
     @BeforeInsert()
     async hashPassword() {

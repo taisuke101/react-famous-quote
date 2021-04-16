@@ -1,0 +1,7 @@
+query getFavorits {
+    getFavorits {
+        quote {
+            ...quoteResponse
+        }
+    }
+}

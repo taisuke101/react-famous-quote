@@ -26,6 +26,8 @@ const type_graphql_1 = require("type-graphql");
 const typeorm_1 = require("typeorm");
 const argon2_1 = __importDefault(require("argon2"));
 const Base_1 = __importDefault(require("./Base"));
+const Favorite_1 = require("./Favorite");
+const Like_1 = require("./Like");
 let User = class User extends Base_1.default {
     constructor(user) {
         super();
@@ -52,6 +54,14 @@ __decorate([
     typeorm_1.Column(),
     __metadata("design:type", String)
 ], User.prototype, "password", void 0);
+__decorate([
+    typeorm_1.OneToMany(() => Favorite_1.Favorite, favorite => favorite.user),
+    __metadata("design:type", Array)
+], User.prototype, "favorits", void 0);
+__decorate([
+    typeorm_1.OneToMany(() => Like_1.Like, like => like.user),
+    __metadata("design:type", Array)
+], User.prototype, "likes", void 0);
 __decorate([
     typeorm_1.BeforeInsert(),
     __metadata("design:type", Function),
