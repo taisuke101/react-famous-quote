@@ -26,7 +26,7 @@ const Header: FC<HeaderProps> = ({}) => {
 
     const [ logout ] = useLogoutMutation({
         onCompleted: () => apolloClient.resetStore(),
-    }); 
+    });
 
     let body = null;
 
