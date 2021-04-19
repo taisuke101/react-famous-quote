@@ -32,38 +32,39 @@ const Quotes: FC<QuoteProps> = ({}) => {
     return (
         <div className='py-24 text-center'>
             {!data && loading 
-            ? (
-                <div className='flex justify-center'>
-                    <h1>Loading....</h1>
-                    <Loader 
-                        type="TailSpin" 
-                        color="#00fa9a" 
-                        height={200} 
-                        width={200} 
-                    />
-                </div>
-            ) 
-            : (
-                <>
-                    { data?.getQuotes.quotes.map(quote => (
-                        <QuoteCard 
-                            quote={quote}
+                ? (
+                    <div className='flex justify-center'>
+                        <h1>Loading....</h1>
+                        <Loader 
+                            type="TailSpin" 
+                            color="#00fa9a" 
+                            height={200} 
+                            width={200} 
                         />
-                    ))}
-                    <button
-                        className='px-6 py-2 mx-auto mt-2 text-lg font-semibold tracking-widest text-white transition duration-500 transform bg-green-400 rounded-lg hover:text-black hover:bg-green-600'
-                        onClick={async () => {
-                            await fetchMore({
-                                variables: {
-                                    limit: variables?.limit,
-                                    cursor: data?.getQuotes.quotes[data.getQuotes.quotes.length -1].id
-                                }
-                            })
-                        }}
-                    >
-                        さらに読み込む
-                    </button>
-                </>
+                    </div>
+                ) : (
+                    <>
+                        { data?.getQuotes.quotes.map(quote => (
+                            <div key={quote.id}>
+                                <QuoteCard 
+                                    quote={quote}
+                                />
+                            </div>
+                        ))}
+                        <button
+                            className='px-6 py-2 mx-auto mt-2 text-lg font-semibold tracking-widest text-white transition duration-500 transform bg-green-400 rounded-lg hover:text-black hover:bg-green-600'
+                            onClick={async () => {
+                                await fetchMore({
+                                    variables: {
+                                        limit: variables?.limit,
+                                        cursor: data?.getQuotes.quotes[data.getQuotes.quotes.length -1].id
+                                    }
+                                })
+                            }}
+                        >
+                            さらに読み込む
+                        </button>
+                    </>
                 )
             }
         </div>

@@ -36,7 +36,7 @@ const Home: VFC = () => {
               pagination={{ clickable: true }}
             >
               {data.getToptenQuotes.map(quote =>(
-                <SwiperSlide>
+                <SwiperSlide key={quote.id}>
                   <QuoteCard 
                     quote={quote}
                   />

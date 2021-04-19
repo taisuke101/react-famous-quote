@@ -8,6 +8,7 @@ import http from 'http';
 import { ApolloError, ApolloServer, UserInputError } from 'apollo-server-express'
 import { ArgumentValidationError, buildSchema } from 'type-graphql';
 import { createConnection } from 'typeorm';
+import { GraphQLError } from 'graphql';
 
 import { HelloResolver } from './resolvers/hello';
 import { QuoteResolver } from './resolvers/quote';
@@ -68,7 +69,7 @@ const main = async () => {
             onConnect: () => console.log('subscription connected!'),
             onDisconnect: () => console.log('subscription disconnected!'),
         },
-        formatError: (err) => {
+        formatError: (err: GraphQLError) => {
             if (err.originalError instanceof ApolloError) {
                 return err;
             }

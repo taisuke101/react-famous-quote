@@ -90,6 +90,18 @@ let QuoteResolver = class QuoteResolver {
             return (yield quote).slice(0, 10);
         });
     }
+    searchQuote(searchArgs) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return Quote_1.Quote.find({
+                where: [
+                    { author: typeorm_1.Like(`%${searchArgs}%`) },
+                    { country: typeorm_1.Like(`%${searchArgs}%`) },
+                    { job: typeorm_1.Like(`%${searchArgs}%`) },
+                    { text: typeorm_1.Like(`%${searchArgs}%`) }
+                ]
+            });
+        });
+    }
     likeQuote(quoteId, value, { req }) {
         return __awaiter(this, void 0, void 0, function* () {
             const isLike = value !== -1;
@@ -102,10 +114,9 @@ let QuoteResolver = class QuoteResolver {
             if (like && like.value !== realValue) {
                 yield typeorm_1.getConnection().transaction((transaction) => __awaiter(this, void 0, void 0, function* () {
                     yield transaction.query(`
-                    update likes
-                    set value = $1
-                    where "quoteId" = $2 and "userId" = $3
-                `, [realValue, quoteId, userId]);
+                    delete from likes
+                    where "quoteId" = $1 and "userId" = $2
+                `, [quoteId, userId]);
                     yield transaction.query(`
                     update quotes
                     set "likeCount" = "likeCount" + $1
@@ -193,6 +204,13 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], QuoteResolver.prototype, "getToptenQuotes", null);
+__decorate([
+    type_graphql_1.Query(() => [Quote_1.Quote]),
+    __param(0, type_graphql_1.Arg('serchArgs', () => String)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], QuoteResolver.prototype, "searchQuote", null);
 __decorate([
     type_graphql_1.Mutation(() => Boolean),
     type_graphql_1.UseMiddleware(isAuth_1.isAuth),

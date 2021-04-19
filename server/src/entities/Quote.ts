@@ -25,7 +25,7 @@ export class Quote extends Base {
     text: string;
 
     @Field()
-    @Column({ default: 0})
+    @Column({ default: 0 })
     likeCount: number;
 
     @OneToMany(() => Favorite, favorite => favorite.quote)
