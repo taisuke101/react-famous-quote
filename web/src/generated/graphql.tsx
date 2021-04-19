@@ -118,8 +118,10 @@ export type Query = {
   getQuotes: PaginatedQuotes;
   getQuote: Array<Quote>;
   getToptenQuotes: Array<Quote>;
+  searchQuote: Array<Quote>;
   getMe?: Maybe<User>;
   getFavorits: Array<Favorite>;
+  getFavorite: Favorite;
 };
 
 
@@ -133,6 +135,16 @@ export type QueryGetQuoteArgs = {
   job?: Maybe<Scalars['String']>;
   country?: Maybe<Scalars['String']>;
   author?: Maybe<Scalars['String']>;
+};
+
+
+export type QuerySearchQuoteArgs = {
+  serchArgs: Scalars['String'];
+};
+
+
+export type QueryGetFavoriteArgs = {
+  quoteId: Scalars['Int'];
 };
 
 export type Quote = {
@@ -325,6 +337,19 @@ export type GetToptenQuotesQueryVariables = Exact<{ [key: string]: never; }>;
 export type GetToptenQuotesQuery = (
   { __typename?: 'Query' }
   & { getToptenQuotes: Array<(
+    { __typename?: 'Quote' }
+    & QuoteResponseFragment
+  )> }
+);
+
+export type SearchQuoteQueryVariables = Exact<{
+  searchArgs: Scalars['String'];
+}>;
+
+
+export type SearchQuoteQuery = (
+  { __typename?: 'Query' }
+  & { searchQuote: Array<(
     { __typename?: 'Quote' }
     & QuoteResponseFragment
   )> }
@@ -754,3 +779,38 @@ export function useGetToptenQuotesLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type GetToptenQuotesQueryHookResult = ReturnType<typeof useGetToptenQuotesQuery>;
 export type GetToptenQuotesLazyQueryHookResult = ReturnType<typeof useGetToptenQuotesLazyQuery>;
 export type GetToptenQuotesQueryResult = Apollo.QueryResult<GetToptenQuotesQuery, GetToptenQuotesQueryVariables>;
+export const SearchQuoteDocument = gql`
+    query searchQuote($searchArgs: String!) {
+  searchQuote(serchArgs: $searchArgs) {
+    ...quoteResponse
+  }
+}
+    ${QuoteResponseFragmentDoc}`;
+
+/**
+ * __useSearchQuoteQuery__
+ *
+ * To run a query within a React component, call `useSearchQuoteQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSearchQuoteQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSearchQuoteQuery({
+ *   variables: {
+ *      searchArgs: // value for 'searchArgs'
+ *   },
+ * });
+ */
+export function useSearchQuoteQuery(baseOptions: Apollo.QueryHookOptions<SearchQuoteQuery, SearchQuoteQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<SearchQuoteQuery, SearchQuoteQueryVariables>(SearchQuoteDocument, options);
+      }
+export function useSearchQuoteLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchQuoteQuery, SearchQuoteQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<SearchQuoteQuery, SearchQuoteQueryVariables>(SearchQuoteDocument, options);
+        }
+export type SearchQuoteQueryHookResult = ReturnType<typeof useSearchQuoteQuery>;
+export type SearchQuoteLazyQueryHookResult = ReturnType<typeof useSearchQuoteLazyQuery>;
+export type SearchQuoteQueryResult = Apollo.QueryResult<SearchQuoteQuery, SearchQuoteQueryVariables>;

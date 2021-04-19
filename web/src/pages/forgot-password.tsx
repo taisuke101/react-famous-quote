@@ -42,7 +42,7 @@ const ForgotPassword: VFC<ForgotPasswordProps> = ({}) => {
                         complete ? (
                             <>
                                 <div>メールを送信しました！</div>
-                                <span className='text-red-500'>*メールが届かない場合は誤ったアドレスを入力しているか、メールアドレスが登録されていない場合があります。</span>
+                                <span className='text-red-500'>*メールが届かない場合は誤ったアドレスを入力しているか、メールアドレスが登録されていない可能性があります。</span>
                                 <Link href='/'>
                                     <a>ホームに戻る</a>
                                 </Link>

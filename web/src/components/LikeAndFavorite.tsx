@@ -29,7 +29,7 @@ const LikeAndFavorite: VFC<LikeAndFavoriteProps> = ({ quote }) => {
             pathname: '/login',
             query: {
                 errorMessage: 
-                'いいね機能を使用するにはログインする必要があります。'
+                '*いいね機能を使用するにはログインする必要があります。'
             }
         }),
     });
@@ -39,7 +39,7 @@ const LikeAndFavorite: VFC<LikeAndFavoriteProps> = ({ quote }) => {
             pathname: '/login',
             query: {
                 errorMessage:
-                'ストック機能を使用するにはログインする必要があります。'
+                '*ストック機能を使用するにはログインする必要があります。'
             }
         }),
     });

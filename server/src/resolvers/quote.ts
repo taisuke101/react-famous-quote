@@ -1,6 +1,6 @@
 import { UserInputError } from "apollo-server-errors";
 import { Arg, Ctx, FieldResolver, Int, Mutation, Query, Resolver, Root, UseMiddleware } from "type-graphql";
-import { getConnection } from "typeorm";
+import { getConnection, Like as findLike } from "typeorm";
 
 import { PaginatedQuotes, Quote } from '../entities/Quote'
 import { Like } from "../entities/Like";
@@ -89,6 +89,20 @@ export class QuoteResolver {
         return (await quote).slice(0, 10)
     }
 
+    @Query(() => [Quote])
+    async searchQuote(
+        @Arg('serchArgs', () => String) searchArgs: string
+    ): Promise<Quote[] | undefined> {
+        return Quote.find({
+            where: [
+                {author: findLike(`%${searchArgs}%`)},
+                {country: findLike(`%${searchArgs}%`)},
+                {job: findLike(`%${searchArgs}%`)},
+                {text: findLike(`%${searchArgs}%`)}
+            ]
+        })
+    }
+
     @Mutation(() => Boolean)
     @UseMiddleware(isAuth)
     async likeQuote(
@@ -108,17 +122,16 @@ export class QuoteResolver {
         if (like && like.value !== realValue) {
             await getConnection().transaction(async (transaction) => {
                 await transaction.query(`
-                    update likes
-                    set value = $1
-                    where "quoteId" = $2 and "userId" = $3
-                `, [realValue, quoteId, userId]);
+                    delete from likes
+                    where "quoteId" = $1 and "userId" = $2
+                `, [quoteId, userId]);
 
                 await transaction.query(`
                     update quotes
                     set "likeCount" = "likeCount" + $1
                     where id = $2
                 `, [realValue, quoteId]);
-            })
+            });
         } else if (!like) {
             await getConnection().transaction(async (transaction) => {
                 await transaction.query(`
@@ -130,12 +143,11 @@ export class QuoteResolver {
                     update quotes
                     set "likeCount" = "likeCount" + $1
                     where id = $2
-                `, [realValue, quoteId])
+                `, [realValue, quoteId]);
             });
-            
-        }//
+        }
         return true;
-    }
+    }//
 
     @Mutation(() => Quote)
     async createQuote(
@@ -166,5 +178,5 @@ export class QuoteResolver {
     async deleteQuote(@Arg('id', () => Int!) id: number): Promise<boolean> {
         await Quote.delete(id);
         return true;
-    }
+    }//
 }

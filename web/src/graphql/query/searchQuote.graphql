@@ -1,0 +1,5 @@
+query searchQuote($searchArgs: String!) {
+    searchQuote(serchArgs: $searchArgs) {
+        ...quoteResponse
+    }
+}

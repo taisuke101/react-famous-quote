@@ -7,6 +7,7 @@ import PageLink from './PageLink';
 import { useGetMeQuery, useLogoutMutation } from '../generated/graphql';
 
 import { FaChevronCircleDown, FaChevronCircleRight } from 'react-icons/fa';
+import SearchBox from './SearchBox';
 
 interface HeaderProps {
 
@@ -75,7 +76,9 @@ const Header: FC<HeaderProps> = ({}) => {
                             <FaChevronCircleRight />
                         )
                         }
-                        <div>ユーザー名：{data.getMe.username}</div>
+                        <div className='cursor-pointer'>
+                            ユーザー名：{data.getMe.username}
+                        </div>
                     </section>
                     {open ? (
                         <section 
@@ -104,11 +107,14 @@ const Header: FC<HeaderProps> = ({}) => {
     return (
         <div className='fixed z-10 w-full px-6 py-6 bg-green-200'>
             <section className='flex justify-between'>
-                <PageLink 
-                    href='/'
-                    text='名言ポータル'
-                    textClass='text-2xl tracking-widest'
-                />
+                <section className='flex'>
+                    <PageLink 
+                        href='/'
+                        text='名言ポータル'
+                        textClass='text-2xl tracking-widest'
+                    />
+                    <SearchBox />
+                </section>
                 <section className='space-x-4 text-lg'>
                     {body}
                 </section>
