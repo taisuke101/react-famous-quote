@@ -28,6 +28,10 @@ export class Quote extends Base {
     @Column({ default: 0 })
     likeCount: number;
 
+    @Field()
+    @Column({ nullable: true })
+    category: string;
+
     @OneToMany(() => Favorite, favorite => favorite.quote)
     favorits: Favorite[];
 

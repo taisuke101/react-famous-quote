@@ -152,7 +152,7 @@ export class UserResolver {
 
         await redis.del(key);
 
-        req.session.userId =  userId;
+        req.session.userId =  parseInt(userId);
 
         return user;
     }

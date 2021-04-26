@@ -27,6 +27,8 @@ const quote_1 = require("./resolvers/quote");
 const user_1 = require("./resolvers/user");
 const favorite_1 = require("./resolvers/favorite");
 const constants_1 = require("./constants");
+const createLikeLoader_1 = require("./utils/createLikeLoader");
+const createFavoriteLoader_1 = require("./utils/createFavoriteLoader");
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
     yield typeorm_1.createConnection()
         .then(() => console.log('database connect!'));
@@ -91,7 +93,13 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
             }
             return err;
         },
-        context: ({ req, res }) => ({ req, res, redis })
+        context: ({ req, res }) => ({
+            req,
+            res,
+            redis,
+            likeLoader: createLikeLoader_1.createLikeLoader(),
+            favoriteLoader: createFavoriteLoader_1.createFavoriteLoader(),
+        })
     });
     apolloServer.applyMiddleware({
         app,

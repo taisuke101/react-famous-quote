@@ -27,26 +27,25 @@ const type_graphql_1 = require("type-graphql");
 const typeorm_1 = require("typeorm");
 const Quote_1 = require("../entities/Quote");
 const Like_1 = require("../entities/Like");
-const Favorite_1 = require("../entities/Favorite");
 const QuoteInput_1 = require("../inputs/QuoteInput");
 const isAuth_1 = require("../middleware/isAuth");
 let QuoteResolver = class QuoteResolver {
-    likeStatus(quote, { req }) {
+    likeStatus(quote, { req, likeLoader }) {
         return __awaiter(this, void 0, void 0, function* () {
             if (!req.session.userId)
                 return null;
-            const like = yield Like_1.Like.findOne({
+            const like = yield likeLoader.load({
                 quoteId: quote.id,
                 userId: req.session.userId
             });
             return (like === null || like === void 0 ? void 0 : like.value) === 1 ? 1 : null;
         });
     }
-    hasFavorite(quote, { req }) {
+    hasFavorite(quote, { req, favoriteLoader }) {
         return __awaiter(this, void 0, void 0, function* () {
             if (!req.session.userId)
                 return null;
-            const favorite = yield Favorite_1.Favorite.findOne({
+            const favorite = yield favoriteLoader.load({
                 quoteId: quote.id,
                 userId: req.session.userId
             });
@@ -72,14 +71,16 @@ let QuoteResolver = class QuoteResolver {
             };
         });
     }
-    getQuote(author, country, job) {
+    getQuote(author, country, job, category) {
         return __awaiter(this, void 0, void 0, function* () {
             if (author)
                 return Quote_1.Quote.find({ author });
             else if (country)
                 return Quote_1.Quote.find({ country });
-            else
+            else if (job)
                 return Quote_1.Quote.find({ job });
+            else
+                return Quote_1.Quote.find({ category });
         });
     }
     getToptenQuotes() {
@@ -194,8 +195,9 @@ __decorate([
     __param(0, type_graphql_1.Arg('author', () => String, { nullable: true })),
     __param(1, type_graphql_1.Arg('country', () => String, { nullable: true })),
     __param(2, type_graphql_1.Arg('job', () => String, { nullable: true })),
+    __param(3, type_graphql_1.Arg('category', () => String, { nullable: true })),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String, String]),
+    __metadata("design:paramtypes", [String, String, String, String]),
     __metadata("design:returntype", Promise)
 ], QuoteResolver.prototype, "getQuote", null);
 __decorate([
