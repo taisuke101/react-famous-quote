@@ -16,6 +16,8 @@ import { UserResolver } from './resolvers/user';
 import { FavoriteResolver } from './resolvers/favorite';
 import { COOKIE_NAME, __prod__ } from './constants';
 import { MyContext } from './types';
+import { createLikeLoader } from './utils/createLikeLoader';
+import { createFavoriteLoader } from './utils/createFavoriteLoader';
 
 const main = async () => {
     await createConnection()
@@ -88,7 +90,13 @@ const main = async () => {
 
             return err;
         },
-        context: ({ req, res }): MyContext => ({ req, res, redis })
+        context: ({ req, res }): MyContext => ({ 
+            req, 
+            res, 
+            redis,
+            likeLoader: createLikeLoader(),
+            favoriteLoader: createFavoriteLoader(),
+        })
     });
     //
     apolloServer.applyMiddleware({ 

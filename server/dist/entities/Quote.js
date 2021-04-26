@@ -46,6 +46,11 @@ __decorate([
     __metadata("design:type", Number)
 ], Quote.prototype, "likeCount", void 0);
 __decorate([
+    type_graphql_1.Field(),
+    typeorm_1.Column({ nullable: true }),
+    __metadata("design:type", String)
+], Quote.prototype, "category", void 0);
+__decorate([
     typeorm_1.OneToMany(() => Favorite_1.Favorite, favorite => favorite.quote),
     __metadata("design:type", Array)
 ], Quote.prototype, "favorits", void 0);

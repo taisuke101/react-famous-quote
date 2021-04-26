@@ -4,7 +4,6 @@ import { getConnection, Like as findLike } from "typeorm";
 
 import { PaginatedQuotes, Quote } from '../entities/Quote'
 import { Like } from "../entities/Like";
-import { Favorite } from "../entities/Favorite";
 import { CreateQuoteInput, UpdateQuoteInput } from "../inputs/QuoteInput";
 import { isAuth } from "../middleware/isAuth";
 import { MyContext } from "../types";
@@ -14,14 +13,14 @@ export class QuoteResolver {
     @FieldResolver(() => Int, { nullable: true})
     async likeStatus(
         @Root() quote: Quote,
-        @Ctx() { req }: MyContext
+        @Ctx() { req, likeLoader }: MyContext
     ): Promise<number | null> {
         if (!req.session.userId) return null;
 
-        const like = await Like.findOne({
+        const like = await likeLoader.load({
             quoteId: quote.id,
-            userId: req.session.userId as number
-        });
+            userId: req.session.userId
+        })
 
         return like?.value === 1 ? 1 : null;
     }
@@ -29,13 +28,13 @@ export class QuoteResolver {
     @FieldResolver(() => Boolean, {nullable: true})
     async hasFavorite(
         @Root() quote: Quote,
-        @Ctx() { req }: MyContext
+        @Ctx() { req, favoriteLoader }: MyContext
     ): Promise<boolean | null> {
         if (!req.session.userId) return null;
 
-        const favorite = await Favorite.findOne({
+        const favorite = await favoriteLoader.load({
             quoteId: quote.id,
-            userId: req.session.userId  as number
+            userId: req.session.userId
         });
 
         return favorite ? true : false;
@@ -70,14 +69,17 @@ export class QuoteResolver {
     async getQuote(
         @Arg('author', () => String, { nullable: true }) author: string,
         @Arg('country', () => String, { nullable: true }) country: string,
-        @Arg('job', () => String, { nullable: true }) job: string
+        @Arg('job', () => String, { nullable: true }) job: string,
+        @Arg('category', () => String, { nullable: true }) category: string,
     ): Promise<Quote[] | undefined> {
         if (author)
             return Quote.find({author});
         else if (country)
             return Quote.find({country});
-        else
+        else if (job)
             return Quote.find({job});
+        else
+            return Quote.find({category})
     }
 
     @Query(() => [Quote])
@@ -115,7 +117,7 @@ export class QuoteResolver {
         const { userId } = req.session;
 
         const like = await Like.findOne({
-            userId: userId as number, 
+            userId: userId, 
             quoteId
         });
 

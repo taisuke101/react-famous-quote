@@ -118,7 +118,7 @@ let UserResolver = class UserResolver {
                 throw new apollo_server_errors_1.UserInputError('errors', { formattedErrors: { userId: 'ユーザーが存在しません！' } });
             yield User_1.User.update({ id: numberUserId }, { password: yield argon2_1.default.hash(data.newPassword) });
             yield redis.del(key);
-            req.session.userId = userId;
+            req.session.userId = parseInt(userId);
             return user;
         });
     }

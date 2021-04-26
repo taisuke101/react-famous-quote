@@ -27,7 +27,7 @@ export class FavoriteResolver {
         @Arg('quoteId', () => Int) quoteId: number, 
         @Ctx() { req }: MyContext
     ): Promise<Favorite | undefined> {
-        const userId  = req.session.userId as number;
+        const userId  = req.session.userId;
 
         return Favorite.findOne(
             {userId, quoteId}, 
@@ -48,17 +48,17 @@ export class FavoriteResolver {
 
         if (quote) {
             const favorite = await Favorite.findOne({
-                userId: userId as number, 
+                userId: userId, 
                 quoteId
             })
             if (favorite) {
                 Favorite.delete({
-                    userId: userId as number,
+                    userId: userId,
                     quoteId
                 });
             } else {
                 Favorite.create({
-                    userId: userId as number,
+                    userId: userId,
                     quoteId,
                     user: user,
                     quote: quote,
