@@ -17,7 +17,7 @@ const Username: VFC<UsernameProps> = ({}) => {
     const { data, loading } = useGetFavoritsQuery();
 
     return (
-        <div className='pt-24'>
+        <>
             <h1 className='text-2xl text-center'>{username}のストック一覧</h1>
             { data && loading 
                 ? (
@@ -38,6 +38,7 @@ const Username: VFC<UsernameProps> = ({}) => {
                         return (
                             <QuoteCard 
                                 quote={quote}
+                                wiki={false}
                             />
                         )
                     })
@@ -45,7 +46,7 @@ const Username: VFC<UsernameProps> = ({}) => {
                 </>
                 )
             }
-        </div>
+        </>
     );
 }
 

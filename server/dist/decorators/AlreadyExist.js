@@ -11,7 +11,7 @@ const class_validator_1 = require("class-validator");
 const User_1 = require("../entities/User");
 let IsUserAlreadyExistConstraint = class IsUserAlreadyExistConstraint {
     validate(username) {
-        return User_1.User.findOne({ where: { username } }).then(user => {
+        return User_1.User.findOne({ where: { username } }).then((user) => {
             if (user)
                 return false;
             return true;
@@ -37,7 +37,7 @@ exports.IsUserAlreadyExist = IsUserAlreadyExist;
 class_validator_1.ValidatorConstraint({ async: true });
 class IsEmailAlreadyExistConstraint {
     validate(email) {
-        return User_1.User.findOne({ where: { email } }).then(user => {
+        return User_1.User.findOne({ where: { email } }).then((user) => {
             if (user)
                 return false;
             return true;

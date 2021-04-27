@@ -28,11 +28,11 @@ __decorate([
     __metadata("design:type", Number)
 ], Like.prototype, "quoteId", void 0);
 __decorate([
-    typeorm_1.ManyToOne(() => User_1.User, user => user.likes),
+    typeorm_1.ManyToOne(() => User_1.User, (user) => user.likes),
     __metadata("design:type", User_1.User)
 ], Like.prototype, "user", void 0);
 __decorate([
-    typeorm_1.ManyToOne(() => Quote_1.Quote, quote => quote.likes),
+    typeorm_1.ManyToOne(() => Quote_1.Quote, (quote) => quote.likes),
     __metadata("design:type", Quote_1.Quote)
 ], Like.prototype, "quote", void 0);
 Like = __decorate([

@@ -47,15 +47,15 @@ __decorate([
 ], Quote.prototype, "likeCount", void 0);
 __decorate([
     type_graphql_1.Field(),
-    typeorm_1.Column({ nullable: true }),
+    typeorm_1.Column(),
     __metadata("design:type", String)
 ], Quote.prototype, "category", void 0);
 __decorate([
-    typeorm_1.OneToMany(() => Favorite_1.Favorite, favorite => favorite.quote),
+    typeorm_1.OneToMany(() => Favorite_1.Favorite, (favorite) => favorite.quote),
     __metadata("design:type", Array)
 ], Quote.prototype, "favorits", void 0);
 __decorate([
-    typeorm_1.OneToMany(() => Like_1.Like, like => like.quote),
+    typeorm_1.OneToMany(() => Like_1.Like, (like) => like.quote),
     __metadata("design:type", Array)
 ], Quote.prototype, "likes", void 0);
 Quote = __decorate([

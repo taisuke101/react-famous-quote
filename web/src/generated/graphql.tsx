@@ -132,6 +132,7 @@ export type QueryGetQuotesArgs = {
 
 
 export type QueryGetQuoteArgs = {
+  category?: Maybe<Scalars['String']>;
   job?: Maybe<Scalars['String']>;
   country?: Maybe<Scalars['String']>;
   author?: Maybe<Scalars['String']>;
@@ -157,6 +158,7 @@ export type Quote = {
   job: Scalars['String'];
   text: Scalars['String'];
   likeCount: Scalars['Float'];
+  category: Scalars['String'];
   likeStatus?: Maybe<Scalars['Int']>;
   hasFavorite?: Maybe<Scalars['Boolean']>;
 };
@@ -302,6 +304,7 @@ export type GetQuoteQueryVariables = Exact<{
   author?: Maybe<Scalars['String']>;
   country?: Maybe<Scalars['String']>;
   job?: Maybe<Scalars['String']>;
+  category?: Maybe<Scalars['String']>;
 }>;
 
 
@@ -670,8 +673,8 @@ export type GetMeQueryHookResult = ReturnType<typeof useGetMeQuery>;
 export type GetMeLazyQueryHookResult = ReturnType<typeof useGetMeLazyQuery>;
 export type GetMeQueryResult = Apollo.QueryResult<GetMeQuery, GetMeQueryVariables>;
 export const GetQuoteDocument = gql`
-    query getQuote($author: String, $country: String, $job: String) {
-  getQuote(author: $author, country: $country, job: $job) {
+    query getQuote($author: String, $country: String, $job: String, $category: String) {
+  getQuote(author: $author, country: $country, job: $job, category: $category) {
     ...quoteResponse
   }
 }
@@ -692,6 +695,7 @@ export const GetQuoteDocument = gql`
  *      author: // value for 'author'
  *      country: // value for 'country'
  *      job: // value for 'job'
+ *      category: // value for 'category'
  *   },
  * });
  */

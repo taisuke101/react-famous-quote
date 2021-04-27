@@ -18,10 +18,10 @@ const Like_1 = require("../entities/Like");
 const createLikeLoader = () => new dataloader_1.default((keys) => __awaiter(void 0, void 0, void 0, function* () {
     const likes = yield Like_1.Like.findByIds(keys);
     const likeIdsToLike = {};
-    likes.forEach(like => {
+    likes.forEach((like) => {
         likeIdsToLike[`${like.quoteId}|${like.userId}`] = like;
     });
-    return keys.map(key => likeIdsToLike[`${key.quoteId}|${key.userId}`]);
+    return keys.map((key) => likeIdsToLike[`${key.quoteId}|${key.userId}`]);
 }));
 exports.createLikeLoader = createLikeLoader;
 //# sourceMappingURL=createLikeLoader.js.map

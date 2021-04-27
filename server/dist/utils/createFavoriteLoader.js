@@ -18,10 +18,10 @@ const Favorite_1 = require("../entities/Favorite");
 const createFavoriteLoader = () => new dataloader_1.default((keys) => __awaiter(void 0, void 0, void 0, function* () {
     const favorits = yield Favorite_1.Favorite.findByIds(keys);
     const favoriteIdsToFavorite = {};
-    favorits.forEach(favorite => {
+    favorits.forEach((favorite) => {
         favoriteIdsToFavorite[`${favorite.quoteId}|${favorite.userId}`] = favorite;
     });
-    return keys.map(key => favoriteIdsToFavorite[`${key.quoteId}|${key.userId}`]);
+    return keys.map((key) => favoriteIdsToFavorite[`${key.quoteId}|${key.userId}`]);
 }));
 exports.createFavoriteLoader = createFavoriteLoader;
 //# sourceMappingURL=createFavoriteLoader.js.map
