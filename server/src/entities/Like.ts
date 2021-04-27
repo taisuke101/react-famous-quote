@@ -1,24 +1,30 @@
-import { BaseEntity, Column, Entity, ManyToOne, PrimaryColumn, Unique } from "typeorm";
+import {
+	BaseEntity,
+	Column,
+	Entity,
+	ManyToOne,
+	PrimaryColumn,
+	Unique,
+} from 'typeorm';
 
-import { Quote } from "./Quote";
-import { User } from "./User";
+import { Quote } from './Quote';
+import { User } from './User';
 
 @Entity('likes')
 @Unique(['userId', 'quoteId'])
 export class Like extends BaseEntity {
-    @Column()
-    value: number;
-    
-    @PrimaryColumn()
-    userId: number;
+	@Column()
+	value: number;
 
-    @PrimaryColumn()
-    quoteId: number;
+	@PrimaryColumn()
+	userId: number;
 
-    @ManyToOne(() => User, user => user.likes)
-    user: User;
+	@PrimaryColumn()
+	quoteId: number;
 
-    @ManyToOne(() => Quote, quote => quote.likes)
-    quote: Quote;
-    
+	@ManyToOne(() => User, (user) => user.likes)
+	user: User;
+
+	@ManyToOne(() => Quote, (quote) => quote.likes)
+	quote: Quote;
 }

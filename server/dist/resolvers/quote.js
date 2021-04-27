@@ -36,7 +36,7 @@ let QuoteResolver = class QuoteResolver {
                 return null;
             const like = yield likeLoader.load({
                 quoteId: quote.id,
-                userId: req.session.userId
+                userId: req.session.userId,
             });
             return (like === null || like === void 0 ? void 0 : like.value) === 1 ? 1 : null;
         });
@@ -47,7 +47,7 @@ let QuoteResolver = class QuoteResolver {
                 return null;
             const favorite = yield favoriteLoader.load({
                 quoteId: quote.id,
-                userId: req.session.userId
+                userId: req.session.userId,
             });
             return favorite ? true : false;
         });
@@ -58,8 +58,8 @@ let QuoteResolver = class QuoteResolver {
             const quoteLimitPlusOne = quoteLimit + 1;
             const qb = typeorm_1.getConnection()
                 .getRepository(Quote_1.Quote)
-                .createQueryBuilder("q")
-                .orderBy('"createdAt"', "ASC")
+                .createQueryBuilder('q')
+                .orderBy('"createdAt"', 'ASC')
                 .take(quoteLimitPlusOne);
             if (cursor) {
                 qb.where('"id" > :cursor', { cursor });
@@ -67,7 +67,7 @@ let QuoteResolver = class QuoteResolver {
             const quotes = yield qb.getMany();
             return {
                 quotes: quotes.slice(0, quoteLimit),
-                hasMore: quotes.length === quoteLimitPlusOne
+                hasMore: quotes.length === quoteLimitPlusOne,
             };
         });
     }
@@ -86,7 +86,7 @@ let QuoteResolver = class QuoteResolver {
     getToptenQuotes() {
         return __awaiter(this, void 0, void 0, function* () {
             const quote = Quote_1.Quote.find({
-                order: { likeCount: "DESC" }
+                order: { likeCount: 'DESC' },
             });
             return (yield quote).slice(0, 10);
         });
@@ -98,8 +98,8 @@ let QuoteResolver = class QuoteResolver {
                     { author: typeorm_1.Like(`%${searchArgs}%`) },
                     { country: typeorm_1.Like(`%${searchArgs}%`) },
                     { job: typeorm_1.Like(`%${searchArgs}%`) },
-                    { text: typeorm_1.Like(`%${searchArgs}%`) }
-                ]
+                    { text: typeorm_1.Like(`%${searchArgs}%`) },
+                ],
             });
         });
     }
@@ -110,7 +110,7 @@ let QuoteResolver = class QuoteResolver {
             const { userId } = req.session;
             const like = yield Like_1.Like.findOne({
                 userId: userId,
-                quoteId
+                quoteId,
             });
             if (like && like.value !== realValue) {
                 yield typeorm_1.getConnection().transaction((transaction) => __awaiter(this, void 0, void 0, function* () {
@@ -155,7 +155,6 @@ let QuoteResolver = class QuoteResolver {
                 const updatedQuote = Object.assign(quote, data);
                 yield updatedQuote.save();
             }
-            ;
             return quote;
         });
     }

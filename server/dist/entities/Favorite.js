@@ -28,13 +28,13 @@ __decorate([
 ], Favorite.prototype, "quoteId", void 0);
 __decorate([
     type_graphql_1.Field(() => User_1.User),
-    typeorm_1.ManyToOne(() => User_1.User, user => user.favorits),
+    typeorm_1.ManyToOne(() => User_1.User, (user) => user.favorits),
     typeorm_1.JoinColumn({ name: 'user' }),
     __metadata("design:type", User_1.User)
 ], Favorite.prototype, "user", void 0);
 __decorate([
     type_graphql_1.Field(() => Quote_1.Quote),
-    typeorm_1.ManyToOne(() => Quote_1.Quote, quote => quote.favorits),
+    typeorm_1.ManyToOne(() => Quote_1.Quote, (quote) => quote.favorits),
     typeorm_1.JoinColumn({ name: 'quote' }),
     __metadata("design:type", Quote_1.Quote)
 ], Favorite.prototype, "quote", void 0);

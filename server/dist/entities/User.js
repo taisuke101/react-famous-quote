@@ -55,11 +55,11 @@ __decorate([
     __metadata("design:type", String)
 ], User.prototype, "password", void 0);
 __decorate([
-    typeorm_1.OneToMany(() => Favorite_1.Favorite, favorite => favorite.user),
+    typeorm_1.OneToMany(() => Favorite_1.Favorite, (favorite) => favorite.user),
     __metadata("design:type", Array)
 ], User.prototype, "favorits", void 0);
 __decorate([
-    typeorm_1.OneToMany(() => Like_1.Like, like => like.user),
+    typeorm_1.OneToMany(() => Like_1.Like, (like) => like.user),
     __metadata("design:type", Array)
 ], User.prototype, "likes", void 0);
 __decorate([

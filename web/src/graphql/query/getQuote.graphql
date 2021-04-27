@@ -1,12 +1,14 @@
 query getQuote(
     $author: String,
     $country: String,
-    $job: String
+    $job: String,
+    $category: String,
 ) {
     getQuote(
         author: $author,
         country: $country,
-        job: $job
+        job: $job,
+        category: $category
     ) {
         ...quoteResponse
     }

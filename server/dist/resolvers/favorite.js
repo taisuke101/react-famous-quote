@@ -33,7 +33,7 @@ let FavoriteResolver = class FavoriteResolver {
         return __awaiter(this, void 0, void 0, function* () {
             return Favorite_1.Favorite.find({
                 where: { userId: req.session.userId },
-                relations: ['quote']
+                relations: ['quote'],
             });
         });
     }
@@ -51,12 +51,12 @@ let FavoriteResolver = class FavoriteResolver {
             if (quote) {
                 const favorite = yield Favorite_1.Favorite.findOne({
                     userId: userId,
-                    quoteId
+                    quoteId,
                 });
                 if (favorite) {
                     Favorite_1.Favorite.delete({
                         userId: userId,
-                        quoteId
+                        quoteId,
                     });
                 }
                 else {
@@ -70,7 +70,9 @@ let FavoriteResolver = class FavoriteResolver {
                 return true;
             }
             else {
-                throw new apollo_server_errors_1.UserInputError('errors', { formattedErrors: { quoteId: '名言が見つかりません！' } });
+                throw new apollo_server_errors_1.UserInputError('errors', {
+                    formattedErrors: { quoteId: '名言が見つかりません！' },
+                });
             }
         });
     }

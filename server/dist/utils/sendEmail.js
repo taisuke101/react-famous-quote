@@ -19,7 +19,7 @@ function sendEmail(to, html) {
         let testAccount = yield nodemailer_1.default.createTestAccount();
         console.log('testAccount', testAccount);
         let transporter = nodemailer_1.default.createTransport({
-            host: "smtp.ethereal.email",
+            host: 'smtp.ethereal.email',
             port: 587,
             secure: false,
             auth: {
@@ -30,11 +30,11 @@ function sendEmail(to, html) {
         let info = yield transporter.sendMail({
             from: '"Fred Foo 👻" <foo@example.com>',
             to,
-            subject: "パスワードの変更",
+            subject: 'パスワードの変更',
             html,
         });
-        console.log("Message sent: %s", info.messageId);
-        console.log("Preview URL: %s", nodemailer_1.default.getTestMessageUrl(info));
+        console.log('Message sent: %s', info.messageId);
+        console.log('Preview URL: %s', nodemailer_1.default.getTestMessageUrl(info));
     });
 }
 exports.sendEmail = sendEmail;

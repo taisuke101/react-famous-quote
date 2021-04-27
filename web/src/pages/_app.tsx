@@ -4,21 +4,25 @@ import Header from '../components/Header';
 import { cache } from '../utils/cache';
 
 import '../styles/globals.css';
-import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+import Sidebar from '../components/Sidebar';
 
 const client = new ApolloClient({
-  uri: 'http://localhost:5000/graphql',
-  credentials: 'include',
-  cache,
-})
+	uri: 'http://localhost:5000/graphql',
+	credentials: 'include',
+	cache,
+});
 
 function MyApp({ Component, pageProps }) {
-  return(
-    <ApolloProvider client={client}>
-      <Header />
-      <Component {...pageProps} />
-    </ApolloProvider>
-  ) 
+	return (
+		<ApolloProvider client={client}>
+			<Header />
+			<Sidebar />
+			<div className='pt-24 ml-48'>
+				<Component {...pageProps} />
+			</div>
+		</ApolloProvider>
+	);
 }
 
-export default MyApp
+export default MyApp;

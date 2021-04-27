@@ -25,7 +25,7 @@ export const updateAfterLike = (
     if (data) {
         if (data.likeStatus === value) return;
         
-        const newLikeCount = (data.likeCount as number) + value;
+        const newLikeCount = (data.likeCount) + value;
 
         cache.writeFragment({
             id: "Quote:" + quoteId,

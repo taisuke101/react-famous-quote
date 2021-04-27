@@ -1,23 +1,20 @@
 import { VFC } from 'react';
 import { useRouter } from 'next/router';
-import Loader from 'react-loader-spinner';
-
 import { useGetQuoteQuery } from '../../../generated/graphql';
+import Loader from 'react-loader-spinner';
 import QuoteCard from '../../../components/QuoteCard';
 
-interface CountryProps {}
+interface CategoryProps {}
 
-const Country: VFC<CountryProps> = ({}) => {
+const Category: VFC<CategoryProps> = ({}) => {
 	const router = useRouter();
-	const country = router.query.country;
+	const category = router.query.category;
 
 	const { data, loading } = useGetQuoteQuery({
 		variables: {
-			country: country as string,
+			category: category as string,
 		},
 	});
-
-	console.log(data);
 
 	return (
 		<>
@@ -27,9 +24,9 @@ const Country: VFC<CountryProps> = ({}) => {
 					<Loader type='TailSpin' color='#00fa9a' height={200} width={200} />
 				</div>
 			) : (
-				<>
-					<h1 className='mb-4 text-4xl text-center'>
-						{`${country}出身者の名言`}...
+				<div className='text-center'>
+					<h1 className='mb-4 text-4xl'>
+						{`カテゴリー「${category}」の名言`}...
 						<span className='text-red-500'>{data.getQuote.length}</span>件
 					</h1>
 					{data.getQuote.map((quote) => (
@@ -37,9 +34,9 @@ const Country: VFC<CountryProps> = ({}) => {
 							<QuoteCard quote={quote} wiki={true} />
 						</div>
 					))}
-				</>
+				</div>
 			)}
 		</>
 	);
 };
-export default Country;
+export default Category;

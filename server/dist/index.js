@@ -30,22 +30,21 @@ const constants_1 = require("./constants");
 const createLikeLoader_1 = require("./utils/createLikeLoader");
 const createFavoriteLoader_1 = require("./utils/createFavoriteLoader");
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
-    yield typeorm_1.createConnection()
-        .then(() => console.log('database connect!'));
+    yield typeorm_1.createConnection().then(() => console.log('database connect!'));
     const app = express_1.default();
     const httpServer = http_1.default.createServer(app);
     const RedisStore = connect_redis_1.default(express_session_1.default);
     const redis = new ioredis_1.default();
     app.use(cors_1.default({
         origin: 'http://localhost:3000',
-        credentials: true
+        credentials: true,
     }));
     app.use(express_session_1.default({
         name: constants_1.COOKIE_NAME,
         store: new RedisStore({
             client: redis,
             disableTTL: true,
-            disableTouch: true
+            disableTouch: true,
         }),
         cookie: {
             maxAge: 1000 * 60 * 60 * 24 * 365,
@@ -60,16 +59,11 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
     const apolloServer = new apollo_server_express_1.ApolloServer({
         playground: {
             settings: {
-                "request.credentials": "include",
+                'request.credentials': 'include',
             },
         },
         schema: yield type_graphql_1.buildSchema({
-            resolvers: [
-                hello_1.HelloResolver,
-                quote_1.QuoteResolver,
-                user_1.UserResolver,
-                favorite_1.FavoriteResolver
-            ]
+            resolvers: [hello_1.HelloResolver, quote_1.QuoteResolver, user_1.UserResolver, favorite_1.FavoriteResolver],
         }),
         subscriptions: {
             path: '/subscriptions',
@@ -83,7 +77,9 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
             }
             if (err.originalError instanceof type_graphql_1.ArgumentValidationError) {
                 const errorMessage = (_a = err.extensions) === null || _a === void 0 ? void 0 : _a.exception.validationErrors;
-                const object = errorMessage.map((e) => ({ [e.property]: Object.values(e.constraints) }));
+                const object = errorMessage.map((e) => ({
+                    [e.property]: Object.values(e.constraints),
+                }));
                 const formattedErrors = object.reduce((result, current) => {
                     let key = Object.keys(current);
                     result[key] = current[key];
@@ -99,11 +95,11 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
             redis,
             likeLoader: createLikeLoader_1.createLikeLoader(),
             favoriteLoader: createFavoriteLoader_1.createFavoriteLoader(),
-        })
+        }),
     });
     apolloServer.applyMiddleware({
         app,
-        cors: false
+        cors: false,
     });
     apolloServer.installSubscriptionHandlers(httpServer);
     httpServer.listen(process.env.PORT, () => {
