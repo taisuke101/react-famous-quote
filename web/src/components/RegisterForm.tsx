@@ -81,7 +81,9 @@ const RegisterForm: FC<{}> = ({}) => {
 					/>
 					<SubmitButton>新規登録</SubmitButton>
 					<Link href='/login'>
-						<a className='mt-4'>すでにアカウントを作成している場合はこちら</a>
+						<a className='mt-4 transition duration-500 hover:text-green-500'>
+							すでにアカウントを作成している場合はこちら
+						</a>
 					</Link>
 				</form>
 			)}

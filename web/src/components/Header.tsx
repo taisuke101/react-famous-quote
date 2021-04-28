@@ -56,12 +56,14 @@ const Header: FC<HeaderProps> = ({}) => {
 						</div>
 					</section>
 					{open ? (
-						<section className='absolute flex flex-col p-3 space-y-3 text-center bg-gray-400 w-52 right-5'>
+						<section className='absolute flex flex-col px-3 py-5 space-y-4 text-center bg-gray-200 w-52 right-5'>
 							<Link href={`/user/${data.getMe.username}`}>
-								<div className='cursor-pointer'>ストック一覧</div>
+								<div className='transition duration-500 cursor-pointer hover:text-green-500'>
+									ストック一覧
+								</div>
 							</Link>
 							<div
-								className='cursor-pointer'
+								className='transition duration-500 cursor-pointer hover:text-green-500'
 								onClick={async () => {
 									await router.push('/');
 									await logout();
@@ -79,7 +81,7 @@ const Header: FC<HeaderProps> = ({}) => {
 	}
 
 	return (
-		<div className='fixed z-10 w-full px-6 py-6 bg-green-200'>
+		<div className='fixed z-20 w-full px-6 py-6 bg-green-200'>
 			<section className='flex justify-between'>
 				<section className='flex'>
 					<PageLink

@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import { VFC } from 'react';
+import ReactTooltip from 'react-tooltip';
 
 import {
 	GetFavoritsDocument,
@@ -47,10 +48,11 @@ const LikeAndFavorite: VFC<LikeAndFavoriteProps> = ({ quote }) => {
 
 	return (
 		<section className='flex justify-center space-x-5'>
-			<section className='p-2 bg-white rounded-lg'>
+			<section className='p-2 bg-transparent rounded-full'>
 				{quote.likeStatus === 1 ? (
 					<button
-						className='flex'
+						className='flex focus:outline-none'
+						data-tip='いいね！を取り消す'
 						onClick={() => {
 							like({
 								variables: {
@@ -64,11 +66,12 @@ const LikeAndFavorite: VFC<LikeAndFavoriteProps> = ({ quote }) => {
 					>
 						<AiFillHeart className='text-3xl text-red-500' />
 						<span className='ml-1 text-xl text-red-500'>{quote.likeCount}</span>
-						<span className='ml-2 text-xl'>取り消し</span>
+						<ReactTooltip effect='solid' />
 					</button>
 				) : (
 					<button
-						className='flex'
+						className='flex focus:outline-none'
+						data-tip='いいね！する'
 						onClick={() => {
 							like({
 								variables: {
@@ -82,14 +85,15 @@ const LikeAndFavorite: VFC<LikeAndFavoriteProps> = ({ quote }) => {
 					>
 						<RiHeartAddLine className='text-3xl text-red-500' />
 						<span className='ml-1 text-xl text-red-500'>{quote.likeCount}</span>
-						<span className='ml-2 text-xl'>いいね！する</span>
+						<ReactTooltip effect='solid' />
 					</button>
 				)}
 			</section>
-			<section className='flex p-2 bg-white rounded-lg'>
+			<section className='flex p-2 bg-transparent rounded-full'>
 				{quote.hasFavorite ? (
 					<button
-						className='flex'
+						className='flex focus:outline-none'
+						data-tip='ストックから外す'
 						onClick={() =>
 							createFavorite({
 								variables: { quoteId: numberQuoteId },
@@ -100,11 +104,12 @@ const LikeAndFavorite: VFC<LikeAndFavoriteProps> = ({ quote }) => {
 						}
 					>
 						<BsBookmarkFill className='text-3xl text-blue-500' />
-						<span className='ml-2 text-xl'>ストックから外す</span>
+						<ReactTooltip effect='solid' />
 					</button>
 				) : (
 					<button
-						className='flex'
+						className='flex focus:outline-none'
+						data-tip='名言をストックする'
 						onClick={() =>
 							createFavorite({
 								variables: { quoteId: numberQuoteId },
@@ -115,7 +120,7 @@ const LikeAndFavorite: VFC<LikeAndFavoriteProps> = ({ quote }) => {
 						}
 					>
 						<BsBookmarkPlus className='text-3xl text-blue-500' />
-						<span className='ml-2 text-xl'>名言をストック</span>
+						<ReactTooltip effect='solid' />
 					</button>
 				)}
 			</section>
