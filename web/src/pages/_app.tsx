@@ -18,7 +18,7 @@ function MyApp({ Component, pageProps }) {
 		<ApolloProvider client={client}>
 			<Header />
 			<Sidebar />
-			<div className='pt-24 ml-48'>
+			<div className='pt-24 bg-white'>
 				<Component {...pageProps} />
 			</div>
 		</ApolloProvider>

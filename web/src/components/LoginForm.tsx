@@ -85,10 +85,14 @@ const LoginForm: FC<{}> = ({}) => {
 						/>
 						<SubmitButton>ログイン</SubmitButton>
 						<Link href='/register'>
-							<a className='mt-4'>アカウントを持っていない場合はこちら</a>
+							<a className='mt-4 transition duration-500 hover:text-green-500'>
+								アカウントを持っていない場合はこちら
+							</a>
 						</Link>
 						<Link href='/forgot-password'>
-							<a className='mt-4'>パスワードを忘れた場合</a>
+							<a className='mt-4 transition duration-500 hover:text-green-500'>
+								パスワードを忘れた場合
+							</a>
 						</Link>
 					</form>
 				</>
