@@ -48,8 +48,8 @@ const About: VFC<AboutProps> = ({}) => {
 					</h1>
 					<div className='grid grid-cols-2 mt-10'>
 						<div className='flex justify-center space-x-3'>
-							<BsFillBookmarksFill className='text-blue-500 text-8xl' />
 							<BsFillHeartFill className='text-red-500 text-8xl' />
+							<BsFillBookmarksFill className='text-blue-500 text-8xl' />
 						</div>
 						<div>
 							名言をいいね！したり、ストックすることができます。

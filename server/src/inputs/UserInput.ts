@@ -1,4 +1,4 @@
-import { IsNotEmpty, MaxLength, MinLength } from 'class-validator';
+import { IsEmail, IsNotEmpty, MaxLength, MinLength } from 'class-validator';
 import { Field, InputType } from 'type-graphql';
 
 import { Match } from '../decorators/Match';
@@ -17,6 +17,7 @@ export class CreateUserInput {
 
 	@Field()
 	@IsNotEmpty({ message: 'Eメールは必須項目です！' })
+	@IsEmail({}, { message: '無効なEメールの形式です！' })
 	@IsEmailAlreadyExist({ message: '登録済みのEメールアドレスです！' })
 	email: string;
 
