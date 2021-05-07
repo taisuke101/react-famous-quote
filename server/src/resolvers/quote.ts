@@ -196,5 +196,5 @@ export class QuoteResolver {
 	async deleteQuote(@Arg('id', () => Int!) id: number): Promise<boolean> {
 		await Quote.delete(id);
 		return true;
-	} //
+	}
 }

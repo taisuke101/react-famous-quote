@@ -1,15 +1,5 @@
 import { UserInputError } from 'apollo-server-errors';
-import {
-	Arg,
-	Ctx,
-	Mutation,
-	Publisher,
-	PubSub,
-	Query,
-	Resolver,
-	Root,
-	Subscription,
-} from 'type-graphql';
+import { Arg, Ctx, Mutation, Query, Resolver } from 'type-graphql';
 import argon2 from 'argon2';
 import { v4 } from 'uuid';
 
@@ -32,7 +22,6 @@ export class UserResolver {
 
 	@Mutation(() => User)
 	async createUser(
-		@PubSub('CREATE_USER') publish: Publisher<User>,
 		@Arg('data') data: CreateUserInput,
 		@Ctx() { req }: MyContext
 	): Promise<User> {
@@ -50,18 +39,9 @@ export class UserResolver {
 			password,
 		}).save();
 
-		const payload = user;
-
-		await publish(payload);
-
 		req.session.userId = user.id;
 
 		return user;
-	}
-
-	@Subscription({ topics: 'CREATE_USER' })
-	createUserReceived(@Root() root: User): User {
-		return root;
 	}
 
 	@Mutation(() => User)

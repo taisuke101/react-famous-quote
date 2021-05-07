@@ -4,7 +4,6 @@ import express from 'express';
 import Redis from 'ioredis';
 import session from 'express-session';
 import connectRedis from 'connect-redis';
-import http from 'http';
 import {
 	ApolloError,
 	ApolloServer,
@@ -27,7 +26,6 @@ const main = async () => {
 	await createConnection().then(() => console.log('database connect!'));
 
 	const app = express();
-	const httpServer = http.createServer(app);
 
 	const RedisStore = connectRedis(session);
 	const redis = new Redis();
@@ -68,11 +66,6 @@ const main = async () => {
 		schema: await buildSchema({
 			resolvers: [HelloResolver, QuoteResolver, UserResolver, FavoriteResolver],
 		}),
-		subscriptions: {
-			path: '/subscriptions',
-			onConnect: () => console.log('subscription connected!'),
-			onDisconnect: () => console.log('subscription disconnected!'),
-		},
 		formatError: (err: GraphQLError) => {
 			if (err.originalError instanceof ApolloError) {
 				return err;
@@ -89,8 +82,7 @@ const main = async () => {
 						let key: any = Object.keys(current);
 						result[key] = current[key];
 						return result;
-					},
-					{}
+					}
 				);
 				throw new UserInputError('Errors', { formattedErrors });
 			}
@@ -110,9 +102,8 @@ const main = async () => {
 		app,
 		cors: false,
 	});
-	apolloServer.installSubscriptionHandlers(httpServer);
 
-	httpServer.listen(process.env.PORT!, () => {
+	app.listen(process.env.PORT!, () => {
 		console.log('server started on ' + process.env.APP_ADDRESS);
 	});
 };
