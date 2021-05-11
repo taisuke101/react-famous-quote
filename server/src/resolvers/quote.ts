@@ -1,4 +1,3 @@
-import { UserInputError } from 'apollo-server-errors';
 import {
 	Arg,
 	Ctx,
@@ -14,7 +13,6 @@ import { getConnection, Like as findLike } from 'typeorm';
 
 import { PaginatedQuotes, Quote } from '../entities/Quote';
 import { Like } from '../entities/Like';
-import { CreateQuoteInput, UpdateQuoteInput } from '../inputs/QuoteInput';
 import { isAuth } from '../middleware/isAuth';
 import { MyContext } from '../types';
 
@@ -166,35 +164,6 @@ export class QuoteResolver {
 				);
 			});
 		}
-		return true;
-	} //
-
-	@Mutation(() => Quote)
-	async createQuote(@Arg('data') data: CreateQuoteInput): Promise<Quote> {
-		return Quote.create({ ...data }).save();
-	}
-
-	@Mutation(() => Quote)
-	async updateQuote(
-		@Arg('id', () => Int!) id: number,
-		@Arg('data') data: UpdateQuoteInput
-	): Promise<Quote | undefined> {
-		const quote = await Quote.findOne(id);
-
-		if (!quote) throw new UserInputError('名言が見つかりません！');
-
-		if (typeof quote !== undefined) {
-			const updatedQuote = Object.assign(quote, data);
-
-			await updatedQuote.save();
-		}
-
-		return quote;
-	}
-
-	@Mutation(() => Boolean)
-	async deleteQuote(@Arg('id', () => Int!) id: number): Promise<boolean> {
-		await Quote.delete(id);
 		return true;
 	}
 }

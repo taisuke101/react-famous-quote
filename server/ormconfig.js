@@ -4,10 +4,17 @@ module.exports = {
 	port: process.env.DATABASE_PORT_DEVELOPMENT,
 	username: process.env.DATABASE_USERNAME_DEVELOPMENT,
 	password: process.env.DATABASE_PASSWORD_DEVELOPMENT,
-	database: process.env.DATABASE_NAME_DEVELOPMENT,
-	synchronize: false,
+	database:
+		process.env.NODE_ENV === 'test'
+			? process.env.DATABASE_NAME_TEST
+			: process.env.DATABASE_NAME_DEVELOPMENT,
 	logging: false,
-	entities: ['dist/entities/**/*.js'],
+	synchronize: process.env.NODE_ENV === 'test' ? true : false,
+	dropSchema: process.env.NODE_ENV === 'test' ? true : false,
+	entities:
+		process.env.NODE_ENV === 'test'
+			? ['src/entities/**/*.ts']
+			: ['dist/entities/**/*.js'],
 	migrations: ['dist/migration/**/*.js'],
 	subscribers: ['dist/subscriber/**/*.js'],
 	cli: {

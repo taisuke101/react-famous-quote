@@ -26,6 +26,7 @@ __decorate([
 __decorate([
     type_graphql_1.Field(),
     class_validator_1.IsNotEmpty({ message: 'Eメールは必須項目です！' }),
+    class_validator_1.IsEmail({}, { message: '無効なEメールの形式です！' }),
     AlreadyExist_1.IsEmailAlreadyExist({ message: '登録済みのEメールアドレスです！' }),
     __metadata("design:type", String)
 ], CreateUserInput.prototype, "email", void 0);

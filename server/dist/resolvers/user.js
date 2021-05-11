@@ -40,7 +40,7 @@ let UserResolver = class UserResolver {
         }
         return User_1.User.findOne(req.session.userId);
     }
-    createUser(publish, data, { req }) {
+    createUser(data, { req }) {
         return __awaiter(this, void 0, void 0, function* () {
             const { username, email, password } = data;
             const emailIsTaken = yield User_1.User.findOne({ email });
@@ -53,14 +53,9 @@ let UserResolver = class UserResolver {
                 email,
                 password,
             }).save();
-            const payload = user;
-            yield publish(payload);
             req.session.userId = user.id;
             return user;
         });
-    }
-    createUserReceived(root) {
-        return root;
     }
     login(usernameOrEmail, password, { req }) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -140,20 +135,12 @@ __decorate([
 ], UserResolver.prototype, "getMe", null);
 __decorate([
     type_graphql_1.Mutation(() => User_1.User),
-    __param(0, type_graphql_1.PubSub('CREATE_USER')),
-    __param(1, type_graphql_1.Arg('data')),
-    __param(2, type_graphql_1.Ctx()),
+    __param(0, type_graphql_1.Arg('data')),
+    __param(1, type_graphql_1.Ctx()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Function, UserInput_1.CreateUserInput, Object]),
+    __metadata("design:paramtypes", [UserInput_1.CreateUserInput, Object]),
     __metadata("design:returntype", Promise)
 ], UserResolver.prototype, "createUser", null);
-__decorate([
-    type_graphql_1.Subscription({ topics: 'CREATE_USER' }),
-    __param(0, type_graphql_1.Root()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [User_1.User]),
-    __metadata("design:returntype", User_1.User)
-], UserResolver.prototype, "createUserReceived", null);
 __decorate([
     type_graphql_1.Mutation(() => User_1.User),
     __param(0, type_graphql_1.Arg('usernameOrEmail')),

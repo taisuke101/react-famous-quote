@@ -18,7 +18,6 @@ const express_1 = __importDefault(require("express"));
 const ioredis_1 = __importDefault(require("ioredis"));
 const express_session_1 = __importDefault(require("express-session"));
 const connect_redis_1 = __importDefault(require("connect-redis"));
-const http_1 = __importDefault(require("http"));
 const apollo_server_express_1 = require("apollo-server-express");
 const type_graphql_1 = require("type-graphql");
 const typeorm_1 = require("typeorm");
@@ -32,7 +31,6 @@ const createFavoriteLoader_1 = require("./utils/createFavoriteLoader");
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
     yield typeorm_1.createConnection().then(() => console.log('database connect!'));
     const app = express_1.default();
-    const httpServer = http_1.default.createServer(app);
     const RedisStore = connect_redis_1.default(express_session_1.default);
     const redis = new ioredis_1.default();
     app.use(cors_1.default({
@@ -65,11 +63,6 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
         schema: yield type_graphql_1.buildSchema({
             resolvers: [hello_1.HelloResolver, quote_1.QuoteResolver, user_1.UserResolver, favorite_1.FavoriteResolver],
         }),
-        subscriptions: {
-            path: '/subscriptions',
-            onConnect: () => console.log('subscription connected!'),
-            onDisconnect: () => console.log('subscription disconnected!'),
-        },
         formatError: (err) => {
             var _a;
             if (err.originalError instanceof apollo_server_express_1.ApolloError) {
@@ -84,7 +77,7 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
                     let key = Object.keys(current);
                     result[key] = current[key];
                     return result;
-                }, {});
+                });
                 throw new apollo_server_express_1.UserInputError('Errors', { formattedErrors });
             }
             return err;
@@ -101,8 +94,7 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
         app,
         cors: false,
     });
-    apolloServer.installSubscriptionHandlers(httpServer);
-    httpServer.listen(process.env.PORT, () => {
+    app.listen(process.env.PORT, () => {
         console.log('server started on ' + process.env.APP_ADDRESS);
     });
 });
