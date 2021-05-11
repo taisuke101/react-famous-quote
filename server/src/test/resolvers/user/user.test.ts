@@ -1,7 +1,6 @@
-import { Connection } from 'typeorm';
+import { Connection, createConnection } from 'typeorm';
 import faker from 'faker';
 
-import { testConnection } from '../../testConnection';
 import { User } from '../../../entities/User';
 import { graphqlCall } from '../../graphqlCall';
 import {
@@ -15,7 +14,7 @@ import {
 let connection: Connection;
 
 beforeAll(async () => {
-	connection = await testConnection(true);
+	connection = await createConnection();
 });
 
 afterAll(async () => {
@@ -182,6 +181,7 @@ describe('logoutのテスト', () => {
 		});
 
 		expect(result).toBeTruthy();
+		await User.delete({ username: user.username });
 	});
 });
 

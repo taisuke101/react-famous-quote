@@ -45,6 +45,10 @@ export class FavoriteResolver {
 	): Promise<boolean> {
 		const { userId } = req.session;
 		const user = await User.findOne(userId);
+		if (!user)
+			throw new UserInputError('errors', {
+				formattedErrors: { userId: 'ユーザーが見つかりません！' },
+			});
 
 		const quote = await Quote.findOne(quoteId);
 
