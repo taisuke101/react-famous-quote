@@ -1,8 +1,12 @@
-import { Connection } from 'typeorm';
 import faker from 'faker';
+import {
+	runSeeder,
+	tearDownDatabase,
+	useRefreshDatabase,
+	useSeeding,
+} from 'typeorm-seeding';
 
 import { graphqlCall } from '../../graphqlCall';
-import { runSeeder, useRefreshDatabase, useSeeding } from 'typeorm-seeding';
 import { CreateQuotesSeed } from '../../seeds/quote.seed';
 import {
 	getQuotes,
@@ -12,11 +16,11 @@ import {
 	likeQuote,
 } from './quoteTestResolvers';
 import { createUserMutation } from '../user/userTestResolvers';
-
-let connection: Connection;
+import { createLikeLoader } from '../../../utils/createLikeLoader';
+import { createFavoriteLoader } from '../../../utils/createFavoriteLoader';
 
 beforeAll(async (done) => {
-	connection = await useRefreshDatabase();
+	await useRefreshDatabase();
 	await useSeeding();
 
 	await runSeeder(CreateQuotesSeed);
@@ -25,7 +29,7 @@ beforeAll(async (done) => {
 
 afterAll(async () => {
 	await useRefreshDatabase();
-	await connection.close();
+	await tearDownDatabase();
 });
 
 const user = {
@@ -43,22 +47,95 @@ describe('getQuotesのテスト', () => {
 				limit: 10,
 				cursor: null,
 			},
+			likeLoader: createLikeLoader(),
+			favoriteLoader: createFavoriteLoader(),
 		});
 
-		expect(result.data).toBeDefined();
+		expect(result.data?.getQuotes.hasMore).toBeTruthy();
+		expect(result.data?.getQuotes.quotes).toBeDefined();
+	});
+
+	test('OK: ページネーションが動作している', async () => {
+		const result = await graphqlCall({
+			source: getQuotes,
+			variableValues: {
+				limit: 10,
+				cursor: '10',
+			},
+			userId: 1,
+			likeLoader: createLikeLoader(),
+			favoriteLoader: createFavoriteLoader(),
+		});
+
+		expect(result.data?.getQuotes.hasMore).toBeFalsy();
+		expect(result.data?.getQuotes.quotes).toBeDefined();
+	});
+
+	test('NG: カーサーに無効な値を挿入', async () => {
+		const result = await graphqlCall({
+			source: getQuotes,
+			variableValues: {
+				limit: 10,
+				cursor: 10,
+			},
+			userId: 1,
+			likeLoader: createLikeLoader(),
+			favoriteLoader: createFavoriteLoader(),
+		});
+
+		expect(result.errors).toBeDefined();
 	});
 });
 
 describe('getQuoteのテスト', () => {
-	test('OK: 個別名言取得成功', async () => {
-		const result = await graphqlCall({
+	test('OK: 個別名言(author, country, job, category)取得成功', async () => {
+		const resultAuthor = await graphqlCall({
 			source: getQuote,
 			variableValues: {
 				author: 'テスト',
 			},
+			userId: 1,
+			likeLoader: createLikeLoader(),
+			favoriteLoader: createFavoriteLoader(),
 		});
 
-		expect(result.data?.getQuote).toBeDefined();
+		expect(resultAuthor.data?.getQuote).toBeDefined();
+
+		const resultCountry = await graphqlCall({
+			source: getQuote,
+			variableValues: {
+				country: 'テスト',
+			},
+			userId: 1,
+			likeLoader: createLikeLoader(),
+			favoriteLoader: createFavoriteLoader(),
+		});
+
+		expect(resultCountry).toBeDefined();
+
+		const resultJob = await graphqlCall({
+			source: getQuote,
+			variableValues: {
+				job: 'テスト',
+			},
+			userId: 1,
+			likeLoader: createLikeLoader(),
+			favoriteLoader: createFavoriteLoader(),
+		});
+
+		expect(resultJob).toBeDefined();
+
+		const resultCategory = await graphqlCall({
+			source: getQuote,
+			variableValues: {
+				category: 'テスト',
+			},
+			userId: 1,
+			likeLoader: createLikeLoader(),
+			favoriteLoader: createFavoriteLoader(),
+		});
+
+		expect(resultCategory.data?.getQuote).toBeDefined();
 	});
 });
 
@@ -66,6 +143,9 @@ describe('getToptenQuotesのテスト', () => {
 	test('OK: 人気TOP10の名言取得成功', async () => {
 		const result = await graphqlCall({
 			source: getToptenQuotes,
+			userId: 1,
+			likeLoader: createLikeLoader(),
+			favoriteLoader: createFavoriteLoader(),
 		});
 
 		expect(result.data?.getToptenQuotes).toBeDefined();
@@ -79,6 +159,9 @@ describe('searchQuoteのテスト', () => {
 			variableValues: {
 				searchArgs: 'テスト',
 			},
+			userId: 1,
+			likeLoader: createLikeLoader(),
+			favoriteLoader: createFavoriteLoader(),
 		});
 
 		expect(result.data?.searchQuote).toBeDefined();
@@ -90,6 +173,9 @@ describe('searchQuoteのテスト', () => {
 			variableValues: {
 				searchArgs: 'flkdjla',
 			},
+			userId: 1,
+			likeLoader: createLikeLoader(),
+			favoriteLoader: createFavoriteLoader(),
 		});
 
 		expect(result).toEqual({ data: { searchQuote: [] } });

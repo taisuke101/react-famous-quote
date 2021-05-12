@@ -43,11 +43,6 @@ let UserResolver = class UserResolver {
     createUser(data, { req }) {
         return __awaiter(this, void 0, void 0, function* () {
             const { username, email, password } = data;
-            const emailIsTaken = yield User_1.User.findOne({ email });
-            if (emailIsTaken)
-                throw new apollo_server_errors_1.UserInputError('errors', {
-                    formattedErrors: { email: '登録済みのEメールです！' },
-                });
             const user = yield User_1.User.create({
                 username,
                 email,

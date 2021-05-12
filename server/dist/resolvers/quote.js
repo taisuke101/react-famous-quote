@@ -22,12 +22,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.QuoteResolver = void 0;
-const apollo_server_errors_1 = require("apollo-server-errors");
 const type_graphql_1 = require("type-graphql");
 const typeorm_1 = require("typeorm");
 const Quote_1 = require("../entities/Quote");
 const Like_1 = require("../entities/Like");
-const QuoteInput_1 = require("../inputs/QuoteInput");
 const isAuth_1 = require("../middleware/isAuth");
 let QuoteResolver = class QuoteResolver {
     likeStatus(quote, { req, likeLoader }) {
@@ -141,29 +139,6 @@ let QuoteResolver = class QuoteResolver {
             return true;
         });
     }
-    createQuote(data) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return Quote_1.Quote.create(Object.assign({}, data)).save();
-        });
-    }
-    updateQuote(id, data) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const quote = yield Quote_1.Quote.findOne(id);
-            if (!quote)
-                throw new apollo_server_errors_1.UserInputError('名言が見つかりません！');
-            if (typeof quote !== undefined) {
-                const updatedQuote = Object.assign(quote, data);
-                yield updatedQuote.save();
-            }
-            return quote;
-        });
-    }
-    deleteQuote(id) {
-        return __awaiter(this, void 0, void 0, function* () {
-            yield Quote_1.Quote.delete(id);
-            return true;
-        });
-    }
 };
 __decorate([
     type_graphql_1.FieldResolver(() => type_graphql_1.Int, { nullable: true }),
@@ -222,28 +197,6 @@ __decorate([
     __metadata("design:paramtypes", [Number, Number, Object]),
     __metadata("design:returntype", Promise)
 ], QuoteResolver.prototype, "likeQuote", null);
-__decorate([
-    type_graphql_1.Mutation(() => Quote_1.Quote),
-    __param(0, type_graphql_1.Arg('data')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [QuoteInput_1.CreateQuoteInput]),
-    __metadata("design:returntype", Promise)
-], QuoteResolver.prototype, "createQuote", null);
-__decorate([
-    type_graphql_1.Mutation(() => Quote_1.Quote),
-    __param(0, type_graphql_1.Arg('id', () => type_graphql_1.Int)),
-    __param(1, type_graphql_1.Arg('data')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, QuoteInput_1.UpdateQuoteInput]),
-    __metadata("design:returntype", Promise)
-], QuoteResolver.prototype, "updateQuote", null);
-__decorate([
-    type_graphql_1.Mutation(() => Boolean),
-    __param(0, type_graphql_1.Arg('id', () => type_graphql_1.Int)),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
-    __metadata("design:returntype", Promise)
-], QuoteResolver.prototype, "deleteQuote", null);
 QuoteResolver = __decorate([
     type_graphql_1.Resolver(Quote_1.Quote)
 ], QuoteResolver);

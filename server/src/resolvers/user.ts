@@ -27,12 +27,6 @@ export class UserResolver {
 	): Promise<User> {
 		const { username, email, password } = data;
 
-		const emailIsTaken = await User.findOne({ email });
-		if (emailIsTaken)
-			throw new UserInputError('errors', {
-				formattedErrors: { email: '登録済みのEメールです！' },
-			});
-
 		const user = await User.create({
 			username,
 			email,
