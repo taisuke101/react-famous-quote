@@ -13,21 +13,22 @@ exports.ChangePasswordInput = exports.CreateUserInput = void 0;
 const class_validator_1 = require("class-validator");
 const type_graphql_1 = require("type-graphql");
 const Match_1 = require("../decorators/Match");
-const AlreadyExist_1 = require("../decorators/AlreadyExist");
+const IsUserAlreadyExist_1 = require("../decorators/IsUserAlreadyExist");
+const IsEmailALreadyExist_1 = require("../decorators/IsEmailALreadyExist");
 let CreateUserInput = class CreateUserInput {
 };
 __decorate([
     type_graphql_1.Field(),
     class_validator_1.IsNotEmpty({ message: 'ユーザー名は必須項目です！' }),
     class_validator_1.MaxLength(15, { message: '15文字以内に収めて下さい！' }),
-    AlreadyExist_1.IsUserAlreadyExist({ message: '登録済みのユーザーです！' }),
+    IsUserAlreadyExist_1.IsUserAlreadyExist({ message: '登録済みのユーザーです！' }),
     __metadata("design:type", String)
 ], CreateUserInput.prototype, "username", void 0);
 __decorate([
     type_graphql_1.Field(),
     class_validator_1.IsNotEmpty({ message: 'Eメールは必須項目です！' }),
     class_validator_1.IsEmail({}, { message: '無効なEメールの形式です！' }),
-    AlreadyExist_1.IsEmailAlreadyExist({ message: '登録済みのEメールアドレスです！' }),
+    IsEmailALreadyExist_1.IsEmailAlreadyExist({ message: '登録済みのEメールアドレスです！' }),
     __metadata("design:type", String)
 ], CreateUserInput.prototype, "email", void 0);
 __decorate([

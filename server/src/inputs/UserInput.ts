@@ -2,10 +2,8 @@ import { IsEmail, IsNotEmpty, MaxLength, MinLength } from 'class-validator';
 import { Field, InputType } from 'type-graphql';
 
 import { Match } from '../decorators/Match';
-import {
-	IsUserAlreadyExist,
-	IsEmailAlreadyExist,
-} from '../decorators/AlreadyExist';
+import { IsUserAlreadyExist } from '../decorators/IsUserAlreadyExist';
+import { IsEmailAlreadyExist } from '../decorators/IsEmailALreadyExist';
 
 @InputType()
 export class CreateUserInput {
