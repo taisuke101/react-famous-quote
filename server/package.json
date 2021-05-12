@@ -8,7 +8,7 @@
 		"dev": "nodemon dist/index.js",
 		"dev-ts": "nodemon --exec ts-node src/index.ts",
 		"db:setup": "ts-node ./src/test/setup.ts",
-		"test": "NODE_ENV=test jest"
+		"test": "NODE_ENV=test jest --runInBand --detectOpenHandles"
 	},
 	"devDependencies": {
 		"@types/connect-redis": "^0.0.16",
@@ -42,7 +42,7 @@
 		"graphql": "^15.5.0",
 		"ioredis": "^4.25.0",
 		"nodemailer": "^6.5.0",
-		"pg": "^8.5.1",
+		"pg": "^8.6.0",
 		"reflect-metadata": "^0.1.13",
 		"type-graphql": "^1.1.1",
 		"typeorm": "^0.2.32",
