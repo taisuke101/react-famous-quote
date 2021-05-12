@@ -1,5 +1,9 @@
-import { Connection } from 'typeorm';
-import { runSeeder, useRefreshDatabase, useSeeding } from 'typeorm-seeding';
+import {
+	runSeeder,
+	tearDownDatabase,
+	useRefreshDatabase,
+	useSeeding,
+} from 'typeorm-seeding';
 import faker from 'faker';
 
 import { CreateQuotesSeed } from '../../seeds/quote.seed';
@@ -11,10 +15,8 @@ import {
 	getFavorite,
 } from './favoriteTestResolvers';
 
-let connection: Connection;
-
 beforeAll(async (done) => {
-	connection = await useRefreshDatabase();
+	await useRefreshDatabase();
 	await useSeeding();
 
 	await runSeeder(CreateQuotesSeed);
@@ -24,7 +26,7 @@ beforeAll(async (done) => {
 
 afterAll(async () => {
 	await useRefreshDatabase();
-	await connection.close();
+	await tearDownDatabase();
 });
 
 const user = {

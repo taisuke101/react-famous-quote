@@ -47,6 +47,10 @@ let FavoriteResolver = class FavoriteResolver {
         return __awaiter(this, void 0, void 0, function* () {
             const { userId } = req.session;
             const user = yield User_1.User.findOne(userId);
+            if (!user)
+                throw new apollo_server_errors_1.UserInputError('errors', {
+                    formattedErrors: { userId: 'ユーザーが見つかりません！' },
+                });
             const quote = yield Quote_1.Quote.findOne(quoteId);
             if (quote) {
                 const favorite = yield Favorite_1.Favorite.findOne({

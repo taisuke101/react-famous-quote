@@ -44,3 +44,19 @@ export const forgotPassword = `
 		forgotPassword(email: $email)
 	}
 `;
+
+export const changePassword = `
+	mutation changePassword(
+		$data: ChangePasswordInput!
+		$token: String!
+	) {
+		changePassword(
+			data: $data,
+			token: $token
+		) {
+			id
+			username
+		}
+	}
+
+`;

@@ -1,5 +1,6 @@
-import { Connection, createConnection } from 'typeorm';
+import { tearDownDatabase, useRefreshDatabase } from 'typeorm-seeding';
 import faker from 'faker';
+import Redis from 'ioredis';
 
 import { User } from '../../../entities/User';
 import { graphqlCall } from '../../graphqlCall';
@@ -9,16 +10,16 @@ import {
 	login,
 	logout,
 	forgotPassword,
+	changePassword,
 } from './userTestResolvers';
 
-let connection: Connection;
-
 beforeAll(async () => {
-	connection = await createConnection();
+	await useRefreshDatabase();
 });
 
 afterAll(async () => {
-	await connection.close();
+	await useRefreshDatabase();
+	await tearDownDatabase();
 });
 
 const user = {
@@ -63,7 +64,7 @@ describe('getMeQueryのテスト', () => {
 });
 
 describe('createUserMutationのテスト', () => {
-	test('OK: createUserでユーザーの作成に成功', async () => {
+	test('OK: ユーザーの作成に成功', async () => {
 		const result = await graphqlCall({
 			source: createUserMutation,
 			variableValues: {
@@ -101,6 +102,54 @@ describe('createUserMutationのテスト', () => {
 		expect(result.data).toBeNull();
 	});
 
+	test('NG: すでに存在するユーザーを入力', async () => {
+		await graphqlCall({
+			source: createUserMutation,
+			variableValues: {
+				data: user,
+			},
+		});
+
+		const result = await graphqlCall({
+			source: createUserMutation,
+			variableValues: {
+				data: {
+					username: user.username,
+					email: 'test@gmail.com',
+					password: user.password,
+					confirmPassword: user.confirmPassword,
+				},
+			},
+		});
+
+		expect(result.errors).toBeDefined();
+		await User.delete({ username: user.username });
+	});
+
+	test('NG: すでに存在するメールアドレスを入力', async () => {
+		await graphqlCall({
+			source: createUserMutation,
+			variableValues: {
+				data: user,
+			},
+		});
+
+		const result = await graphqlCall({
+			source: createUserMutation,
+			variableValues: {
+				data: {
+					username: 'test',
+					email: user.email,
+					password: user.password,
+					confirmPassword: user.confirmPassword,
+				},
+			},
+		});
+
+		expect(result.errors).toBeDefined();
+		await User.delete({ email: user.email });
+	});
+
 	test('NG: パスワードと確認パスワードが一致せず', async () => {
 		const result = await graphqlCall({
 			source: createUserMutation,
@@ -118,7 +167,7 @@ describe('createUserMutationのテスト', () => {
 });
 
 describe('loginのテスト', () => {
-	test('OK: ログインに成功', async () => {
+	test('OK: ユーザー名でログインに成功', async () => {
 		const createUser = await User.create(user).save();
 
 		const result = await graphqlCall({
@@ -137,6 +186,29 @@ describe('loginのテスト', () => {
 				},
 			},
 		});
+		await User.delete({ username: user.username });
+	});
+
+	test('OK: メールアドレスでログインに成功', async () => {
+		const createUser = await User.create(user).save();
+
+		const result = await graphqlCall({
+			source: login,
+			variableValues: {
+				usernameOrEmail: user.email,
+				password: user.password,
+			},
+		});
+
+		expect(result).toMatchObject({
+			data: {
+				login: {
+					id: `${createUser.id}`,
+					username: user.username,
+				},
+			},
+		});
+		await User.delete({ username: user.username });
 	});
 
 	test('NG: ユーザーが存在せず', async () => {
@@ -151,6 +223,8 @@ describe('loginのテスト', () => {
 	});
 
 	test('NG: 登録情報と違うパスワードを入力', async () => {
+		await User.create(user).save();
+
 		const result = await graphqlCall({
 			source: login,
 			variableValues: {
@@ -187,6 +261,27 @@ describe('logoutのテスト', () => {
 
 describe('forgotPasswordのテスト', () => {
 	test('OK: パスワードリセットメールの送信に成功', async () => {
+		jest.setTimeout(20000);
+		const redis = new Redis();
+
+		await User.create(user).save();
+
+		const result = await graphqlCall({
+			source: forgotPassword,
+			variableValues: {
+				email: user.email,
+			},
+			redis,
+		});
+
+		expect(result).toBeTruthy();
+		redis.disconnect();
+		await User.delete({ username: user.username });
+	});
+
+	test('NG: ユーザーが登録されていない', async () => {
+		const redis = new Redis();
+
 		const result = await graphqlCall({
 			source: forgotPassword,
 			variableValues: {
@@ -195,12 +290,35 @@ describe('forgotPasswordのテスト', () => {
 		});
 
 		expect(result).toBeTruthy();
+		redis.disconnect();
 	});
 });
 
-//TODO changePasswordの実装
-// describe('changePasswordのテスト', () => {
-// 	test('OK: パスワードの変更に成功', async () => {
-// 		await User.create(user).save();
-// 	});
-// });
+describe('changePasswordのテスト', () => {
+	test('OK: パスワードの変更に成功', async () => {
+		jest.setTimeout(20000);
+		const redis = new Redis();
+		await User.create(user).save();
+
+		await graphqlCall({
+			source: forgotPassword,
+			variableValues: {
+				email: user.email,
+			},
+			redis,
+		});
+
+		const result = await graphqlCall({
+			source: changePassword,
+			variableValues: {
+				data: {
+					newPassword: '12345',
+				},
+				token: 'test',
+			},
+			redis,
+		});
+
+		expect(result).toBeDefined();
+	});
+});
