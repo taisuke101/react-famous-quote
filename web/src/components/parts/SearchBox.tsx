@@ -13,8 +13,7 @@ const SearchBox: VFC<{}> = ({}) => {
 
 	const { register, handleSubmit } = useForm<SearchBoxProps>();
 
-	//TODO 型付け
-	const onSubmit = (value: any) => {
+	const onSubmit = (value: string[]) => {
 		const objectValue: string[] = Object.values(value);
 		router.push({
 			pathname: '/search',
