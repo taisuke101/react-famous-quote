@@ -14,6 +14,8 @@ beforeAll(async (done) => {
 	done();
 });
 
+//TODO データローダーのテスト作成
+
 afterAll(async () => {
 	await useRefreshDatabase();
 	await tearDownDatabase();
