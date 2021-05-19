@@ -52,6 +52,7 @@ const LikeAndFavorite: VFC<LikeAndFavoriteProps> = ({ quote }) => {
 				{quote.likeStatus === 1 ? (
 					<button
 						className='flex focus:outline-none'
+						data-testid='いいね！を取り消す'
 						data-tip='いいね！を取り消す'
 						onClick={() => {
 							like({
@@ -71,6 +72,7 @@ const LikeAndFavorite: VFC<LikeAndFavoriteProps> = ({ quote }) => {
 				) : (
 					<button
 						className='flex focus:outline-none'
+						data-testid='いいね！する'
 						data-tip='いいね！する'
 						onClick={() => {
 							like({
@@ -93,6 +95,7 @@ const LikeAndFavorite: VFC<LikeAndFavoriteProps> = ({ quote }) => {
 				{quote.hasFavorite ? (
 					<button
 						className='flex focus:outline-none'
+						data-testid='ストックから外す'
 						data-tip='ストックから外す'
 						onClick={() =>
 							createFavorite({
@@ -109,6 +112,7 @@ const LikeAndFavorite: VFC<LikeAndFavoriteProps> = ({ quote }) => {
 				) : (
 					<button
 						className='flex focus:outline-none'
+						data-testid='名言をストックする'
 						data-tip='名言をストックする'
 						onClick={() =>
 							createFavorite({
