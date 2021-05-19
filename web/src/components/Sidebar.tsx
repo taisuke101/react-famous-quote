@@ -58,12 +58,14 @@ const Sidebar: VFC<SidebarProps> = ({}) => {
 					<FaChevronCircleLeft
 						onClick={() => setOpen(false)}
 						className='fixed text-4xl text-green-500 cursor-pointer left-48 top-2/4 hover:animate-bounce'
+						data-testid='sidebar-button-open'
 					/>
 				</div>
 			) : (
 				<FaChevronCircleRight
 					onClick={() => setOpen(true)}
 					className='fixed z-10 text-4xl text-green-500 cursor-pointer top-2/4 left-5 hover:animate-bounce'
+					data-testid='sidebar-button-close'
 				/>
 			)}
 		</>
