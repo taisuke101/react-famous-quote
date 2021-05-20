@@ -15,13 +15,11 @@ import {
 	getFavorite,
 } from './favoriteTestResolvers';
 
-beforeAll(async (done) => {
+beforeEach(async () => {
 	await useRefreshDatabase();
 	await useSeeding();
 
 	await runSeeder(CreateQuotesSeed);
-
-	done();
 });
 
 afterAll(async () => {
@@ -54,6 +52,33 @@ describe('createFavoriteのテスト', () => {
 		});
 
 		expect(result.data?.createFavorite).toBeTruthy();
+	});
+
+	test('OK: お気に入り=>お気に入り削除成功', async () => {
+		await graphqlCall({
+			source: createUserMutation,
+			variableValues: {
+				data: user,
+			},
+		});
+
+		await graphqlCall({
+			source: createFavorite,
+			variableValues: {
+				quoteId: 1,
+			},
+			userId: 1,
+		});
+
+		const result = await graphqlCall({
+			source: createFavorite,
+			variableValues: {
+				quoteId: 1,
+			},
+			userId: 1,
+		});
+
+		expect(result).toBeTruthy();
 	});
 
 	test('NG: ユーザーが見つからず', async () => {

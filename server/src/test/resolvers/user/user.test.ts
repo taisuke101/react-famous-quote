@@ -13,7 +13,7 @@ import {
 	changePassword,
 } from './userTestResolvers';
 
-beforeAll(async () => {
+beforeEach(async () => {
 	await useRefreshDatabase();
 });
 
@@ -46,8 +46,6 @@ describe('getMeQueryのテスト', () => {
 				},
 			},
 		});
-
-		await User.delete({ id: createUser.id });
 	});
 
 	test('NG: getMeクエリでユーザー情報を返さず', async () => {
@@ -83,8 +81,6 @@ describe('createUserMutationのテスト', () => {
 			where: { username: user.username },
 		});
 		expect(databaseUser).toBeDefined;
-
-		await User.delete({ username: user.username });
 	});
 
 	test('NG: Eメールではない形式を指定した', async () => {
@@ -123,7 +119,6 @@ describe('createUserMutationのテスト', () => {
 		});
 
 		expect(result.errors).toBeDefined();
-		await User.delete({ username: user.username });
 	});
 
 	test('NG: すでに存在するメールアドレスを入力', async () => {
@@ -147,7 +142,6 @@ describe('createUserMutationのテスト', () => {
 		});
 
 		expect(result.errors).toBeDefined();
-		await User.delete({ email: user.email });
 	});
 
 	test('NG: パスワードと確認パスワードが一致せず', async () => {
@@ -186,7 +180,6 @@ describe('loginのテスト', () => {
 				},
 			},
 		});
-		await User.delete({ username: user.username });
 	});
 
 	test('OK: メールアドレスでログインに成功', async () => {
@@ -208,7 +201,6 @@ describe('loginのテスト', () => {
 				},
 			},
 		});
-		await User.delete({ username: user.username });
 	});
 
 	test('NG: ユーザーが存在せず', async () => {
@@ -234,7 +226,6 @@ describe('loginのテスト', () => {
 		});
 
 		expect(result.data).toBeNull();
-		await User.delete({ username: user.username });
 	});
 });
 
@@ -255,7 +246,6 @@ describe('logoutのテスト', () => {
 		});
 
 		expect(result).toBeTruthy();
-		await User.delete({ username: user.username });
 	});
 });
 
@@ -276,7 +266,6 @@ describe('forgotPasswordのテスト', () => {
 
 		expect(result).toBeTruthy();
 		redis.disconnect();
-		await User.delete({ username: user.username });
 	});
 
 	test('NG: ユーザーが登録されていない', async () => {
@@ -320,5 +309,6 @@ describe('changePasswordのテスト', () => {
 		});
 
 		expect(result).toBeDefined();
+		redis.disconnect();
 	});
 });
