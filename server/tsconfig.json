@@ -3,8 +3,9 @@
 		"target": "es6",
 		"module": "commonjs",
 		"lib": ["dom", "es6", "es2017", "esnext.asynciterable"],
-		"typeRoots": ["./node_modules/@types", "src/modules"],
+		"typeRoots": ["node_modules/@types", "src/modules"],
 		"sourceMap": true,
+		"types": ["jest", "node"],
 		"outDir": "./dist",
 		"moduleResolution": "node",
 		"removeComments": true,
@@ -23,6 +24,6 @@
 		"resolveJsonModule": true,
 		"baseUrl": "."
 	},
-	"exclude": ["node_modules", "./src/test"],
+	"exclude": ["node_modules"],
 	"include": ["./src/**/*.tsx", "./src/**/*.ts", "constants.ts"]
 }

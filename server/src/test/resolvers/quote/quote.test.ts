@@ -18,13 +18,13 @@ import {
 import { createUserMutation } from '../user/userTestResolvers';
 import { createLikeLoader } from '../../../utils/createLikeLoader';
 import { createFavoriteLoader } from '../../../utils/createFavoriteLoader';
+import { User } from '../../../entities/User';
 
-beforeAll(async (done) => {
+beforeEach(async () => {
 	await useRefreshDatabase();
 	await useSeeding();
 
 	await runSeeder(CreateQuotesSeed);
-	done();
 });
 
 afterAll(async () => {
@@ -195,6 +195,30 @@ describe('likeQuoteのテスト', () => {
 			source: likeQuote,
 			variableValues: {
 				value: 1,
+				quoteId: 1,
+			},
+			userId: 1,
+		});
+
+		expect(result.data?.likeQuote).toBeTruthy();
+	});
+
+	test('OK: いいね=>いいねの取り消しに成功', async () => {
+		await User.create(user).save();
+
+		await graphqlCall({
+			source: likeQuote,
+			variableValues: {
+				value: 1,
+				quoteId: 1,
+			},
+			userId: 1,
+		});
+
+		const result = await graphqlCall({
+			source: likeQuote,
+			variableValues: {
+				value: -1,
 				quoteId: 1,
 			},
 			userId: 1,

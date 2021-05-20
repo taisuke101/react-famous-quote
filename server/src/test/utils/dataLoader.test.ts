@@ -6,12 +6,11 @@ import {
 } from 'typeorm-seeding';
 import { CreateQuotesSeed } from '../seeds/quote.seed';
 
-beforeAll(async (done) => {
+beforeEach(async () => {
 	await useRefreshDatabase();
 	await useSeeding();
 
 	await runSeeder(CreateQuotesSeed);
-	done();
 });
 
 //TODO データローダーのテスト作成
