@@ -18,7 +18,6 @@ beforeEach(async () => {
 });
 
 afterAll(async () => {
-	await useRefreshDatabase();
 	await tearDownDatabase();
 });
 
