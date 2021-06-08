@@ -7,6 +7,7 @@ import Loader from 'react-loader-spinner';
 import { useGetToptenQuotesQuery } from '../generated/graphql';
 
 import 'swiper/swiper-bundle.css';
+import Image from 'next/image';
 
 SwiperCore.use([Navigation, Pagination]);
 
@@ -15,7 +16,6 @@ const Home: VFC = () => {
 
 	return (
 		<>
-			<h1 className='mb-4 text-2xl text-center'>人気Top10の名言一覧</h1>
 			{!data && loading ? (
 				<div className='flex justify-center'>
 					<h1>Loading....</h1>
@@ -23,13 +23,23 @@ const Home: VFC = () => {
 				</div>
 			) : (
 				<>
+					<Image
+						src='/tree.webp'
+						alt='草原の画像'
+						layout={'responsive'}
+						width={500}
+						height={300}
+					/>
+					<h1 className='py-4 mb-6 text-3xl tracking-widest text-center bg-green-400'>
+						人気Top10の名言一覧
+					</h1>
 					<Swiper
 						spaceBetween={50}
 						slidesPerView={1}
 						navigation
 						pagination={{ clickable: true }}
 					>
-						{data.getToptenQuotes.map((quote) => (
+						{data?.getToptenQuotes.map((quote) => (
 							<SwiperSlide key={quote.id}>
 								<QuoteCard quote={quote} wiki={true} />
 							</SwiperSlide>

@@ -13,7 +13,7 @@ interface QuoteCardProps {
 
 const QuoteCard: VFC<QuoteCardProps> = ({ quote, wiki }) => {
 	return (
-		<div className='px-10 py-5 mx-20 mb-5 space-y-5 text-center bg-gray-100 shadow-md'>
+		<div className='px-4 mx-10 mb-5 space-y-5 text-center bg-gray-100 shadow-md py-7 lg:mx-20 lg:py-5 lg:px-10'>
 			<div className='font-serif text-xl font-bold tracking-widest break-words'>
 				{quote.text}
 			</div>

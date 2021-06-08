@@ -51,19 +51,23 @@ const Header: FC<HeaderProps> = ({}) => {
 				>
 					<section className='flex items-center space-x-1'>
 						{open ? <FaChevronCircleDown /> : <FaChevronCircleRight />}
-						<div className='cursor-pointer'>
+						<div className='cursor-pointer' data-testid='header-open'>
 							ユーザー名：{data.getMe.username}
 						</div>
 					</section>
 					{open ? (
 						<section className='absolute flex flex-col px-3 py-5 space-y-4 text-center bg-gray-200 w-52 right-5'>
 							<Link href={`/user/${data.getMe.username}`}>
-								<div className='transition duration-500 cursor-pointer hover:text-green-500'>
+								<div
+									className='transition duration-500 cursor-pointer hover:text-green-500'
+									data-testid='stock-button'
+								>
 									ストック一覧
 								</div>
 							</Link>
 							<div
 								className='transition duration-500 cursor-pointer hover:text-green-500'
+								data-testid='logout-button'
 								onClick={async () => {
 									await router.push('/');
 									await logout();
@@ -81,7 +85,7 @@ const Header: FC<HeaderProps> = ({}) => {
 	}
 
 	return (
-		<div className='fixed z-20 w-full px-6 py-6 bg-green-200'>
+		<div className='fixed z-10 w-full px-6 py-6 bg-green-200'>
 			<section className='flex justify-between'>
 				<section className='flex'>
 					<PageLink

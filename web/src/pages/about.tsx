@@ -1,5 +1,4 @@
 import { VFC } from 'react';
-import Image from 'next/image';
 
 import { FaSearch } from 'react-icons/fa';
 import { BsFillBookmarksFill, BsFillHeartFill } from 'react-icons/bs';
@@ -10,14 +9,6 @@ const About: VFC<AboutProps> = ({}) => {
 	return (
 		<div className='px-5 mb-10'>
 			<article className='w-full space-y-5'>
-				<Image
-					src='/tree.webp'
-					alt='草原の画像'
-					layout={'responsive'}
-					width={500}
-					height={300}
-					className='rounded-lg'
-				/>
 				<section>
 					<h1 className='text-4xl text-center'>このサイトについて</h1>
 					<div className='mt-5 text-xl text-center'>
