@@ -18,7 +18,7 @@ const Sidebar: VFC<SidebarProps> = ({}) => {
 	return (
 		<>
 			{open ? (
-				<div className='fixed z-10 w-1/5 h-screen pt-24 overflow-y-scroll bg-green-500'>
+				<div className='fixed z-20 h-screen pt-24 overflow-y-scroll bg-green-500 w-60 md:w-1/3 lg:w-80'>
 					<SearchBox />
 					<CollapsibleMenu trigger='人物から探す'>
 						{columnData.map((column) => (
@@ -57,14 +57,14 @@ const Sidebar: VFC<SidebarProps> = ({}) => {
 					</CollapsibleMenu>
 					<FaChevronCircleLeft
 						onClick={() => setOpen(false)}
-						className='fixed text-4xl text-green-500 cursor-pointer left-48 top-2/4 hover:animate-bounce'
+						className='fixed text-4xl text-black cursor-pointer left-64 sm:left-80 lg:left-96 top-2/4 hover:animate-bounce'
 						data-testid='sidebar-button-open'
 					/>
 				</div>
 			) : (
 				<FaChevronCircleRight
 					onClick={() => setOpen(true)}
-					className='fixed z-10 text-4xl text-green-500 cursor-pointer top-2/4 left-5 hover:animate-bounce'
+					className='fixed z-10 text-4xl text-black cursor-pointer top-2/4 left-5 hover:animate-bounce'
 					data-testid='sidebar-button-close'
 				/>
 			)}
