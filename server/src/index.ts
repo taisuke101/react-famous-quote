@@ -1,6 +1,13 @@
 import 'reflect-metadata';
 import cors from 'cors';
 import express from 'express';
+import {
+	getComplexity,
+	simpleEstimator,
+	fieldExtensionsEstimator,
+} from 'graphql-query-complexity';
+import helmet from 'helmet';
+import ratelimit from 'express-rate-limit';
 import Redis from 'ioredis';
 import session from 'express-session';
 import connectRedis from 'connect-redis';
@@ -21,6 +28,7 @@ import { COOKIE_NAME, __prod__ } from './constants';
 import { MyContext } from './types';
 import { createLikeLoader } from './utils/createLikeLoader';
 import { createFavoriteLoader } from './utils/createFavoriteLoader';
+import { httpsRedirect, wwwRedirect } from './utils/httpsRedirect';
 
 const main = async () => {
 	await createConnection().then(() => console.log('database connect!'));
@@ -29,6 +37,13 @@ const main = async () => {
 
 	const RedisStore = connectRedis(session);
 	const redis = new Redis();
+
+	app.use(
+		helmet({
+			contentSecurityPolicy:
+				process.env.NODE_ENV === 'production' ? undefined : false,
+		})
+	);
 
 	app.use(
 		cors({
@@ -57,15 +72,31 @@ const main = async () => {
 		})
 	);
 
+	if (process.env.NODE_ENV === 'production') {
+		app.use('/*', httpsRedirect());
+
+		app.get('/*', wwwRedirect());
+
+		app.use(
+			ratelimit({
+				windowMs: 15 * 60 * 1000,
+				max: 100,
+			})
+		);
+	}
+
+	const schema = await buildSchema({
+		resolvers: [HelloResolver, QuoteResolver, UserResolver, FavoriteResolver],
+	});
+
 	const apolloServer = new ApolloServer({
 		playground: {
 			settings: {
 				'request.credentials': 'include',
 			},
 		},
-		schema: await buildSchema({
-			resolvers: [HelloResolver, QuoteResolver, UserResolver, FavoriteResolver],
-		}),
+		schema,
+		introspection: process.env.NODE_ENV !== 'production',
 		formatError: (err: GraphQLError) => {
 			if (err.originalError instanceof ApolloError) {
 				return err;
@@ -86,7 +117,6 @@ const main = async () => {
 				);
 				throw new UserInputError('Errors', { formattedErrors });
 			}
-
 			return err;
 		},
 		context: ({ req, res }): MyContext => ({
@@ -96,8 +126,32 @@ const main = async () => {
 			likeLoader: createLikeLoader(),
 			favoriteLoader: createFavoriteLoader(),
 		}),
+		plugins: [
+			{
+				requestDidStart: () => ({
+					didResolveOperation({ request, document }) {
+						const complexity = getComplexity({
+							schema,
+							operationName: request.operationName,
+							query: document,
+							variables: request.variables,
+							estimators: [
+								fieldExtensionsEstimator(),
+								simpleEstimator({ defaultComplexity: 1 }),
+							],
+						});
+						if (complexity > 13) {
+							throw new Error(
+								`クエリが複雑すぎます! ${complexity} は設定された値を超えています！`
+							);
+						}
+						console.log('Used query complexity points:', complexity);
+					},
+				}),
+			},
+		],
 	});
-	//
+
 	apolloServer.applyMiddleware({
 		app,
 		cors: false,

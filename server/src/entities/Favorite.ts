@@ -1,4 +1,4 @@
-import { Field, ObjectType } from 'type-graphql';
+import { Field, Int, ObjectType } from 'type-graphql';
 import {
 	BaseEntity,
 	Entity,
@@ -15,11 +15,11 @@ import { User } from './User';
 @Entity('favorits')
 @Unique(['userId', 'quoteId'])
 export class Favorite extends BaseEntity {
-	@Field()
+	@Field(() => Int)
 	@PrimaryColumn()
 	userId: number;
 
-	@Field()
+	@Field(() => Int)
 	@PrimaryColumn()
 	quoteId: number;
 

@@ -41,7 +41,7 @@ __decorate([
     __metadata("design:type", String)
 ], Quote.prototype, "text", void 0);
 __decorate([
-    type_graphql_1.Field(),
+    type_graphql_1.Field(() => type_graphql_1.Int),
     typeorm_1.Column({ default: 0 }),
     __metadata("design:type", Number)
 ], Quote.prototype, "likeCount", void 0);

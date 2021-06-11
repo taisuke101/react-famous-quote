@@ -1,4 +1,4 @@
-import { Field, ObjectType } from 'type-graphql';
+import { Field, Int, ObjectType } from 'type-graphql';
 import { Column, Entity, OneToMany } from 'typeorm';
 
 import Base from './Base';
@@ -24,7 +24,7 @@ export class Quote extends Base {
 	@Column()
 	text: string;
 
-	@Field()
+	@Field(() => Int)
 	@Column({ default: 0 })
 	likeCount: number;
 
