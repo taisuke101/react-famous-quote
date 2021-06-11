@@ -27,7 +27,7 @@ const Quotes: FC<QuoteProps> = ({}) => {
 	}
 
 	return (
-		<div className='pb-24 text-center'>
+		<div className='pb-24 text-center mt-9'>
 			{!data && loading ? (
 				<div className='flex justify-center'>
 					<h1>Loading....</h1>
@@ -35,6 +35,7 @@ const Quotes: FC<QuoteProps> = ({}) => {
 				</div>
 			) : (
 				<>
+					<h1 className='mb-8 text-3xl text-center'>名言一覧</h1>
 					{data?.getQuotes.quotes.map((quote) => (
 						<div key={quote.id}>
 							<QuoteCard quote={quote} wiki={true} />

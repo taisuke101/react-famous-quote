@@ -45,7 +45,7 @@ const LoginForm: FC<{}> = ({}) => {
 	};
 
 	return (
-		<>
+		<div className='py-5 mx-4 bg-gray-200 rounded-md shadow-md md:mx-20 lg:mx-32 mt-14'>
 			{loading ? (
 				<div className='flex justify-center'>
 					<h1>Loading....</h1>
@@ -53,16 +53,17 @@ const LoginForm: FC<{}> = ({}) => {
 				</div>
 			) : (
 				<>
+					<h1 className='mb-8 text-3xl text-center'>ユーザーログイン</h1>
 					<form
 						onSubmit={handleSubmit(onSubmit)}
-						className='flex flex-col mx-40 text-center'
+						className='flex flex-col mx-10 space-y-5 text-center md:mx-20'
 					>
 						{router.query.errorMessage && (
 							<h1 className='mb-5 text-lg text-red-500'>
 								{router.query.errorMessage}
 							</h1>
 						)}
-						<p className='mt-2 text-xl'>ユーザー名</p>
+						<p className='mt-2 text-xl text-gray-800 md:text-2xl'>ユーザー名</p>
 						{error.usernameOrEmail && (
 							<p className='text-red-600'>*{error.usernameOrEmail}</p>
 						)}
@@ -72,7 +73,7 @@ const LoginForm: FC<{}> = ({}) => {
 							className='p-2 mt-2 border-b-2 border-green-400'
 							{...register('usernameOrEmail')}
 						/>
-						<p className='mt-2 text-xl'>パスワード</p>
+						<p className='mt-2 text-xl text-gray-800 md:text-2xl'>パスワード</p>
 						{error.password && (
 							<p className='text-red-600'>*{error.password}</p>
 						)}
@@ -97,7 +98,7 @@ const LoginForm: FC<{}> = ({}) => {
 					</form>
 				</>
 			)}
-		</>
+		</div>
 	);
 };
 export default LoginForm;

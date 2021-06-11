@@ -28,7 +28,7 @@ const Country: VFC<CountryProps> = ({}) => {
 				</div>
 			) : (
 				<>
-					<h1 className='mb-4 text-4xl text-center'>
+					<h1 className='mb-4 text-3xl text-center md:text-4xl lg:text-5xl mt-9'>
 						{`${country}出身者の名言`}...
 						<span className='text-red-500'>{data.getQuote.length}</span>件
 					</h1>

@@ -26,8 +26,8 @@ const Author: VFC<AuthorProps> = ({}) => {
 					<Loader type='TailSpin' color='#00fa9a' height={200} width={200} />
 				</div>
 			) : (
-				<div className='text-center'>
-					<h1 className='mb-4 text-4xl'>
+				<div className='text-center mt-9'>
+					<h1 className='mb-4 text-3xl md:text-4xl lg:text-5xl'>
 						{`${author}の名言`}...
 						<span className='text-red-500'>{data.getQuote.length}</span>件
 					</h1>

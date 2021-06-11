@@ -6,7 +6,13 @@ import Link from 'next/link';
 import PageLink from './parts/PageLink';
 import { useGetMeQuery, useLogoutMutation } from '../generated/graphql';
 
-import { FaChevronCircleDown, FaChevronCircleRight } from 'react-icons/fa';
+import {
+	FaChevronCircleDown,
+	FaChevronCircleRight,
+	FaTimes,
+} from 'react-icons/fa';
+import { GiHamburgerMenu } from 'react-icons/gi';
+import Collapsible from 'react-collapsible';
 
 interface HeaderProps {}
 
@@ -14,11 +20,12 @@ const Header: FC<HeaderProps> = ({}) => {
 	const router = useRouter();
 	const apolloClient = useApolloClient();
 	const [open, setOpen] = useState(false);
+	const [ref, setRef] = useState(false);
 	const menuRef = useRef(null);
 
 	useEffect(() => {
-		open && menuRef.current.focus();
-	}, [open]);
+		ref && menuRef.current.focus();
+	}, [ref]);
 
 	const { data } = useGetMeQuery();
 
@@ -43,7 +50,10 @@ const Header: FC<HeaderProps> = ({}) => {
 				<PageLink href='/about' text='このサイトについて' />
 				<PageLink href='/quotes' text='名言一覧' />
 				<div
-					onClick={() => setOpen(!open)}
+					onClick={() => {
+						setOpen(!open);
+						setRef(true);
+					}}
 					ref={menuRef}
 					onBlur={() => setOpen(false)}
 					tabIndex={0}
@@ -91,10 +101,97 @@ const Header: FC<HeaderProps> = ({}) => {
 					<PageLink
 						href='/'
 						text='名言ポータル'
-						textClass='text-2xl tracking-widest'
+						textClass='text-2xl tracking-wider lg:tracking-widest'
 					/>
 				</section>
-				<section className='space-x-4 text-lg'>{body}</section>
+				<section className='hidden space-x-4 text-lg md:flex'>{body}</section>
+				{!open ? (
+					<GiHamburgerMenu
+						onClick={() => setOpen(true)}
+						className='text-4xl md:hidden'
+					/>
+				) : (
+					<section className='fixed top-0 left-0 z-40 w-full h-full bg-gray-100 backdrop-blur-10 bg-opacity-10 bg-clip-padding md:hidden'>
+						<button
+							type='button'
+							className='absolute text-5xl text-red-700 top-4 right-6'
+							onClick={() => setOpen(false)}
+						>
+							<FaTimes />
+						</button>
+						<section>
+							{data.getMe ? (
+								<div className='flex flex-col items-center text-xl pt-60 space-y-9'>
+									<PageLink
+										href='/about'
+										text='このサイトについて'
+										textClass='transition duration-500 cursor-pointer hover:text-green-600'
+										onClick={() => setOpen(false)}
+									/>
+									<PageLink
+										href='/quotes'
+										text='名言一覧'
+										textClass='transition duration-500 cursor-pointer hover:text-green-600'
+										onClick={() => setOpen(false)}
+									/>
+									<Collapsible
+										className='transition duration-500 cursor-pointer hover:text-green-600'
+										trigger={`ユーザー名：${data.getMe.username}`}
+									>
+										<div className='flex flex-col text-center text-blue-800'>
+											<Link href={`/user/${data.getMe.username}`}>
+												<div
+													className='transition duration-500 cursor-pointer hover:text-green-600'
+													data-testid='stock-button'
+													onClick={() => setOpen(false)}
+												>
+													・ストック一覧
+												</div>
+											</Link>
+											<div
+												className='transition duration-500 cursor-pointer hover:text-green-600'
+												data-testid='logout-button'
+												onClick={async () => {
+													await router.push('/');
+													await logout();
+													setOpen(false);
+												}}
+											>
+												・ログアウト
+											</div>
+										</div>
+									</Collapsible>
+								</div>
+							) : (
+								<div
+									className='flex flex-col items-center text-xl pt-60 space-y-9'
+									onClick={() => setOpen(false)}
+								>
+									<PageLink
+										href='/about'
+										text='このサイトについて'
+										textClass='transition duration-500 cursor-pointer hover:text-green-600'
+									/>
+									<PageLink
+										href='/quotes'
+										text='名言一覧'
+										textClass='transition duration-500 cursor-pointer hover:text-green-600'
+									/>
+									<PageLink
+										href='/login'
+										text='ログイン'
+										textClass='transition duration-500 cursor-pointer hover:text-green-600'
+									/>
+									<PageLink
+										href='/register'
+										text='新規登録'
+										textClass='transition duration-500 cursor-pointer hover:text-green-600'
+									/>
+								</div>
+							)}
+						</section>
+					</section>
+				)}
 			</section>
 		</div>
 	);

@@ -25,28 +25,30 @@ const ForgotPassword: VFC<ForgotPasswordProps> = ({}) => {
 	};
 
 	return (
-		<>
+		<div className='py-5 mx-4 bg-gray-200 rounded-md shadow-md mt-14'>
 			{loading ? (
 				<div className='flex justify-center'>
 					<h1>sending....</h1>
 					<Loader type='TailSpin' color='#00fa9a' height={200} width={200} />
 				</div>
 			) : complete ? (
-				<>
-					<div>メールを送信しました！</div>
+				<div className='flex flex-col space-y-5 text-center'>
+					<span>メールを送信しました！</span>
 					<span className='text-red-500'>
 						*メールが届かない場合は誤ったアドレスを入力しているか、メールアドレスが登録されていない可能性があります。
 					</span>
 					<Link href='/'>
-						<a>ホームに戻る</a>
+						<a className='transition duration-500 hover:text-green-500'>
+							ホームに戻る
+						</a>
 					</Link>
-				</>
+				</div>
 			) : (
 				<form
 					onSubmit={handleSubmit(onSubmit)}
-					className='flex flex-col mx-40 text-center'
+					className='flex flex-col mx-10 space-y-5 text-center md:mx-40'
 				>
-					<p className='mt-2 text-xl'>パスワードのリセット</p>
+					<p className='mt-2 text-xl text-gray-800'>パスワードのリセット</p>
 					<span>
 						パスワードリセットのメールを送るため、以下の欄に登録したメールアドレスを入力して下さい。
 					</span>
@@ -59,7 +61,7 @@ const ForgotPassword: VFC<ForgotPasswordProps> = ({}) => {
 					<SubmitButton>登録</SubmitButton>
 				</form>
 			)}
-		</>
+		</div>
 	);
 };
 export default ForgotPassword;
