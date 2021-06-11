@@ -41,29 +41,35 @@ const Token: VFC<TokenProps> = ({}) => {
 	};
 
 	return (
-		<div className='pt-24'>
-			<>
+		<>
+			<div className='py-5 mx-4 bg-gray-200 rounded-md shadow-md md:mx-20 lg:mx-32 mt-14'>
 				{loading ? (
 					<div className='flex justify-center'>
 						<h1>Loading....</h1>
 						<Loader type='TailSpin' color='#00fa9a' height={200} width={200} />
 					</div>
 				) : complete ? (
-					<>
-						<p>パスワードの再設定が完了しました！</p>
-						<Link href='/login'>
-							<a>ログインする</a>
-						</Link>
-						<Link href='/'>
-							<a>ホームに戻る</a>
-						</Link>
-					</>
+					<div className='text-center'>
+						<p className='mb-8 text-xl'>パスワードの再設定が完了しました！</p>
+						<section className='space-x-3'>
+							<Link href='/login'>
+								<a className='transition duration-500 cursor-pointer hover:text-green-500'>
+									ログインする
+								</a>
+							</Link>
+							<Link href='/'>
+								<a className='transition duration-500 cursor-pointer hover:text-green-500'>
+									ホームに戻る
+								</a>
+							</Link>
+						</section>
+					</div>
 				) : (
 					<form
 						onSubmit={handleSubmit(onSubmit)}
-						className='flex flex-col mx-40 text-center'
+						className='flex flex-col mx-5 space-y-5 text-center'
 					>
-						<p className='mt-2 text-xl'>新しいパスワード</p>
+						<p className='mt-2 text-xl'>新しいパスワードに変更</p>
 						{error.newPassword && (
 							<p className='text-red-600'>{error.newPassword}</p>
 						)}
@@ -75,11 +81,11 @@ const Token: VFC<TokenProps> = ({}) => {
 							className='p-2 mt-2 border-b-2 border-green-400'
 							{...register('newPassword')}
 						/>
-						<SubmitButton>登録</SubmitButton>
+						<SubmitButton>変更</SubmitButton>
 					</form>
 				)}
-			</>
-		</div>
+			</div>
+		</>
 	);
 };
 export default Token;

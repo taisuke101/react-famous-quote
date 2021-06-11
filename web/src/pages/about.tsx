@@ -7,7 +7,7 @@ interface AboutProps {}
 
 const About: VFC<AboutProps> = ({}) => {
 	return (
-		<div className='px-5 mb-10'>
+		<div className='px-5 my-10'>
 			<article className='w-full space-y-5'>
 				<section>
 					<h1 className='text-4xl text-center'>このサイトについて</h1>
