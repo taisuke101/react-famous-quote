@@ -17,12 +17,12 @@ const User_1 = require("./User");
 let Favorite = class Favorite extends typeorm_1.BaseEntity {
 };
 __decorate([
-    type_graphql_1.Field(),
+    type_graphql_1.Field(() => type_graphql_1.Int),
     typeorm_1.PrimaryColumn(),
     __metadata("design:type", Number)
 ], Favorite.prototype, "userId", void 0);
 __decorate([
-    type_graphql_1.Field(),
+    type_graphql_1.Field(() => type_graphql_1.Int),
     typeorm_1.PrimaryColumn(),
     __metadata("design:type", Number)
 ], Favorite.prototype, "quoteId", void 0);
