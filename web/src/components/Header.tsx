@@ -38,7 +38,6 @@ const Header: FC<HeaderProps> = ({}) => {
 	if (!data?.getMe) {
 		body = (
 			<>
-				<PageLink href='/about' text='このサイトについて' />
 				<PageLink href='/quotes' text='名言一覧' />
 				<PageLink href='/login' text='ログイン' />
 				<PageLink href='/register' text='新規登録' />
@@ -47,7 +46,6 @@ const Header: FC<HeaderProps> = ({}) => {
 	} else {
 		body = (
 			<div className='flex space-x-4'>
-				<PageLink href='/about' text='このサイトについて' />
 				<PageLink href='/quotes' text='名言一覧' />
 				<div
 					onClick={() => {
@@ -123,12 +121,6 @@ const Header: FC<HeaderProps> = ({}) => {
 							{data.getMe ? (
 								<div className='flex flex-col items-center text-xl pt-60 space-y-9'>
 									<PageLink
-										href='/about'
-										text='このサイトについて'
-										textClass='transition duration-500 cursor-pointer hover:text-green-600'
-										onClick={() => setOpen(false)}
-									/>
-									<PageLink
 										href='/quotes'
 										text='名言一覧'
 										textClass='transition duration-500 cursor-pointer hover:text-green-600'
@@ -167,11 +159,6 @@ const Header: FC<HeaderProps> = ({}) => {
 									className='flex flex-col items-center text-xl pt-60 space-y-9'
 									onClick={() => setOpen(false)}
 								>
-									<PageLink
-										href='/about'
-										text='このサイトについて'
-										textClass='transition duration-500 cursor-pointer hover:text-green-600'
-									/>
 									<PageLink
 										href='/quotes'
 										text='名言一覧'

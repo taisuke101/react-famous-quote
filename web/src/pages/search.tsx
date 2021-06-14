@@ -19,18 +19,17 @@ const Search: VFC<SearchProps> = ({}) => {
 		<>
 			{!data && loading ? (
 				<div className='flex justify-center'>
-					<h1>Loading....</h1>
 					<Loader type='TailSpin' color='#00fa9a' height={200} width={200} />
 				</div>
 			) : (
-				<div className='text-center'>
-					<section className='mb-4 text-xl'>
+				<div className='text-center mt-9'>
+					<section className='mb-4 text-2xl'>
 						キーワード
 						<span className='text-2xl font-bold'>
 							「”{router.query.searchArgs}”」
 						</span>
 						での検索結果
-						<span className='text-2xl text-red-500'>
+						<span className='text-3xl text-red-500'>
 							{data.searchQuote.length}
 						</span>
 						件
