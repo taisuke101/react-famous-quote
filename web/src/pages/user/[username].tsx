@@ -15,13 +15,12 @@ const Username: VFC<UsernameProps> = ({}) => {
 	const { data, loading } = useGetFavoritsQuery();
 
 	return (
-		<>
+		<div className='mb-56'>
 			<h1 className='mt-10 mb-5 text-2xl text-center'>
 				{username}のストック一覧
 			</h1>
 			{data && loading ? (
 				<div className='flex justify-center'>
-					<h1>Loading....</h1>
 					<Loader type='TailSpin' color='#00fa9a' height={200} width={200} />
 				</div>
 			) : (
@@ -32,7 +31,7 @@ const Username: VFC<UsernameProps> = ({}) => {
 					})}
 				</>
 			)}
-		</>
+		</div>
 	);
 };
 

@@ -4,6 +4,7 @@ import { AppProps } from 'next/dist/next-server/lib/router/router';
 import Header from '../components/Header';
 import { cache } from '../utils/cache';
 import Sidebar from '../components/Sidebar';
+import Footer from '../components/Footer';
 
 import '../styles/globals.css';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
@@ -22,6 +23,7 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
 			<div className='pt-20 bg-white'>
 				<Component {...pageProps} />
 			</div>
+			<Footer />
 		</ApolloProvider>
 	);
 }

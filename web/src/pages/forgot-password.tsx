@@ -25,7 +25,7 @@ const ForgotPassword: VFC<ForgotPasswordProps> = ({}) => {
 	};
 
 	return (
-		<div className='py-5 mx-4 bg-gray-200 rounded-md shadow-md mt-14'>
+		<div className='py-5 mx-4 bg-gray-200 rounded-md shadow-md mb-72 mt-14'>
 			{loading ? (
 				<div className='flex justify-center'>
 					<h1>sending....</h1>

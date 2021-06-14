@@ -20,7 +20,6 @@ const Category: VFC<CategoryProps> = ({}) => {
 		<>
 			{!data && loading ? (
 				<div className='flex justify-center'>
-					<h1>Loading....</h1>
 					<Loader type='TailSpin' color='#00fa9a' height={200} width={200} />
 				</div>
 			) : (
