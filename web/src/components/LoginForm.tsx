@@ -45,10 +45,9 @@ const LoginForm: FC<{}> = ({}) => {
 	};
 
 	return (
-		<div className='py-5 mx-4 bg-gray-200 rounded-md shadow-md md:mx-20 lg:mx-32 mt-14'>
+		<div className='py-5 mx-4 mb-16 bg-gray-200 rounded-md shadow-md md:mx-20 lg:mx-32 mt-14'>
 			{loading ? (
 				<div className='flex justify-center'>
-					<h1>Loading....</h1>
 					<Loader type='TailSpin' color='#00fa9a' height={200} width={200} />
 				</div>
 			) : (
