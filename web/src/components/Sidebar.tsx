@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { useEffect, useRef, useState, VFC } from 'react';
+import { useState, VFC } from 'react';
 import Collapsible from 'react-collapsible';
 
 import { categoryData } from '../data/categoryData';
@@ -14,28 +14,21 @@ interface SidebarProps {}
 
 const Sidebar: VFC<SidebarProps> = ({}) => {
 	const [open, setOpen] = useState(false);
-	const menuRef = useRef(null);
-
-	useEffect(() => {
-		open && menuRef.current.focus();
-	}, [open]);
 
 	return (
 		<>
 			{open ? (
-				<div
-					className='fixed z-20 h-screen pt-24 overflow-y-scroll bg-green-500 w-60 md:w-1/3 lg:w-80'
-					ref={menuRef}
-					onBlur={() => setOpen(false)}
-					tabIndex={0}
-				>
+				<div className='fixed z-20 h-screen pt-24 overflow-y-scroll bg-green-500 w-60 md:w-1/3 lg:w-80'>
 					<SearchBox />
 					<CollapsibleMenu trigger='人物から探す'>
 						{columnData.map((column) => (
-							<Collapsible ref={menuRef} trigger={`・${column.column}`}>
+							<Collapsible trigger={`・${column.column}`}>
 								{column.name.map((name) => (
 									<Link href={`/quote/author/${name.name}`} key={name.id}>
-										<p className='pt-1 mb-1 text-sm font-semibold transition duration-500 transform cursor-pointer hover:text-green-500 lg:text-base'>
+										<p
+											className='pt-1 mb-1 text-sm font-semibold transition duration-500 transform cursor-pointer hover:text-green-500 lg:text-base'
+											onClick={() => setOpen(false)}
+										>
 											{name.name}
 										</p>
 									</Link>
@@ -48,7 +41,10 @@ const Sidebar: VFC<SidebarProps> = ({}) => {
 							<Collapsible key={region.id} trigger={`・${region.region}`}>
 								{region.name.map((name) => (
 									<Link href={`/quote/country/${name.name}`} key={name.id}>
-										<p className='pt-1 mb-1 text-sm font-semibold transition duration-500 transform cursor-pointer lg:text-base hover:text-green-500'>
+										<p
+											className='pt-1 mb-1 text-sm font-semibold transition duration-500 transform cursor-pointer lg:text-base hover:text-green-500'
+											onClick={() => setOpen(false)}
+										>
 											{name.name}
 										</p>
 									</Link>
@@ -59,7 +55,10 @@ const Sidebar: VFC<SidebarProps> = ({}) => {
 					<CollapsibleMenu trigger='カテゴリーで探す'>
 						{categoryData.map((category) => (
 							<Link href={`/quote/category/${category.name}`} key={category.id}>
-								<p className='pt-1 mb-1 text-sm transition duration-500 transform cursor-pointer lg:text-base hover:text-green-500'>
+								<p
+									className='pt-1 mb-1 text-sm transition duration-500 transform cursor-pointer lg:text-base hover:text-green-500'
+									onClick={() => setOpen(false)}
+								>
 									{category.name}
 								</p>
 							</Link>

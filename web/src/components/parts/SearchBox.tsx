@@ -5,10 +5,10 @@ import { useForm } from 'react-hook-form';
 import { FaSearch } from 'react-icons/fa';
 
 interface SearchBoxProps {
-	searchArgs: string;
+	searchArgs?: string;
 }
 
-const SearchBox: VFC<{}> = ({}) => {
+const SearchBox: VFC<SearchBoxProps> = ({}) => {
 	const router = useRouter();
 
 	const { register, handleSubmit } = useForm<SearchBoxProps>();
