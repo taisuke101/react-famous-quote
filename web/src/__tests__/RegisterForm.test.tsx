@@ -2,7 +2,7 @@ import React from 'react';
 import { cleanup, render, waitFor } from '@testing-library/react';
 import user from '@testing-library/user-event';
 import { createMockClient } from 'mock-apollo-client';
-import { ApolloProvider, InMemoryCache } from '@apollo/client';
+import { ApolloProvider } from '@apollo/client';
 
 import RegisterForm from '../components/RegisterForm';
 import { CreateUserDocument } from '../generated/graphql';

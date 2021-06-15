@@ -39,12 +39,22 @@ const RegisterForm: FC<{}> = ({}) => {
 				</div>
 			) : (
 				<>
-					<h1 className='mb-8 text-3xl text-center'>ユーザー新規登録</h1>
+					<h1
+						style={{ fontFamily: 'Kiwi Maru' }}
+						className='mb-8 text-3xl text-center'
+					>
+						ユーザー新規登録
+					</h1>
 					<form
 						onSubmit={handleSubmit(onSubmit)}
 						className='flex flex-col mx-10 mt-10 space-y-5 text-center md:mx-20'
 					>
-						<p className='mt-2 text-xl text-gray-800 md:text-2xl'>ユーザー名</p>
+						<p
+							style={{ fontFamily: 'Kiwi Maru' }}
+							className='mt-2 text-xl text-gray-800 md:text-2xl'
+						>
+							ユーザー名
+						</p>
 						{error.username && (
 							<p className='text-red-600'>*{error.username}</p>
 						)}
@@ -54,7 +64,10 @@ const RegisterForm: FC<{}> = ({}) => {
 							className='p-2 mt-2 border-b-2 border-green-400'
 							{...register('username')}
 						/>
-						<p className='mt-2 text-xl text-gray-800 md:text-2xl'>
+						<p
+							style={{ fontFamily: 'Kiwi Maru' }}
+							className='mt-2 text-xl text-gray-800 md:text-2xl'
+						>
 							Eメールアドレス
 						</p>
 						{error.email && <p className='text-red-600'>*{error.email}</p>}
@@ -64,7 +77,12 @@ const RegisterForm: FC<{}> = ({}) => {
 							className='p-2 mt-2 border-b-2 border-green-400'
 							{...register('email')}
 						/>
-						<p className='mt-2 text-xl text-gray-800 md:text-2xl'>パスワード</p>
+						<p
+							style={{ fontFamily: 'Kiwi Maru' }}
+							className='mt-2 text-xl text-gray-800 md:text-2xl'
+						>
+							パスワード
+						</p>
 						{error.password && (
 							<p className='text-red-600'>*{error.password}</p>
 						)}
@@ -75,7 +93,10 @@ const RegisterForm: FC<{}> = ({}) => {
 							className='p-2 mt-2 border-b-2 border-green-400'
 							{...register('password')}
 						/>
-						<p className='mt-2 text-xl text-gray-800 md:text-2xl'>
+						<p
+							style={{ fontFamily: 'Kiwi Maru' }}
+							className='mt-2 text-xl text-gray-800 md:text-2xl'
+						>
 							確認用パスワード
 						</p>
 						{error.confirmPassword && (

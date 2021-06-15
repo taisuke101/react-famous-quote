@@ -38,15 +38,15 @@ const Header: FC<HeaderProps> = ({}) => {
 	if (!data?.getMe) {
 		body = (
 			<>
-				<PageLink href='/quotes' text='名言一覧' />
-				<PageLink href='/login' text='ログイン' />
-				<PageLink href='/register' text='新規登録' />
+				<PageLink href='/quotes' text='名言一覧' textClass='md:text-2xl' />
+				<PageLink href='/login' text='ログイン' textClass='md:text-2xl' />
+				<PageLink href='/register' text='新規登録' textClass='md:text-2xl' />
 			</>
 		);
 	} else {
 		body = (
 			<div className='flex space-x-4'>
-				<PageLink href='/quotes' text='名言一覧' />
+				<PageLink href='/quotes' text='名言一覧' textClass='md:text-2xl' />
 				<div
 					onClick={() => {
 						setOpen(!open);
@@ -57,7 +57,10 @@ const Header: FC<HeaderProps> = ({}) => {
 					tabIndex={0}
 					className='focus:outline-none'
 				>
-					<section className='flex items-center space-x-1'>
+					<section
+						style={{ fontFamily: 'Kiwi Maru' }}
+						className='flex items-center space-x-1 md:text-xl'
+					>
 						{open ? <FaChevronCircleDown /> : <FaChevronCircleRight />}
 						<div className='cursor-pointer' data-testid='header-open'>
 							ユーザー名：{data.getMe.username}
@@ -67,6 +70,7 @@ const Header: FC<HeaderProps> = ({}) => {
 						<section className='absolute flex flex-col px-3 py-5 space-y-4 text-center bg-gray-200 w-52 right-5'>
 							<Link href={`/user/${data.getMe.username}`}>
 								<div
+									style={{ fontFamily: 'Kiwi Maru' }}
 									className='transition duration-500 cursor-pointer hover:text-green-500'
 									data-testid='stock-button'
 								>
@@ -74,6 +78,7 @@ const Header: FC<HeaderProps> = ({}) => {
 								</div>
 							</Link>
 							<div
+								style={{ fontFamily: 'Kiwi Maru' }}
 								className='transition duration-500 cursor-pointer hover:text-green-500'
 								data-testid='logout-button'
 								onClick={async () => {
@@ -99,7 +104,7 @@ const Header: FC<HeaderProps> = ({}) => {
 					<PageLink
 						href='/'
 						text='名言ポータル'
-						textClass='text-2xl tracking-wider lg:tracking-widest'
+						textClass='font-medium text-3xl tracking-wider lg:tracking-widest'
 					/>
 				</section>
 				<section className='hidden space-x-4 text-lg md:flex'>{body}</section>
@@ -119,40 +124,44 @@ const Header: FC<HeaderProps> = ({}) => {
 						</button>
 						<section>
 							{data.getMe ? (
-								<div className='flex flex-col items-center text-xl pt-60 space-y-9'>
+								<div className='flex flex-col items-center text-2xl pt-60 space-y-9'>
 									<PageLink
 										href='/quotes'
 										text='名言一覧'
 										textClass='transition duration-500 cursor-pointer hover:text-green-600'
 										onClick={() => setOpen(false)}
 									/>
-									<Collapsible
-										className='transition duration-500 cursor-pointer hover:text-green-600'
-										trigger={`ユーザー名：${data.getMe.username}`}
-									>
-										<div className='flex flex-col text-center text-blue-800'>
-											<Link href={`/user/${data.getMe.username}`}>
+									<div style={{ fontFamily: 'Kiwi Maru' }}>
+										<Collapsible
+											className='transition duration-500 cursor-pointer hover:text-green-600'
+											trigger={`ユーザー名：${data.getMe.username}`}
+										>
+											<div className='flex flex-col text-center text-blue-800'>
+												<Link href={`/user/${data.getMe.username}`}>
+													<div
+														style={{ fontFamily: 'Kiwi Maru' }}
+														className='transition duration-500 cursor-pointer hover:text-green-600'
+														data-testid='stock-button'
+														onClick={() => setOpen(false)}
+													>
+														・ストック一覧
+													</div>
+												</Link>
 												<div
+													style={{ fontFamily: 'Kiwi Maru' }}
 													className='transition duration-500 cursor-pointer hover:text-green-600'
-													data-testid='stock-button'
-													onClick={() => setOpen(false)}
+													data-testid='logout-button'
+													onClick={async () => {
+														await router.push('/');
+														await logout();
+														setOpen(false);
+													}}
 												>
-													・ストック一覧
+													・ログアウト
 												</div>
-											</Link>
-											<div
-												className='transition duration-500 cursor-pointer hover:text-green-600'
-												data-testid='logout-button'
-												onClick={async () => {
-													await router.push('/');
-													await logout();
-													setOpen(false);
-												}}
-											>
-												・ログアウト
 											</div>
-										</div>
-									</Collapsible>
+										</Collapsible>
+									</div>
 								</div>
 							) : (
 								<div
@@ -162,17 +171,17 @@ const Header: FC<HeaderProps> = ({}) => {
 									<PageLink
 										href='/quotes'
 										text='名言一覧'
-										textClass='transition duration-500 cursor-pointer hover:text-green-600'
+										textClass='text-3xl transition duration-500 cursor-pointer hover:text-green-600'
 									/>
 									<PageLink
 										href='/login'
 										text='ログイン'
-										textClass='transition duration-500 cursor-pointer hover:text-green-600'
+										textClass='text-3xl transition duration-500 cursor-pointer hover:text-green-600'
 									/>
 									<PageLink
 										href='/register'
 										text='新規登録'
-										textClass='transition duration-500 cursor-pointer hover:text-green-600'
+										textClass='text-3xl transition duration-500 cursor-pointer hover:text-green-600'
 									/>
 								</div>
 							)}

@@ -52,7 +52,12 @@ const LoginForm: FC<{}> = ({}) => {
 				</div>
 			) : (
 				<>
-					<h1 className='mb-8 text-3xl text-center'>ユーザーログイン</h1>
+					<h1
+						style={{ fontFamily: 'Kiwi Maru' }}
+						className='mb-8 text-3xl text-center'
+					>
+						ユーザーログイン
+					</h1>
 					<form
 						onSubmit={handleSubmit(onSubmit)}
 						className='flex flex-col mx-10 space-y-5 text-center md:mx-20'
@@ -62,7 +67,12 @@ const LoginForm: FC<{}> = ({}) => {
 								{router.query.errorMessage}
 							</h1>
 						)}
-						<p className='mt-2 text-xl text-gray-800 md:text-2xl'>ユーザー名</p>
+						<p
+							style={{ fontFamily: 'Kiwi Maru' }}
+							className='mt-2 text-xl text-gray-800 md:text-2xl'
+						>
+							ユーザー名
+						</p>
 						{error.usernameOrEmail && (
 							<p className='text-red-600'>*{error.usernameOrEmail}</p>
 						)}
@@ -72,7 +82,12 @@ const LoginForm: FC<{}> = ({}) => {
 							className='p-2 mt-2 border-b-2 border-green-400'
 							{...register('usernameOrEmail')}
 						/>
-						<p className='mt-2 text-xl text-gray-800 md:text-2xl'>パスワード</p>
+						<p
+							style={{ fontFamily: 'Kiwi Maru' }}
+							className='mt-2 text-xl text-gray-800 md:text-2xl'
+						>
+							パスワード
+						</p>
 						{error.password && (
 							<p className='text-red-600'>*{error.password}</p>
 						)}

@@ -20,14 +20,17 @@ const Country: VFC<CountryProps> = ({}) => {
 	console.log(data);
 
 	return (
-		<>
+		<div className='mb-56'>
 			{!data && loading ? (
 				<div className='flex justify-center'>
 					<Loader type='TailSpin' color='#00fa9a' height={200} width={200} />
 				</div>
 			) : (
 				<>
-					<h1 className='mb-4 text-3xl text-center md:text-4xl lg:text-5xl mt-9'>
+					<h1
+						style={{ fontFamily: 'Kiwi Maru' }}
+						className='mb-4 text-3xl text-center md:text-4xl lg:text-5xl mt-9'
+					>
 						{`${country}出身者の名言`}...
 						<span className='text-red-500'>{data.getQuote.length}</span>件
 					</h1>
@@ -38,7 +41,7 @@ const Country: VFC<CountryProps> = ({}) => {
 					))}
 				</>
 			)}
-		</>
+		</div>
 	);
 };
 export default Country;

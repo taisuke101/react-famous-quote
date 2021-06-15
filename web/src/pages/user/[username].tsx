@@ -16,7 +16,10 @@ const Username: VFC<UsernameProps> = ({}) => {
 
 	return (
 		<div className='mb-56'>
-			<h1 className='mt-10 mb-5 text-2xl text-center'>
+			<h1
+				style={{ fontFamily: 'Kiwi Maru' }}
+				className='mt-10 mb-5 text-3xl text-center'
+			>
 				{username}のストック一覧
 			</h1>
 			{data && loading ? (
