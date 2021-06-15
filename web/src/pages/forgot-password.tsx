@@ -2,7 +2,9 @@ import Link from 'next/link';
 import { useState, VFC } from 'react';
 import { useForm } from 'react-hook-form';
 import Loader from 'react-loader-spinner';
+
 import SubmitButton from '../components/parts/SubmitButton';
+import SEO from '../components/SEO';
 import { useForgotPasswordMutation } from '../generated/graphql';
 
 interface ForgotPasswordProps {
@@ -26,6 +28,11 @@ const ForgotPassword: VFC<ForgotPasswordProps> = ({}) => {
 
 	return (
 		<div className='py-5 mx-4 bg-gray-200 rounded-md shadow-md mb-72 mt-14'>
+			<SEO
+				siteTitle='パスワードを忘れた場合'
+				title='パスワードを忘れた場合'
+				description='パスワードを忘れた時のためのページです'
+			/>
 			{loading ? (
 				<div className='flex justify-center'>
 					<h1>sending....</h1>

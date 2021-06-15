@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { useGetQuoteQuery } from '../../../generated/graphql';
 import Loader from 'react-loader-spinner';
 import QuoteCard from '../../../components/QuoteCard';
+import SEO from '../../../components/SEO';
 
 interface CategoryProps {}
 
@@ -18,6 +19,11 @@ const Category: VFC<CategoryProps> = ({}) => {
 
 	return (
 		<div className='mb-56'>
+			<SEO
+				siteTitle={`${category}の名言`}
+				title={`${category}の名言`}
+				description={`${category}の名言を表示するページです`}
+			/>
 			{!data && loading ? (
 				<div className='flex justify-center'>
 					<Loader type='TailSpin' color='#00fa9a' height={200} width={200} />

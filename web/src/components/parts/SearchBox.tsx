@@ -27,6 +27,7 @@ const SearchBox: VFC<SearchBoxProps> = ({}) => {
 		<section className='flex items-center px-2 mx-2 bg-white rounded-lg'>
 			<form className='flex' onSubmit={handleSubmit(onSubmit)}>
 				<input
+					style={{ fontFamily: 'Kiwi Maru' }}
 					className='w-full bg-transparent h-9 focus:outline-none'
 					name='searchArgs'
 					placeholder='ワード検索'

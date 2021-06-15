@@ -4,6 +4,7 @@ import Loader from 'react-loader-spinner';
 
 import { useGetQuoteQuery } from '../../../generated/graphql';
 import QuoteCard from '../../../components/QuoteCard';
+import SEO from '../../../components/SEO';
 
 interface CountryProps {}
 
@@ -21,6 +22,11 @@ const Country: VFC<CountryProps> = ({}) => {
 
 	return (
 		<div className='mb-56'>
+			<SEO
+				siteTitle={`${country}出身者の名言`}
+				title={`${country}出身者の名言`}
+				description={`${country}出身者の名言を表示するページです`}
+			/>
 			{!data && loading ? (
 				<div className='flex justify-center'>
 					<Loader type='TailSpin' color='#00fa9a' height={200} width={200} />

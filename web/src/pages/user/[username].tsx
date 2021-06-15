@@ -4,6 +4,7 @@ import Loader from 'react-loader-spinner';
 
 import { useGetFavoritsQuery } from '../../generated/graphql';
 import QuoteCard from '../../components/QuoteCard';
+import SEO from '../../components/SEO';
 
 interface UsernameProps {}
 
@@ -16,6 +17,11 @@ const Username: VFC<UsernameProps> = ({}) => {
 
 	return (
 		<div className='mb-56'>
+			<SEO
+				siteTitle='ストック一覧'
+				title='ストック一覧'
+				description='ユーザーがストックした名言を表示するページです'
+			/>
 			<h1
 				style={{ fontFamily: 'Kiwi Maru' }}
 				className='mt-10 mb-5 text-3xl text-center'

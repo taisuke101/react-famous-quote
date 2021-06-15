@@ -5,6 +5,7 @@ import Link from 'next/link';
 
 import { useGetQuoteQuery } from '../../../generated/graphql';
 import QuoteCard from '../../../components/QuoteCard';
+import SEO from '../../../components/SEO';
 
 interface AuthorProps {}
 
@@ -20,6 +21,11 @@ const Author: VFC<AuthorProps> = ({}) => {
 
 	return (
 		<div className='mb-56'>
+			<SEO
+				siteTitle={`${author}の名言`}
+				title={`${author}の名言`}
+				description={`${author}の名言を表示するページです`}
+			/>
 			{!data && loading ? (
 				<div className='flex justify-center'>
 					<Loader type='TailSpin' color='#00fa9a' height={200} width={200} />

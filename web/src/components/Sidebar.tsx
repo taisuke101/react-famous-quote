@@ -64,7 +64,7 @@ const Sidebar: VFC<SidebarProps> = ({}) => {
 									key={category.id}
 								>
 									<p
-										className='pt-1 mb-1 text-sm transition duration-500 transform cursor-pointer lg:text-base hover:text-green-500'
+										className='pt-1 mb-1 text-sm font-medium transition duration-500 transform cursor-pointer lg:text-base hover:text-green-500'
 										onClick={() => setOpen(false)}
 									>
 										{category.name}
