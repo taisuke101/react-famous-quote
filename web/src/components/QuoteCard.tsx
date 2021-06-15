@@ -13,22 +13,22 @@ interface QuoteCardProps {
 
 const QuoteCard: VFC<QuoteCardProps> = ({ quote, wiki }) => {
 	return (
-		<div className='px-4 mx-10 mb-5 space-y-5 text-center bg-gray-100 shadow-md py-7 lg:mx-20 lg:py-5 lg:px-10'>
+		<div className='px-4 mx-10 mb-5 space-y-5 text-center bg-gray-100 shadow-md rounded-2xl py-7 lg:mx-20 lg:py-5 lg:px-10'>
 			<div className='font-serif text-xl font-bold tracking-widest break-words'>
 				{quote.text}
 			</div>
 			<section className='inline-flex flex-col space-y-5'>
 				<Link href={`/quote/author/${quote.author}`}>
-					<a className='text-xl font-semibold transition duration-500 transform hover:text-green-500'>
+					<a className='text-xl font-bold transition duration-500 transform hover:text-green-500'>
 						{quote.author}
 					</a>
 				</Link>
 				<Link href={`/quote/country/${quote.country}`}>
-					<a className='text-lg transition duration-500 transform hover:text-green-500'>
+					<a className='font-mono text-lg font-medium transition duration-500 transform hover:text-green-500'>
 						{quote.country}
 					</a>
 				</Link>
-				<div>{quote.job}</div>
+				<div className='font-mono font-semibold'>{quote.job}</div>
 				<LikeAndFavorite quote={quote} />
 				{wiki && (
 					<div data-tip={`Wikipediaで${quote.author}を検索する`}>

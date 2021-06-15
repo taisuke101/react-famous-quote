@@ -11,7 +11,11 @@ interface PageLinkProps {
 const PageLink: FC<PageLinkProps> = ({ href, text, textClass, onClick }) => {
 	return (
 		<Link href={href}>
-			<a className={`${textClass ? textClass : ''}`} onClick={onClick}>
+			<a
+				style={{ fontFamily: 'Kiwi Maru' }}
+				className={`${textClass ? textClass : ''}`}
+				onClick={onClick}
+			>
 				{text}
 			</a>
 		</Link>

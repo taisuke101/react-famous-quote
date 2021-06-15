@@ -19,14 +19,17 @@ const Author: VFC<AuthorProps> = ({}) => {
 	});
 
 	return (
-		<>
+		<div className='mb-56'>
 			{!data && loading ? (
 				<div className='flex justify-center'>
 					<Loader type='TailSpin' color='#00fa9a' height={200} width={200} />
 				</div>
 			) : (
 				<div className='text-center mt-9'>
-					<h1 className='mb-4 text-3xl md:text-4xl lg:text-5xl'>
+					<h1
+						style={{ fontFamily: 'Kiwi Maru' }}
+						className='mb-4 text-3xl md:text-4xl lg:text-5xl'
+					>
 						{`${author}の名言`}...
 						<span className='text-red-500'>{data.getQuote.length}</span>件
 					</h1>
@@ -40,7 +43,7 @@ const Author: VFC<AuthorProps> = ({}) => {
 					))}
 				</div>
 			)}
-		</>
+		</div>
 	);
 };
 export default Author;
