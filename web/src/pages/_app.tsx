@@ -1,10 +1,11 @@
 import { ApolloClient, ApolloProvider } from '@apollo/client';
 import { AppProps } from 'next/dist/next-server/lib/router/router';
+import dynamic from 'next/dynamic';
 
 import Header from '../components/Header';
 import { cache } from '../utils/cache';
-import Sidebar from '../components/Sidebar';
-import Footer from '../components/Footer';
+const Sidebar = dynamic(import('../components/Sidebar'));
+const Footer = dynamic(import('../components/Footer'));
 
 import '../styles/globals.css';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';

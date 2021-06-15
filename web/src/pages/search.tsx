@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import { VFC } from 'react';
 import Loader from 'react-loader-spinner';
 import QuoteCard from '../components/QuoteCard';
+import SEO from '../components/SEO';
 import { useSearchQuoteQuery } from '../generated/graphql';
 
 interface SearchProps {}
@@ -17,6 +18,11 @@ const Search: VFC<SearchProps> = ({}) => {
 
 	return (
 		<>
+			<SEO
+				siteTitle='検索結果'
+				title='検索結果'
+				description='名言の検索結果を表示するページです'
+			/>
 			{!data && loading ? (
 				<div className='flex justify-center'>
 					<Loader type='TailSpin' color='#00fa9a' height={200} width={200} />

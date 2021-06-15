@@ -4,6 +4,7 @@ import { useState, VFC } from 'react';
 import { useForm } from 'react-hook-form';
 import Loader from 'react-loader-spinner';
 import SubmitButton from '../../components/parts/SubmitButton';
+import SEO from '../../components/SEO';
 
 import {
 	ChangePasswordInput,
@@ -42,6 +43,11 @@ const Token: VFC<TokenProps> = ({}) => {
 
 	return (
 		<>
+			<SEO
+				siteTitle='パスワード変更'
+				title='パスワード変更'
+				description='パスワードを変更するためのページです'
+			/>
 			<div className='py-5 mx-4 bg-gray-200 rounded-md shadow-md mb-96 md:mx-20 lg:mx-32 mt-14'>
 				{loading ? (
 					<div className='flex justify-center'>

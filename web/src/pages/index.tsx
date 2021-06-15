@@ -17,6 +17,7 @@ import { FaSearch } from 'react-icons/fa';
 import { BsFillBookmarksFill, BsFillHeartFill } from 'react-icons/bs';
 import 'swiper/swiper-bundle.css';
 import Image from 'next/image';
+import SEO from '../components/SEO';
 
 SwiperCore.use([Navigation, Pagination]);
 
@@ -25,6 +26,7 @@ const Home: VFC = () => {
 
 	return (
 		<>
+			<SEO siteTitle='Home' title='Home' description='トップページです' />
 			{!data && loading ? (
 				<div className='flex justify-center'>
 					<Loader type='TailSpin' color='#00fa9a' height={200} width={200} />

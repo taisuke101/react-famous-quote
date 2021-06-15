@@ -4,6 +4,7 @@ import Loader from 'react-loader-spinner';
 
 import { useGetQuotesQuery } from '../generated/graphql';
 import QuoteCard from '../components/QuoteCard';
+import SEO from '../components/SEO';
 
 interface QuoteProps {}
 
@@ -28,6 +29,11 @@ const Quotes: FC<QuoteProps> = ({}) => {
 
 	return (
 		<div className='pb-24 text-center mt-9'>
+			<SEO
+				siteTitle='名言一覧'
+				title='名言一覧'
+				description='名言一覧のページです'
+			/>
 			{!data && loading ? (
 				<div className='flex justify-center'>
 					<Loader type='TailSpin' color='#00fa9a' height={200} width={200} />
