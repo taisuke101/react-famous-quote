@@ -55,7 +55,7 @@ const Token: VFC<TokenProps> = ({}) => {
 					</div>
 				) : complete ? (
 					<div className='text-center'>
-						<p className='mb-8 text-xl'>パスワードの再設定が完了しました！</p>
+						<p className='mb-8 text-xl'>パスワードの再設定が完了しました!</p>
 						<section className='space-x-3'>
 							<Link href='/login'>
 								<a className='transition duration-500 cursor-pointer hover:text-green-500'>

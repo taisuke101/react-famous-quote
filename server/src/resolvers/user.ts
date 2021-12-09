@@ -51,13 +51,13 @@ export class UserResolver {
 		);
 		if (!user)
 			throw new UserInputError('errors', {
-				formattedErrors: { usernameOrEmail: 'ユーザーが見つかりません！' },
+				formattedErrors: { usernameOrEmail: 'ユーザーが見つかりません!' },
 			});
 
 		const valid = await argon2.verify(user.password, password);
 		if (!valid)
 			throw new UserInputError('errors', {
-				formattedErrors: { password: '登録情報と一致しません！' },
+				formattedErrors: { password: '登録情報と一致しません!' },
 			});
 
 		req.session.userId = user.id;
@@ -125,7 +125,7 @@ export class UserResolver {
 		const userId = await redis.get(key);
 		if (!userId)
 			throw new UserInputError('errors', {
-				formattedErrors: { token: '期限切れのトークンです！' },
+				formattedErrors: { token: '期限切れのトークンです!' },
 			});
 
 		const numberUserId = parseInt(userId);
@@ -133,7 +133,7 @@ export class UserResolver {
 		const user = await User.findOne(numberUserId);
 		if (!user)
 			throw new UserInputError('errors', {
-				formattedErrors: { userId: 'ユーザーが存在しません！' },
+				formattedErrors: { userId: 'ユーザーが存在しません!' },
 			});
 
 		await User.update(

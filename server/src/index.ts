@@ -31,13 +31,16 @@ import { createFavoriteLoader } from './utils/createFavoriteLoader';
 import { httpsRedirect, wwwRedirect } from './utils/httpsRedirect';
 
 const main = async () => {
-	await createConnection().then(() => console.log('database connect!'));
+	const connection = await createConnection();
+
+	if (process.env.NODE_ENV === 'production') await connection.runMigrations();
 
 	const app = express();
 
 	const RedisStore = connectRedis(session);
-	const redis = new Redis();
+	const redis = new Redis(process.env.REDIS_URL);
 
+	app.set('proxy', 1);
 	app.use(
 		helmet({
 			contentSecurityPolicy:
@@ -47,7 +50,7 @@ const main = async () => {
 
 	app.use(
 		cors({
-			origin: 'http://localhost:3000',
+			origin: process.env.CORS_ORIGIN,
 			credentials: true,
 		})
 	);
@@ -65,6 +68,8 @@ const main = async () => {
 				httpOnly: true,
 				sameSite: 'lax',
 				secure: __prod__,
+				//カスタムドメイン
+				//domain: __prod__ ? '.codeponder.com' : undefined,
 			},
 			saveUninitialized: false,
 			secret: process.env.REDIS_SECRET!,
@@ -142,7 +147,7 @@ const main = async () => {
 						});
 						if (complexity > 13) {
 							throw new Error(
-								`クエリが複雑すぎます! ${complexity} は設定された値を超えています！`
+								`クエリが複雑すぎます! ${complexity} は設定された値を超えています!`
 							);
 						}
 						console.log('Used query complexity points:', complexity);
