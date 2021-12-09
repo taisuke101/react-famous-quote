@@ -15,7 +15,7 @@ import QuoteCard from '../components/QuoteCard';
 
 import { FaSearch } from 'react-icons/fa';
 import { BsFillBookmarksFill, BsFillHeartFill } from 'react-icons/bs';
-import 'swiper/swiper-bundle.css';
+import 'swiper/css';
 import Image from 'next/image';
 import SEO from '../components/SEO';
 
@@ -60,7 +60,7 @@ const Home: VFC = () => {
 					</Swiper>
 					<div className='px-5 my-10'>
 						<article className='space-y-5'>
-							<ScrollRevealContainer>
+							<ScrollRevealContainer move='bottom'>
 								<h1
 									style={{ fontFamily: 'Kiwi Maru' }}
 									className='text-4xl text-center'
@@ -101,7 +101,7 @@ const Home: VFC = () => {
 									</div>
 								</section>
 							</ScrollRevealContainer>
-							<ScrollRevealContainer>
+							<ScrollRevealContainer move='right'>
 								<section
 									id='scroll-3'
 									className='py-10 mt-10 mb-20 bg-gray-100 rounded-lg shadow-lg'
@@ -115,7 +115,7 @@ const Home: VFC = () => {
 											<BsFillBookmarksFill className='text-blue-500 text-8xl' />
 										</div>
 										<div>
-											名言をいいね！したり、ストックすることができます。
+											名言をいいね!したり、ストックすることができます。
 											<p>
 												気に入った名言を後でいつでも確認することができます。
 											</p>
