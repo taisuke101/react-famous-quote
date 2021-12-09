@@ -182,7 +182,7 @@ describe('searchQuoteのテスト', () => {
 });
 
 describe('likeQuoteのテスト', () => {
-	test('OK: 名言のいいね！に成功', async () => {
+	test('OK: 名言のいいね!に成功', async () => {
 		await graphqlCall({
 			source: createUserMutation,
 			variableValues: {

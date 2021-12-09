@@ -52,8 +52,8 @@ const LikeAndFavorite: VFC<LikeAndFavoriteProps> = ({ quote }) => {
 				{quote.likeStatus === 1 ? (
 					<button
 						className='flex focus:outline-none'
-						data-testid='いいね！を取り消す'
-						data-tip='いいね！を取り消す'
+						data-testid='いいね!を取り消す'
+						data-tip='いいね!を取り消す'
 						onClick={() => {
 							like({
 								variables: {
@@ -72,8 +72,8 @@ const LikeAndFavorite: VFC<LikeAndFavoriteProps> = ({ quote }) => {
 				) : (
 					<button
 						className='flex focus:outline-none'
-						data-testid='いいね！する'
-						data-tip='いいね！する'
+						data-testid='いいね!する'
+						data-tip='いいね!する'
 						onClick={() => {
 							like({
 								variables: {

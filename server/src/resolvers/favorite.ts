@@ -47,7 +47,7 @@ export class FavoriteResolver {
 		const user = await User.findOne(userId);
 		if (!user)
 			throw new UserInputError('errors', {
-				formattedErrors: { userId: 'ユーザーが見つかりません！' },
+				formattedErrors: { userId: 'ユーザーが見つかりません!' },
 			});
 
 		const quote = await Quote.findOne(quoteId);
@@ -73,7 +73,7 @@ export class FavoriteResolver {
 			return true;
 		} else {
 			throw new UserInputError('errors', {
-				formattedErrors: { quoteId: '名言が見つかりません！' },
+				formattedErrors: { quoteId: '名言が見つかりません!' },
 			});
 		}
 	}
