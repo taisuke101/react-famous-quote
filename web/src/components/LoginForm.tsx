@@ -52,10 +52,7 @@ const LoginForm: FC<{}> = ({}) => {
 				</div>
 			) : (
 				<>
-					<h1
-						style={{ fontFamily: 'Kiwi Maru' }}
-						className='mb-8 text-3xl text-center'
-					>
+					<h1 className='mb-8 text-3xl text-center font-kiwi'>
 						ユーザーログイン
 					</h1>
 					<form
@@ -67,10 +64,7 @@ const LoginForm: FC<{}> = ({}) => {
 								{router.query.errorMessage}
 							</h1>
 						)}
-						<p
-							style={{ fontFamily: 'Kiwi Maru' }}
-							className='mt-2 text-xl text-gray-800 md:text-2xl'
-						>
+						<p className='mt-2 text-xl text-gray-800 font-kiwi md:text-2xl'>
 							ユーザー名
 						</p>
 						{error.usernameOrEmail && (
@@ -82,10 +76,7 @@ const LoginForm: FC<{}> = ({}) => {
 							className='p-2 mt-2 border-b-2 border-green-400'
 							{...register('usernameOrEmail')}
 						/>
-						<p
-							style={{ fontFamily: 'Kiwi Maru' }}
-							className='mt-2 text-xl text-gray-800 md:text-2xl'
-						>
+						<p className='mt-2 text-xl text-gray-800 font-kiwi md:text-2xl'>
 							パスワード
 						</p>
 						{error.password && (

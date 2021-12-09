@@ -57,10 +57,7 @@ const Header: FC<HeaderProps> = ({}) => {
 					tabIndex={0}
 					className='focus:outline-none'
 				>
-					<section
-						style={{ fontFamily: 'Kiwi Maru' }}
-						className='flex items-center space-x-1 md:text-xl'
-					>
+					<section className='flex items-center space-x-1 font-kiwi md:text-xl'>
 						{open ? <FaChevronCircleDown /> : <FaChevronCircleRight />}
 						<div className='cursor-pointer' data-testid='header-open'>
 							ユーザー名：{data.getMe.username}
@@ -70,16 +67,14 @@ const Header: FC<HeaderProps> = ({}) => {
 						<section className='absolute flex flex-col px-3 py-5 space-y-4 text-center bg-gray-200 w-52 right-5'>
 							<Link href={`/user/${data.getMe.username}`}>
 								<div
-									style={{ fontFamily: 'Kiwi Maru' }}
-									className='transition duration-500 cursor-pointer hover:text-green-500'
+									className='transition duration-500 cursor-pointer font-kiwi hover:text-green-500'
 									data-testid='stock-button'
 								>
 									ストック一覧
 								</div>
 							</Link>
 							<div
-								style={{ fontFamily: 'Kiwi Maru' }}
-								className='transition duration-500 cursor-pointer hover:text-green-500'
+								className='transition duration-500 cursor-pointer font-kiwi hover:text-green-500'
 								data-testid='logout-button'
 								onClick={async () => {
 									await router.push('/');
@@ -131,7 +126,7 @@ const Header: FC<HeaderProps> = ({}) => {
 										textClass='transition duration-500 cursor-pointer hover:text-green-600'
 										onClick={() => setOpen(false)}
 									/>
-									<div style={{ fontFamily: 'Kiwi Maru' }}>
+									<div>
 										<Collapsible
 											className='transition duration-500 cursor-pointer hover:text-green-600'
 											trigger={`ユーザー名：${data.getMe.username}`}
@@ -139,8 +134,7 @@ const Header: FC<HeaderProps> = ({}) => {
 											<div className='flex flex-col text-center text-blue-800'>
 												<Link href={`/user/${data.getMe.username}`}>
 													<div
-														style={{ fontFamily: 'Kiwi Maru' }}
-														className='transition duration-500 cursor-pointer hover:text-green-600'
+														className='transition duration-500 cursor-pointer font-kiwi hover:text-green-600'
 														data-testid='stock-button'
 														onClick={() => setOpen(false)}
 													>
@@ -148,8 +142,7 @@ const Header: FC<HeaderProps> = ({}) => {
 													</div>
 												</Link>
 												<div
-													style={{ fontFamily: 'Kiwi Maru' }}
-													className='transition duration-500 cursor-pointer hover:text-green-600'
+													className='transition duration-500 cursor-pointer font-kiwi hover:text-green-600'
 													data-testid='logout-button'
 													onClick={async () => {
 														await router.push('/');

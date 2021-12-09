@@ -22,6 +22,10 @@ const SEO: VFC<SEOProps> = ({ siteTitle, title, description }) => {
 			<meta name='twitter:creator' content={Data.twitterUsername} />
 			<meta name='twitter:description' content={Data.description} />
 			{/* <meta name='twitter:image' content={`${Data.url}${Data.image}`} /> */}
+			<link
+				rel='stylesheet'
+				href='https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@300;400;500&display=swap'
+			/>
 		</Head>
 	);
 };

@@ -40,20 +40,14 @@ const Quotes: FC<QuoteProps> = ({}) => {
 				</div>
 			) : (
 				<>
-					<h1
-						style={{ fontFamily: 'Kiwi Maru' }}
-						className='mb-8 text-3xl text-center'
-					>
-						名言一覧
-					</h1>
+					<h1 className='mb-8 text-3xl text-center font-kiwi'>名言一覧</h1>
 					{data?.getQuotes.quotes.map((quote) => (
 						<div key={quote.id}>
 							<QuoteCard quote={quote} wiki={true} />
 						</div>
 					))}
 					<button
-						style={{ fontFamily: 'Kiwi Maru' }}
-						className='px-6 py-2 mx-auto mt-2 text-lg font-semibold tracking-widest text-white transition duration-500 transform bg-green-400 rounded-lg hover:text-black hover:bg-green-600 focus:outline-none'
+						className='px-6 py-2 mx-auto mt-2 text-lg font-semibold tracking-widest text-white transition duration-500 transform bg-green-400 rounded-lg font-kiwi hover:text-black hover:bg-green-600 focus:outline-none'
 						onClick={async () => {
 							await fetchMore({
 								variables: {

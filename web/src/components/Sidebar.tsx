@@ -20,7 +20,7 @@ const Sidebar: VFC<SidebarProps> = ({}) => {
 			{open ? (
 				<div className='fixed z-20 h-screen pt-24 overflow-y-scroll bg-green-500 w-60 md:w-1/3 lg:w-80'>
 					<SearchBox />
-					<div style={{ fontFamily: 'Kiwi Maru' }}>
+					<div className='font-kiwi'>
 						<CollapsibleMenu trigger='人物から探す'>
 							{columnData.map((column) => (
 								<Collapsible trigger={`・${column.column}`}>
@@ -38,7 +38,7 @@ const Sidebar: VFC<SidebarProps> = ({}) => {
 							))}
 						</CollapsibleMenu>
 					</div>
-					<div style={{ fontFamily: 'Kiwi Maru' }}>
+					<div className='font-kiwi'>
 						<CollapsibleMenu trigger='国別で探す'>
 							{regionData.map((region) => (
 								<Collapsible key={region.id} trigger={`・${region.region}`}>
@@ -56,7 +56,7 @@ const Sidebar: VFC<SidebarProps> = ({}) => {
 							))}
 						</CollapsibleMenu>
 					</div>
-					<div style={{ fontFamily: 'Kiwi Maru' }}>
+					<div className='font-kiwi'>
 						<CollapsibleMenu trigger='カテゴリーで探す'>
 							{categoryData.map((category) => (
 								<Link

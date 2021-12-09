@@ -12,8 +12,7 @@ const PageLink: FC<PageLinkProps> = ({ href, text, textClass, onClick }) => {
 	return (
 		<Link href={href}>
 			<a
-				style={{ fontFamily: 'Kiwi Maru' }}
-				className={`${textClass ? textClass : ''}`}
+				className={`${textClass ? textClass : ''} font-kiwi`}
 				onClick={onClick}
 			>
 				{text}

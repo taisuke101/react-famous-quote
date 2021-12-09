@@ -39,20 +39,14 @@ const RegisterForm: FC<{}> = ({}) => {
 				</div>
 			) : (
 				<>
-					<h1
-						style={{ fontFamily: 'Kiwi Maru' }}
-						className='mb-8 text-3xl text-center'
-					>
+					<h1 className='mb-8 text-3xl text-center font-kiwi'>
 						ユーザー新規登録
 					</h1>
 					<form
 						onSubmit={handleSubmit(onSubmit)}
 						className='flex flex-col mx-10 mt-10 space-y-5 text-center md:mx-20'
 					>
-						<p
-							style={{ fontFamily: 'Kiwi Maru' }}
-							className='mt-2 text-xl text-gray-800 md:text-2xl'
-						>
+						<p className='mt-2 text-xl text-gray-800 font-kiwi md:text-2xl'>
 							ユーザー名
 						</p>
 						{error.username && (
@@ -64,10 +58,7 @@ const RegisterForm: FC<{}> = ({}) => {
 							className='p-2 mt-2 border-b-2 border-green-400'
 							{...register('username')}
 						/>
-						<p
-							style={{ fontFamily: 'Kiwi Maru' }}
-							className='mt-2 text-xl text-gray-800 md:text-2xl'
-						>
+						<p className='mt-2 text-xl text-gray-800 font-kiwi md:text-2xl'>
 							Eメールアドレス
 						</p>
 						{error.email && <p className='text-red-600'>*{error.email}</p>}
@@ -77,10 +68,7 @@ const RegisterForm: FC<{}> = ({}) => {
 							className='p-2 mt-2 border-b-2 border-green-400'
 							{...register('email')}
 						/>
-						<p
-							style={{ fontFamily: 'Kiwi Maru' }}
-							className='mt-2 text-xl text-gray-800 md:text-2xl'
-						>
+						<p className='mt-2 text-xl text-gray-800 font-kiwi md:text-2xl'>
 							パスワード
 						</p>
 						{error.password && (
@@ -93,10 +81,7 @@ const RegisterForm: FC<{}> = ({}) => {
 							className='p-2 mt-2 border-b-2 border-green-400'
 							{...register('password')}
 						/>
-						<p
-							style={{ fontFamily: 'Kiwi Maru' }}
-							className='mt-2 text-xl text-gray-800 md:text-2xl'
-						>
+						<p className='mt-2 text-xl text-gray-800 font-kiwi md:text-2xl'>
 							確認用パスワード
 						</p>
 						{error.confirmPassword && (

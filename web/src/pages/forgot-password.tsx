@@ -55,10 +55,7 @@ const ForgotPassword: VFC<ForgotPasswordProps> = ({}) => {
 					onSubmit={handleSubmit(onSubmit)}
 					className='flex flex-col mx-10 space-y-5 text-center md:mx-40'
 				>
-					<p
-						style={{ fontFamily: 'Kiwi Maru' }}
-						className='mt-2 text-2xl text-gray-800'
-					>
+					<p className='mt-2 text-2xl text-gray-800 font-kiwi'>
 						パスワードのリセット
 					</p>
 					<span>

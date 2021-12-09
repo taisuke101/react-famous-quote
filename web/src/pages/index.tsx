@@ -40,10 +40,7 @@ const Home: VFC = () => {
 						width={500}
 						height={300}
 					/>
-					<h1
-						style={{ fontFamily: 'Kiwi Maru' }}
-						className='py-4 mb-6 text-3xl tracking-widest text-center bg-green-400'
-					>
+					<h1 className='py-4 mb-6 text-3xl tracking-widest text-center bg-green-400 font-kiwi'>
 						人気Top10の名言一覧
 					</h1>
 					<Swiper
@@ -61,10 +58,7 @@ const Home: VFC = () => {
 					<div className='px-5 my-10'>
 						<article className='space-y-5'>
 							<ScrollRevealContainer move='bottom'>
-								<h1
-									style={{ fontFamily: 'Kiwi Maru' }}
-									className='text-4xl text-center'
-								>
+								<h1 className='text-4xl text-center font-kiwi'>
 									このサイトについて
 								</h1>
 								<section>
@@ -78,10 +72,7 @@ const Home: VFC = () => {
 							</ScrollRevealContainer>
 						</article>
 						<article>
-							<h1
-								style={{ fontFamily: 'Kiwi Maru' }}
-								className='mt-5 text-4xl text-center'
-							>
+							<h1 className='mt-5 text-4xl text-center font-kiwi'>
 								サイトの使い方
 							</h1>
 							<ScrollRevealContainer move='left'>

@@ -1,4 +1,5 @@
 import { FC, useRef, useEffect } from 'react';
+
 import scrollReveal from 'scrollreveal';
 
 interface ScrollRevealContainerProps {
@@ -20,15 +21,16 @@ const ScrollRevealContainer: FC<ScrollRevealContainerProps> = ({
 				origin:
 					move === 'left'
 						? 'left'
-						: 'right'
+						: move === 'right'
 						? 'right'
-						: 'top'
+						: move === 'top'
 						? 'top'
 						: 'bottom',
 				distance: '40px',
 			});
-	}, [sectionRef]);
+	}, []);
 
 	return <section ref={sectionRef}>{children}</section>;
 };
+
 export default ScrollRevealContainer;
