@@ -10,7 +10,11 @@ module.exports = {
 			'blur-40': 'blur(40px)',
 			'blur-50': 'blur(50px)',
 		},
-		extend: {},
+		extend: {
+			fontFamily: {
+				kiwi: ['Kiwi Maru'],
+			},
+		},
 	},
 	variants: {
 		extend: {

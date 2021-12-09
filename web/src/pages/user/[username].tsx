@@ -22,10 +22,7 @@ const Username: VFC<UsernameProps> = ({}) => {
 				title='ストック一覧'
 				description='ユーザーがストックした名言を表示するページです'
 			/>
-			<h1
-				style={{ fontFamily: 'Kiwi Maru' }}
-				className='mt-10 mb-5 text-3xl text-center'
-			>
+			<h1 className='mt-10 mb-5 text-3xl text-center font-kiwi'>
 				{username}のストック一覧
 			</h1>
 			{data && loading ? (

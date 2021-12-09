@@ -74,9 +74,7 @@ const Token: VFC<TokenProps> = ({}) => {
 						onSubmit={handleSubmit(onSubmit)}
 						className='flex flex-col mx-5 space-y-5 text-center'
 					>
-						<p style={{ fontFamily: 'Kiwi Maru' }} className='mt-2 text-xl'>
-							新しいパスワードに変更
-						</p>
+						<p className='mt-2 text-xl font-kiwi'>新しいパスワードに変更</p>
 						{error.newPassword && (
 							<p className='text-red-600'>{error.newPassword}</p>
 						)}
